@@ -1,17 +1,14 @@
 import "./style.css";
-import { CanvasRenderer } from "./CanvasRenderer.ts";
+import { Game } from "./Game.ts";
+import { CONFIG } from "./config.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <canvas></canvas>
 `;
 
-class Game extends CanvasRenderer {
-  loop(): void {
-    this.ctx.rect(20, 30, 100, 100);
-    this.ctx.fill();
-  }
-}
-
-const game = new Game(document.querySelector<HTMLCanvasElement>("canvas")!);
+const game = new Game(document.querySelector<HTMLCanvasElement>("canvas")!, {
+  width: CONFIG.width,
+  height: CONFIG.height,
+});
 
 game.start();

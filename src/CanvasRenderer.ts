@@ -1,4 +1,4 @@
-type RenderEngineParams = {
+export type RenderEngineParams = {
   width?: number;
   height?: number;
 };
