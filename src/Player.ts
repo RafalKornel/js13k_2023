@@ -3,34 +3,55 @@ import { CollisionType, Direction, Vec2 } from "./types.ts";
 import { BaseEntity } from "./BaseEntity.ts";
 import { Game } from "./Game.ts";
 import { renderBox } from "./renderBox.ts";
-import { PlayerCollisionEvent, observer } from "./Observer.ts";
+import {
+  OpaqueCollisionEvent,
+  SolidCollisionEvent,
+  WallCollisionEvent,
+  observer,
+} from "./Observer.ts";
 
-export class Player extends BaseEntity {
-  private velocity = 4;
+export class Player implements BaseEntity {
   private width = 25;
   private color = "#ff0000";
 
+  velocity = 4;
   pos: Vec2;
+  vel: Vec2;
   dim: Vec2;
-  collision: CollisionType = "outside";
+  collisionType: CollisionType = "solid";
   zIndex = 10;
 
-  colisionSet: Set<Direction>;
+  collisionSet: Set<Direction>;
 
   constructor(private readonly game: Game, initalPos: Vec2) {
-    super();
-
     this.pos = initalPos;
+    this.vel = [0, 0];
     this.dim = [this.width, this.width];
 
-    this.colisionSet = new Set<Direction>();
+    this.collisionSet = new Set<Direction>();
 
-    observer.registerCallback("collision", (e) => {
-      const colisionEvent = e as PlayerCollisionEvent;
+    observer.registerCallback("solid-collision", (e) => {
+      const colisionEvent = e as SolidCollisionEvent;
 
-      colisionEvent.data.directions.forEach((dir) => {
-        this.colisionSet.add(dir);
+      const { directions } = colisionEvent.data;
+
+      directions.forEach((dir) => {
+        this.collisionSet.add(dir);
       });
+    });
+
+    observer.registerCallback("opaque-collision", (e) => {
+      const colisionEvent = e as OpaqueCollisionEvent;
+
+      console.log(colisionEvent);
+    });
+
+    observer.registerCallback("wall-collision", (e) => {
+      const colisionEvent = e as WallCollisionEvent;
+
+      const { direction } = colisionEvent.data;
+
+      this.collisionSet.add(direction);
     });
   }
 
@@ -39,19 +60,50 @@ export class Player extends BaseEntity {
   }
 
   update(keysPressed: Set<InputKey>): void {
-    if (keysPressed.has("a") && !this.colisionSet.has("l")) {
-      this.pos[0] -= this.velocity;
-    } else if (keysPressed.has("d") && !this.colisionSet.has("r")) {
-      this.pos[0] += this.velocity;
-    } else if (keysPressed.has("w") && !this.colisionSet.has("t")) {
-      this.pos[1] -= this.velocity;
-    } else if (keysPressed.has("s") && !this.colisionSet.has("d")) {
-      this.pos[1] += this.velocity;
+    // GRAVITY
+
+    // if (this.collisionSet.has("d")) {
+    //   this.vel[1] = 0;
+    // } else {
+    //   this.vel[1] += 0.1; // gravity
+    // }
+
+    // this.pos[0] += this.vel[0];
+    // this.pos[1] += this.vel[1];
+
+    // if (keysPressed.has(" ") && this.collisionSet.has("d")) {
+    //   this.vel[1] = -4;
+    // }
+
+    const d: Vec2 = [0, 0];
+
+    if (keysPressed.has("a") && !this.collisionSet.has("l")) {
+      d[0] -= 1;
     }
 
-    this.colisionSet.delete("d");
-    this.colisionSet.delete("l");
-    this.colisionSet.delete("t");
-    this.colisionSet.delete("r");
+    if (keysPressed.has("d") && !this.collisionSet.has("r")) {
+      d[0] += 1;
+    }
+
+    if (keysPressed.has("w") && !this.collisionSet.has("t")) {
+      d[1] -= 1;
+    }
+
+    if (keysPressed.has("s") && !this.collisionSet.has("d")) {
+      d[1] += 1;
+    }
+
+    // diagonal movement
+    if (d[0] !== 0 && d[1] !== 0) {
+      const len = Math.sqrt(2);
+
+      d[0] /= len;
+      d[1] /= len;
+    }
+
+    this.pos[0] += d[0] * this.velocity;
+    this.pos[1] += d[1] * this.velocity;
+
+    this.collisionSet.clear();
   }
 }

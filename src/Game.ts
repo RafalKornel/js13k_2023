@@ -3,7 +3,7 @@ import { InputManager } from "./InputKey.ts";
 import { Player } from "./Player.ts";
 import { observer } from "./Observer.ts";
 import { SceneManager } from "./SceneManager.ts";
-import { ColisionManager } from "./ColisionManager.ts";
+import { CollisionManager } from "./CollisionManager.ts";
 
 class Camera {
   constructor(private readonly game: Game) {}
@@ -24,10 +24,6 @@ export class Game extends CanvasRenderer {
     this._player = new Player(this, [this.width / 2, this.height / 2]);
 
     this._sceneManager = new SceneManager(this);
-
-    observer.registerCallback("collision", (e) => {
-      console.log(e);
-    });
   }
 
   private update() {
@@ -35,10 +31,11 @@ export class Game extends CanvasRenderer {
 
     this._sceneManager.update(this._inputManager.keysPressed);
 
-    ColisionManager.handleCollisions(this._player, [
+    CollisionManager.handleEntityCollisions(this._player, [
       ...this._sceneManager.chamber.children,
-      // this._sceneManager.chamber,
     ]);
+
+    CollisionManager.handleWallsCollision(this._player);
   }
 
   private render() {

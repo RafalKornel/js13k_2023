@@ -1,14 +1,11 @@
 import { InputKey } from "./InputKey.ts";
-import { BaseEntity } from "./BaseEntity.ts";
 import { Chamber, CHAMBERS, ChamberKey } from "./Chamber.ts";
 import { Game } from "./Game.ts";
 
-export class SceneManager extends BaseEntity {
+export class SceneManager {
   private _currentChamber: Chamber;
 
   constructor(private readonly game: Game) {
-    super();
-
     this._currentChamber = new Chamber(CHAMBERS.initial);
   }
 

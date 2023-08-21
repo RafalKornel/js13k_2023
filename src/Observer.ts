@@ -6,14 +6,25 @@ type BaseGameEvent<TData = any, TKey extends string = string> = {
   data: TData;
 };
 
-export type PlayerCollisionEvent = BaseGameEvent<
+export type SolidCollisionEvent = BaseGameEvent<
   { entity: BaseEntity; directions: Direction[] },
-  "collision"
+  "solid-collision"
 >;
 
-export type SecondEvent = BaseGameEvent<{}, "dupa">;
+export type OpaqueCollisionEvent = BaseGameEvent<
+  { entity: BaseEntity },
+  "opaque-collision"
+>;
 
-type GameEvent = PlayerCollisionEvent | SecondEvent;
+export type WallCollisionEvent = BaseGameEvent<
+  { direction: Direction },
+  "wall-collision"
+>;
+
+type GameEvent =
+  | SolidCollisionEvent
+  | WallCollisionEvent
+  | OpaqueCollisionEvent;
 
 type Callback = (ge: BaseGameEvent) => void;
 

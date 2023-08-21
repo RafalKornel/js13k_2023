@@ -2,12 +2,12 @@ import { CONFIG } from "./config.ts";
 import { Bounds, CollisionType, Direction, Vec2 } from "./types.ts";
 import { BaseEntity } from "./BaseEntity.ts";
 import { renderBox } from "./renderBox.ts";
-import { Chamber, ChamberKey } from "./Chamber.ts";
+import { ChamberKey } from "./Chamber.ts";
 
-export class Marker extends BaseEntity {
+export class Marker implements BaseEntity {
   pos: Vec2;
   dim: Vec2;
-  collision: CollisionType = "outside";
+  collisionType: CollisionType = "opaque";
 
   color: string;
 
@@ -19,8 +19,6 @@ export class Marker extends BaseEntity {
     readonly parentBounds: Bounds,
     readonly nextChamber: ChamberKey
   ) {
-    super();
-
     this.pos = pos;
     this.dim = dim;
 
@@ -30,7 +28,7 @@ export class Marker extends BaseEntity {
   render(ctx: CanvasRenderingContext2D): void {
     renderBox({
       ctx,
-      pos: this.globalPos,
+      pos: this.pos,
       dim: this.dim,
       color: this.color,
     });

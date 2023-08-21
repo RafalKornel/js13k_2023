@@ -5,27 +5,25 @@ import { renderBox } from "./renderBox.ts";
 import { Marker, getMarkerPosition } from "./Marker.ts";
 
 export const CHAMBERS = {
-  initial: { height: 0.8, width: 0.8, markers: ["l", "t", "r", "d"] },
-  horizontalTunnel: { height: 0.2, width: 0.8, markers: ["l", "r"] },
-  verticalTunnel: { height: 0.8, width: 0.2, markers: ["t", "d"] },
+  initial: { height: 1, width: 1, markers: ["l", "t", "r", "d"] },
+  horizontalTunnel: { height: 0.2, width: 1, markers: ["l", "r"] },
+  verticalTunnel: { height: 1, width: 0.2, markers: ["t", "d"] },
 };
 
 export type ChamberKey = keyof typeof CHAMBERS;
 
 type ChamberConfig = (typeof CHAMBERS)[ChamberKey];
 
-export class Chamber extends BaseEntity {
+export class Chamber implements BaseEntity {
   pos: Vec2;
   dim: Vec2;
-  collision: CollisionType = "inside";
+  collisionType: CollisionType = "none";
 
   children: BaseEntity[];
 
   private color = "#9e3333";
 
   constructor(chamberConfig: ChamberConfig) {
-    super();
-
     this.dim = [
       chamberConfig.width * CONFIG.width,
       chamberConfig.height * CONFIG.height,
