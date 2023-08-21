@@ -1,14 +1,21 @@
-import "./style.css";
 import { Game } from "./Game.ts";
-import { CONFIG } from "./config.ts";
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./config.ts";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-    <canvas></canvas>
-`;
+const body = document.querySelector("body")!;
 
-const game = new Game(document.querySelector<HTMLCanvasElement>("canvas")!, {
-  width: CONFIG.width,
-  height: CONFIG.height,
+body.style.background = "#000";
+body.style.margin = "0";
+
+const canvas = document.querySelector<HTMLCanvasElement>("canvas")!;
+
+canvas.style.height = "100%";
+canvas.style.width = "calc(100vh * 4 / 3)";
+// canvas.style.imageRendering = "optimizeSpeed";
+canvas.style.imageRendering = "pixelated";
+
+const game = new Game(canvas, {
+  width: SCREEN_WIDTH,
+  height: SCREEN_HEIGHT,
 });
 
 game.start();

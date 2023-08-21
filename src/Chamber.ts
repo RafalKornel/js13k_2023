@@ -1,4 +1,4 @@
-import { CONFIG } from "./config.ts";
+import { CONFIG, SCREEN_HEIGHT, SCREEN_WIDTH } from "./config.ts";
 import { Bounds, CollisionType, Direction, Vec2 } from "./types.ts";
 import { BaseEntity } from "./BaseEntity.ts";
 import { renderBox } from "./renderBox.ts";
@@ -25,14 +25,11 @@ export class Chamber implements BaseEntity {
 
   constructor(chamberConfig: ChamberConfig) {
     this.dim = [
-      chamberConfig.width * CONFIG.width,
-      chamberConfig.height * CONFIG.height,
+      chamberConfig.width * SCREEN_WIDTH,
+      chamberConfig.height * SCREEN_HEIGHT,
     ];
 
-    this.pos = [
-      (CONFIG.width - this.dim[0]) / 2,
-      (CONFIG.height - this.dim[1]) / 2,
-    ];
+    this.pos = [0, 0];
 
     const bounds = [...this.pos, ...this.dim] as Bounds;
 
@@ -40,7 +37,7 @@ export class Chamber implements BaseEntity {
       (markerOrientation) =>
         new Marker(
           getMarkerPosition(markerOrientation as Direction, this.dim),
-          CONFIG.markerDim as Vec2,
+          [CONFIG.tileSize, CONFIG.tileSize] as Vec2,
           "#0000ff",
           markerOrientation as Direction,
           bounds,

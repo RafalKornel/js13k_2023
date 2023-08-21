@@ -6,8 +6,6 @@ export type RenderEngineParams = {
 export abstract class CanvasRenderer {
   protected ctx: CanvasRenderingContext2D;
 
-  private raf: number | undefined;
-
   protected width: number;
   protected height: number;
 
@@ -31,6 +29,8 @@ export abstract class CanvasRenderer {
       throw new Error("Your browser doesn't support canvas");
     }
 
+    // ctx.imageSmoothingEnabled = false;
+
     this.ctx = ctx;
   }
 
@@ -43,7 +43,7 @@ export abstract class CanvasRenderer {
 
     this.loop();
 
-    this.raf = requestAnimationFrame(() => this.loopWrapper());
+    requestAnimationFrame(() => this.loopWrapper());
   }
 
   private clear() {

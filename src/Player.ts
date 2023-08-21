@@ -9,12 +9,13 @@ import {
   WallCollisionEvent,
   observer,
 } from "./Observer.ts";
+import { CONFIG } from "./config.ts";
 
 export class Player implements BaseEntity {
-  private width = 25;
+  private width = CONFIG.tileSize;
   private color = "#ff0000";
 
-  velocity = 4;
+  velocity = 1;
   pos: Vec2;
   vel: Vec2;
   dim: Vec2;
@@ -94,15 +95,15 @@ export class Player implements BaseEntity {
     }
 
     // diagonal movement
-    if (d[0] !== 0 && d[1] !== 0) {
-      const len = Math.sqrt(2);
+    // if (d[0] !== 0 && d[1] !== 0) {
+    //   const len = Math.sqrt(2);
 
-      d[0] /= len;
-      d[1] /= len;
-    }
+    //   d[0] /= len;
+    //   d[1] /= len;
+    // }
 
-    this.pos[0] += d[0] * this.velocity;
-    this.pos[1] += d[1] * this.velocity;
+    this.pos[0] += Math.floor(d[0] * this.velocity);
+    this.pos[1] += Math.floor(d[1] * this.velocity);
 
     this.collisionSet.clear();
   }

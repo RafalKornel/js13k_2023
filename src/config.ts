@@ -1,5 +1,8 @@
 export const CONFIG = {
-  width: 640,
-  height: 480,
-  markerDim: [25, 25],
+  width: 16,
+  height: 12,
+  tileSize: 8,
 };
+
+export const SCREEN_WIDTH = CONFIG.width * CONFIG.tileSize;
+export const SCREEN_HEIGHT = CONFIG.height * CONFIG.tileSize;

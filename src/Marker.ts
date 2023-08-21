@@ -7,7 +7,7 @@ import { ChamberKey } from "./Chamber.ts";
 export class Marker implements BaseEntity {
   pos: Vec2;
   dim: Vec2;
-  collisionType: CollisionType = "opaque";
+  collisionType: CollisionType = "solid";
 
   color: string;
 
@@ -38,12 +38,12 @@ export class Marker implements BaseEntity {
 export const getMarkerPosition = (orientation: Direction, dim: Vec2): Vec2 => {
   switch (orientation) {
     case "t":
-      return [dim[0] / 2, CONFIG.markerDim[0] / 2];
+      return [dim[0] / 2, CONFIG.tileSize / 2];
     case "l":
-      return [CONFIG.markerDim[0] / 2, dim[1] / 2];
+      return [CONFIG.tileSize / 2, dim[1] / 2];
     case "d":
-      return [dim[0] / 2, dim[1] - CONFIG.markerDim[0] / 2];
+      return [dim[0] / 2, dim[1] - CONFIG.tileSize / 2];
     case "r":
-      return [dim[0] - CONFIG.markerDim[0] / 2, dim[1] / 2];
+      return [dim[0] - CONFIG.tileSize / 2, dim[1] / 2];
   }
 };
