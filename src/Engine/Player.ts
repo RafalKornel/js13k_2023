@@ -1,35 +1,27 @@
 import { InputKey } from "./InputKey.ts";
 import { CollisionType, Direction, Vec2 } from "./types.ts";
 import { BaseEntity } from "./BaseEntity.ts";
-import { Game } from "./Game.ts";
-import { renderBox } from "./renderBox.ts";
 import {
   OpaqueCollisionEvent,
   SolidCollisionEvent,
   WallCollisionEvent,
   observer,
 } from "./Observer.ts";
-import { CONFIG } from "./config.ts";
+import { Renderer } from "./Renderer.ts";
 
-export class Player implements BaseEntity {
-  private width = CONFIG.tileSize;
-  private color = "#ff0000";
+export class Player extends BaseEntity {
+  pos: Vec2;
+  dim: Vec2;
 
   velocity = 1;
-  pos: Vec2;
-  vel: Vec2;
-  dim: Vec2;
-  collisionType: CollisionType = "solid";
-  zIndex = 10;
 
-  collisionSet: Set<Direction>;
+  collisionSet: Set<Direction> = new Set();
 
-  constructor(private readonly game: Game, initalPos: Vec2) {
-    this.pos = initalPos;
-    this.vel = [0, 0];
-    this.dim = [this.width, this.width];
+  constructor(pos: Vec2, dim: Vec2) {
+    super(pos, dim, "#ff0000", { type: "solid" }, "player");
 
-    this.collisionSet = new Set<Direction>();
+    this.pos = pos;
+    this.dim = dim;
 
     observer.registerCallback("solid-collision", (e) => {
       const colisionEvent = e as SolidCollisionEvent;
@@ -56,8 +48,12 @@ export class Player implements BaseEntity {
     });
   }
 
-  render(ctx: CanvasRenderingContext2D) {
-    renderBox({ ctx, pos: this.pos, dim: this.dim, color: this.color });
+  render(renderer: Renderer) {
+    renderer.renderRect({
+      pos: this.pos,
+      dim: this.dim,
+      color: this.color,
+    });
   }
 
   update(keysPressed: Set<InputKey>): void {

@@ -1,4 +1,5 @@
 export type InputKey = string;
+
 export class InputManager {
   private _keysPressed: Set<InputKey>;
 

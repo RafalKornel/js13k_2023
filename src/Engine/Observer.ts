@@ -1,4 +1,4 @@
-import { BaseEntity } from "./BaseEntity";
+import { BaseEntity, EntityKey } from "./BaseEntity";
 import { Direction } from "./types";
 
 type BaseGameEvent<TData = any, TKey extends string = string> = {
@@ -21,10 +21,16 @@ export type WallCollisionEvent = BaseGameEvent<
   "wall-collision"
 >;
 
+export type PortalCollisionEvent = BaseGameEvent<
+  { portal: BaseEntity },
+  "portal-collision"
+>;
+
 type GameEvent =
   | SolidCollisionEvent
   | WallCollisionEvent
-  | OpaqueCollisionEvent;
+  | OpaqueCollisionEvent
+  | PortalCollisionEvent;
 
 type Callback = (ge: BaseGameEvent) => void;
 

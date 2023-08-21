@@ -1,58 +1,49 @@
-import { CanvasRenderer, RenderEngineParams } from "./CanvasRenderer.ts";
-import { InputManager } from "./InputKey.ts";
-import { Player } from "./Player.ts";
-import { SceneManager } from "./SceneManager.ts";
-import { CollisionManager } from "./CollisionManager.ts";
-import { BaseEntity } from "./BaseEntity.ts";
-import { CONFIG, SCREEN_HEIGHT, SCREEN_WIDTH } from "./config.ts";
-import { CollisionType, Vec2 } from "./types.ts";
-import { renderBox } from "./renderBox.ts";
+import { Renderer, RenderEngineParams } from "./Engine/Renderer.ts";
+import { InputManager } from "./Engine/InputKey.ts";
+import { Player } from "./Engine/Player.ts";
+import { CollisionManager } from "./Engine/CollisionManager.ts";
+import { CONFIG, SCREEN_HEIGHT, SCREEN_WIDTH } from "./Engine/config.ts";
+import { SceneManager } from "./Engine/SceneManager.ts";
+import { scenes } from "./scenes.ts";
 
-class Block implements BaseEntity {
-  pos: Vec2 = [SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2];
-  dim: Vec2 = [CONFIG.tileSize, CONFIG.tileSize];
-  collisionType: CollisionType = "solid";
-
-  render(ctx: CanvasRenderingContext2D): void {
-    renderBox({ ctx, color: "#00ff00", dim: this.dim, pos: this.pos });
-  }
-}
-
-export class Game extends CanvasRenderer {
-  _player: Player;
-  _inputManager: InputManager;
-  _sceneManager: SceneManager;
-  _block: Block = new Block();
+export class Game extends Renderer {
+  player: Player;
+  inputManager: InputManager;
+  sceneManager: SceneManager;
+  collisionManager: CollisionManager;
 
   constructor(canvas: HTMLCanvasElement, options: RenderEngineParams = {}) {
     super(canvas, options);
 
-    this._inputManager = new InputManager();
+    this.inputManager = new InputManager();
 
-    this._player = new Player(this, [this.width / 2, this.height / 2]);
+    this.player = new Player(
+      [this.width / 2, this.height / 2],
+      [CONFIG.tileSize, CONFIG.tileSize]
+    );
 
-    this._sceneManager = new SceneManager(this);
+    this.sceneManager = new SceneManager(scenes, "initial");
+
+    this.collisionManager = new CollisionManager(SCREEN_WIDTH, SCREEN_HEIGHT);
   }
 
   private update() {
-    this._player.update(this._inputManager.keysPressed);
+    this.player.update(this.inputManager.keysPressed);
 
-    this._sceneManager.update(this._inputManager.keysPressed);
+    this.sceneManager.update(this.inputManager.keysPressed);
 
-    CollisionManager.handleEntityCollisions(this._player, [
-      ...this._sceneManager.chamber.children,
-      this._block,
-    ]);
+    this.collisionManager.handleEntityCollisions(
+      this.player,
+      this.sceneManager.scene.children
+    );
 
-    CollisionManager.handleWallsCollision(this._player);
+    this.collisionManager.handleWallsCollision(this.player);
   }
 
   private render() {
-    this._sceneManager.render(this.ctx);
+    this.sceneManager.render(this as Renderer);
 
-    this._player.render(this.ctx);
-
-    this._block.render(this.ctx);
+    this.player.render(this as Renderer);
   }
 
   loop(): void {

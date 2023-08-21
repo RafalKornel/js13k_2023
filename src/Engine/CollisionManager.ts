@@ -7,10 +7,14 @@ import {
   observer,
 } from "./Observer.ts";
 import { Direction } from "./types.ts";
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./config.ts";
 
 export class CollisionManager {
-  static handleWallsCollision(player: Player) {
+  constructor(
+    private readonly worldWidth: number,
+    private readonly worldHeight: number
+  ) {}
+
+  handleWallsCollision(player: Player) {
     // TODO: optimize for rectangles?
     const halfW = player.dim[0] / 2;
     const halfH = player.dim[1] / 2;
@@ -23,10 +27,10 @@ export class CollisionManager {
       player.pos[0] = 0 + halfW;
     }
 
-    if (player.pos[0] + halfW > SCREEN_WIDTH) {
+    if (player.pos[0] + halfW > this.worldWidth) {
       direction = "r";
 
-      player.pos[0] = SCREEN_WIDTH - halfW;
+      player.pos[0] = this.worldWidth - halfW;
     }
 
     if (player.pos[1] - halfH <= 0) {
@@ -35,10 +39,10 @@ export class CollisionManager {
       player.pos[1] = 0 + halfH;
     }
 
-    if (player.pos[1] + halfH > SCREEN_HEIGHT) {
+    if (player.pos[1] + halfH > this.worldHeight) {
       direction = "d";
 
-      player.pos[1] = SCREEN_HEIGHT - halfH;
+      player.pos[1] = this.worldHeight - halfH;
     }
 
     if (direction) {
@@ -53,13 +57,13 @@ export class CollisionManager {
     }
   }
 
-  static handleEntityCollisions(player: Player, entities: BaseEntity[]) {
+  handleEntityCollisions(player: Player, entities: BaseEntity[]) {
     for (let i = 0; i < entities.length; i++) {
       const entity = entities[i];
 
-      const { collisionType } = entity;
+      const { collision } = entity;
 
-      if (collisionType === "none") {
+      if (collision.type === "none") {
         continue;
       }
 
@@ -71,16 +75,18 @@ export class CollisionManager {
 
       if (!areColliding) continue;
 
-      if (collisionType === "opaque") {
-        observer.emitEvent({
-          name: "opaque-collision",
-          data: {
-            entity,
-          },
-        } as OpaqueCollisionEvent);
+      collision.onCollide?.(entity, player);
 
-        return;
-      }
+      // if (collision.type === "opaque") {
+      //   observer.emitEvent({
+      //     name: "opaque-collision",
+      //     data: {
+      //       entity,
+      //     },
+      //   } as OpaqueCollisionEvent);
+
+      //   return;
+      // }
 
       const directions: Direction[] = [];
 
@@ -106,7 +112,7 @@ export class CollisionManager {
         player.pos[1] = entity.pos[1] + (dir === "t" ? 1 : -1) * dh;
       }
 
-      if (collisionType === "solid") {
+      if (collision.type === "solid") {
         observer.emitEvent({
           name: "solid-collision",
           data: {

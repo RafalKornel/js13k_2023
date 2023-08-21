@@ -1,6 +1,6 @@
 export type Vec2 = [x: number, y: number];
 
-export type CollisionType = "solid" | "opaque" | "none";
+export type CollisionType = "solid" | "opaque" | "portal" | "none";
 
 export type Bounds = [x: number, y: number, w: number, h: number];
 
