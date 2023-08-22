@@ -1,13 +1,21 @@
-import { InputKey } from "./InputKey.ts";
-import { CollisionType, Direction, Vec2 } from "./types.ts";
-import { BaseEntity } from "./BaseEntity.ts";
+import { InputKey } from "./Engine/InputKey.ts";
+import { Direction, Vec2 } from "./Engine/types.ts";
+import { BaseEntity } from "./Engine/BaseEntity.ts";
 import {
-  OpaqueCollisionEvent,
+  PortalCollisionEvent,
   SolidCollisionEvent,
   WallCollisionEvent,
   observer,
-} from "./Observer.ts";
-import { Renderer } from "./Renderer.ts";
+} from "./Engine/Observer.ts";
+import { Renderer } from "./Engine/Renderer.ts";
+import { Scene } from "./Engine/Scene.ts";
+import {
+  OPPOSITE_DIRECTIONS,
+  PORTAL_OFFSET,
+  add,
+  convertTileToGlobal,
+} from "./Engine/utils.ts";
+import { Game } from "./Game.ts";
 
 export class Player extends BaseEntity {
   pos: Vec2;
@@ -17,7 +25,7 @@ export class Player extends BaseEntity {
 
   collisionSet: Set<Direction> = new Set();
 
-  constructor(pos: Vec2, dim: Vec2) {
+  constructor(readonly game: Game, pos: Vec2, dim: Vec2) {
     super(pos, dim, "#ff0000", { type: "solid" }, "player");
 
     this.pos = pos;
@@ -33,10 +41,22 @@ export class Player extends BaseEntity {
       });
     });
 
-    observer.registerCallback("opaque-collision", (e) => {
-      const colisionEvent = e as OpaqueCollisionEvent;
+    observer.registerCallback("portal-collision", (e) => {
+      const colisionEvent = e as PortalCollisionEvent;
 
-      console.log(colisionEvent);
+      const { portal } = colisionEvent.data;
+
+      const sceneKey = Scene.portalSceneMap.get(portal.key)!;
+
+      const newScene = game.sceneManager.scenes.get(sceneKey)!;
+
+      const newPortal = newScene.portals[OPPOSITE_DIRECTIONS[portal.dir]]!;
+
+      const offset = convertTileToGlobal(PORTAL_OFFSET[newPortal.dir]);
+
+      this.pos = add(newPortal.pos, offset);
+
+      console.log(newPortal);
     });
 
     observer.registerCallback("wall-collision", (e) => {

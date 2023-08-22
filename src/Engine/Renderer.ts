@@ -40,7 +40,7 @@ export abstract class Renderer {
     color,
     dim,
     pos,
-    dimPecent,
+    dimPecent, // obsolete?
     anchor = "center",
   }: {
     pos?: Vec2;

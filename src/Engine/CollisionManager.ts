@@ -1,48 +1,47 @@
 import { BaseEntity } from "./BaseEntity.ts";
-import { Player } from "./Player.ts";
+import { Player } from "../Player.ts";
 import {
-  OpaqueCollisionEvent,
   SolidCollisionEvent,
   WallCollisionEvent,
   observer,
 } from "./Observer.ts";
 import { Direction } from "./types.ts";
+import { Scene } from "./Scene.ts";
+import { convertTileToGlobal } from "./utils.ts";
 
 export class CollisionManager {
-  constructor(
-    private readonly worldWidth: number,
-    private readonly worldHeight: number
-  ) {}
-
-  handleWallsCollision(player: Player) {
+  handleWallsCollision(player: Player, scene: Scene) {
     // TODO: optimize for rectangles?
     const halfW = player.dim[0] / 2;
     const halfH = player.dim[1] / 2;
 
     let direction: Direction | undefined = undefined;
 
-    if (player.pos[0] - halfW <= 0) {
+    const [x, y] = convertTileToGlobal(scene.offset);
+    const [w, h] = convertTileToGlobal(scene.dim);
+
+    if (player.pos[0] - halfW <= x) {
       direction = "l";
 
-      player.pos[0] = 0 + halfW;
+      player.pos[0] = x + halfW;
     }
 
-    if (player.pos[0] + halfW > this.worldWidth) {
+    if (player.pos[0] + halfW > x + w) {
       direction = "r";
 
-      player.pos[0] = this.worldWidth - halfW;
+      player.pos[0] = x + w - halfW;
     }
 
-    if (player.pos[1] - halfH <= 0) {
+    if (player.pos[1] - halfH <= y) {
       direction = "t";
 
-      player.pos[1] = 0 + halfH;
+      player.pos[1] = y + halfH;
     }
 
-    if (player.pos[1] + halfH > this.worldHeight) {
+    if (player.pos[1] + halfH > y + h) {
       direction = "d";
 
-      player.pos[1] = this.worldHeight - halfH;
+      player.pos[1] = y + h - halfH;
     }
 
     if (direction) {
@@ -76,17 +75,6 @@ export class CollisionManager {
       if (!areColliding) continue;
 
       collision.onCollide?.(entity, player);
-
-      // if (collision.type === "opaque") {
-      //   observer.emitEvent({
-      //     name: "opaque-collision",
-      //     data: {
-      //       entity,
-      //     },
-      //   } as OpaqueCollisionEvent);
-
-      //   return;
-      // }
 
       const directions: Direction[] = [];
 

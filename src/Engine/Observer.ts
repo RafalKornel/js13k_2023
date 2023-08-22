@@ -1,5 +1,8 @@
-import { BaseEntity, EntityKey } from "./BaseEntity";
+import { Portal } from "../Portal";
+import { BaseEntity } from "./BaseEntity";
 import { Direction } from "./types";
+
+// TODO: REFACTORY TYPES
 
 type BaseGameEvent<TData = any, TKey extends string = string> = {
   name: TKey;
@@ -22,7 +25,7 @@ export type WallCollisionEvent = BaseGameEvent<
 >;
 
 export type PortalCollisionEvent = BaseGameEvent<
-  { portal: BaseEntity },
+  { portal: Portal },
   "portal-collision"
 >;
 

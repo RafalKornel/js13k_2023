@@ -1,4 +1,3 @@
-import { Portal } from "../Portal.ts";
 import { InputKey } from "./InputKey.ts";
 import { PortalCollisionEvent, observer } from "./Observer.ts";
 import { Renderer } from "./Renderer.ts";
@@ -7,17 +6,21 @@ import { Scene, SceneKey } from "./Scene.ts";
 export class SceneManager {
   private _currentScene: Scene;
 
-  constructor(private _scenes: Map<SceneKey, Scene>, initialScene: SceneKey) {
-    this._currentScene = _scenes.get(initialScene)!;
+  readonly scenes: Map<SceneKey, Scene>;
+
+  constructor(initialScene: Scene) {
+    this.scenes = new Map();
+
+    this._currentScene = initialScene;
 
     observer.registerCallback("portal-collision", (e) => {
       const portalEvent = e as PortalCollisionEvent;
 
-      const portal = portalEvent.data.portal as Portal;
+      const portal = portalEvent.data.portal;
 
-      console.log(portal);
+      const sceneKey = Scene.portalSceneMap.get(portal.key);
 
-      this.changeChamber(portal.linkedPortal!.sceneKey!);
+      this.changeScene(sceneKey!);
     });
   }
 
@@ -29,21 +32,25 @@ export class SceneManager {
     this._currentScene.render(renderer);
   }
 
+  registerScene(scene: Scene) {
+    this.scenes.set(scene.sceneKey, scene);
+  }
+
   update(keysPressed: Set<InputKey>): void {
     if (keysPressed.has("l") || keysPressed.has("j")) {
-      this.changeChamber("horizontalTunnel");
+      this.changeScene("horizontalTunnel");
     }
 
     if (keysPressed.has("i") || keysPressed.has("k")) {
-      this.changeChamber("verticalTunnel");
+      this.changeScene("verticalTunnel");
     }
 
     if (keysPressed.has("r")) {
-      this.changeChamber("initial");
+      this.changeScene("initial");
     }
   }
 
-  changeChamber(key: SceneKey) {
-    this._currentScene = this._scenes.get(key)!;
+  changeScene(key: SceneKey) {
+    this._currentScene = this.scenes.get(key)!;
   }
 }

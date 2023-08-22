@@ -1,58 +1,96 @@
-import { BaseEntity, EntityKey } from "./Engine/BaseEntity";
-import { PortalCollisionEvent, observer } from "./Engine/Observer";
-import { Rect } from "./Engine/Rect";
 import { SceneKey, Scene } from "./Engine/Scene";
 import { CONFIG } from "./Engine/config";
-import { Portal } from "./Portal";
 
-function onCollide(thisEntity: BaseEntity, _otherEntity: BaseEntity) {
-  observer.emitEvent({
-    name: "portal-collision",
-    data: { portal: thisEntity },
-  });
-}
+const createHorizontalTunnel = (left: SceneKey, right: SceneKey): Scene =>
+  new Scene(
+    `horizontal-${left}-${right}`,
+    [CONFIG.width, CONFIG.height / 4],
+    [0, CONFIG.height / 2 - 1.5],
+    "#9e3333",
+    {
+      l: left,
+      r: right,
+    }
+  );
 
-const initialScene = new Scene("initial", [1, 1], "#9e3333");
+const createVerticalTunnel = (top: SceneKey, down: SceneKey): Scene =>
+  new Scene(
+    `vertical-${top}-${down}`,
+    [CONFIG.width / 4, CONFIG.height],
+    [CONFIG.width / 2 - 2, 0],
+    "#9e3333",
+    {
+      t: top,
+      d: down,
+    }
+  );
 
-const tunnelScene = new Scene("tunnel", [1, 0.2], "#9e3333");
+// const SCENES = ["initial", "a", "b", "c", "d"] as const;
+// const TUNNELS = ["horizontal", "vertical"] as const;
 
-const portalA = new Portal(
-  [10 * CONFIG.tileSize, 5 * CONFIG.tileSize],
-  [CONFIG.tileSize, CONFIG.tileSize],
-  "#0000ff",
+const tunnelInitA = createHorizontalTunnel("a", "initial");
+
+const tunnelInitC = createVerticalTunnel("c", "initial");
+
+const sceneInitial = new Scene(
+  "initial",
+  [CONFIG.width, CONFIG.height],
+  [0, 0],
+  "#9e3333",
   {
-    type: "solid",
-    onCollide,
+    l: tunnelInitA.sceneKey,
+    r: "b",
+    t: tunnelInitC.sceneKey,
+    d: "d",
   }
 );
 
-const portalB = new Portal(
-  [(CONFIG.width / 2) * CONFIG.tileSize, CONFIG.tileSize / 2],
-  [CONFIG.tileSize, CONFIG.tileSize],
-  "#0000ff",
-  { type: "solid", onCollide }
+const sceneA = new Scene(
+  "a",
+  [CONFIG.width, CONFIG.height],
+  [0, 0],
+  "#9e3333",
+  {
+    r: tunnelInitA.sceneKey,
+  }
 );
 
-portalA.linkedPortal = portalB;
-portalA.sceneKey = "initial";
-
-portalB.linkedPortal = portalA;
-portalB.sceneKey = "tunnel";
-
-initialScene.addChild(portalA);
-
-initialScene.addChild(
-  new Rect(
-    [5 * CONFIG.tileSize, 3 * CONFIG.tileSize],
-    [CONFIG.tileSize, CONFIG.tileSize],
-    "#00ff00",
-    { type: "solid" }
-  )
+const sceneB = new Scene(
+  "b",
+  [CONFIG.width, CONFIG.height],
+  [0, 0],
+  "#9e3333",
+  {
+    l: "initial",
+  }
 );
 
-tunnelScene.addChild(portalB);
+const sceneC = new Scene(
+  "a",
+  [CONFIG.width, CONFIG.height],
+  [0, 0],
+  "#9e3333",
+  {
+    d: tunnelInitC.sceneKey,
+  }
+);
 
-export const scenes = new Map<SceneKey, Scene>();
+const sceneD = new Scene(
+  "a",
+  [CONFIG.width, CONFIG.height],
+  [0, 0],
+  "#9e3333",
+  {
+    t: "initial",
+  }
+);
 
-scenes.set("initial", initialScene);
-scenes.set("tunnel", tunnelScene);
+export const scenes: Scene[] = [
+  sceneInitial,
+  sceneA,
+  sceneB,
+  sceneC,
+  sceneD,
+  tunnelInitA,
+  tunnelInitC,
+];

@@ -1,8 +1,8 @@
 import { Renderer, RenderEngineParams } from "./Engine/Renderer.ts";
 import { InputManager } from "./Engine/InputKey.ts";
-import { Player } from "./Engine/Player.ts";
+import { Player } from "./Player.ts";
 import { CollisionManager } from "./Engine/CollisionManager.ts";
-import { CONFIG, SCREEN_HEIGHT, SCREEN_WIDTH } from "./Engine/config.ts";
+import { CONFIG } from "./Engine/config.ts";
 import { SceneManager } from "./Engine/SceneManager.ts";
 import { scenes } from "./scenes.ts";
 
@@ -18,13 +18,18 @@ export class Game extends Renderer {
     this.inputManager = new InputManager();
 
     this.player = new Player(
+      this,
       [this.width / 2, this.height / 2],
       [CONFIG.tileSize, CONFIG.tileSize]
     );
 
-    this.sceneManager = new SceneManager(scenes, "initial");
+    this.sceneManager = new SceneManager(scenes[0]);
 
-    this.collisionManager = new CollisionManager(SCREEN_WIDTH, SCREEN_HEIGHT);
+    scenes.forEach((scene) => {
+      this.sceneManager.registerScene(scene);
+    });
+
+    this.collisionManager = new CollisionManager();
   }
 
   private update() {
@@ -37,7 +42,10 @@ export class Game extends Renderer {
       this.sceneManager.scene.children
     );
 
-    this.collisionManager.handleWallsCollision(this.player);
+    this.collisionManager.handleWallsCollision(
+      this.player,
+      this.sceneManager.scene
+    );
   }
 
   private render() {
