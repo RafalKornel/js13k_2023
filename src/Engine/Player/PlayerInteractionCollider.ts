@@ -1,7 +1,9 @@
-import { Vec2 } from "../Engine/types.ts";
-import { BaseEntity } from "../Engine/BaseEntity.ts";
-import { PLAYER_INTERACTION_COLLIDER_KEY, PLAYER_KEY } from "../constants.ts";
-import { PositionComponent } from "../Engine/Components/PositionComponent.ts";
+import { Vec2 } from "../types.ts";
+import { BaseEntity } from "../BaseEntity.ts";
+import { PositionComponent } from "../Components/PositionComponent.ts";
+import { PLAYER_KEY } from "./Player.ts";
+
+export const PLAYER_INTERACTION_COLLIDER_KEY = "player_interaction_collider";
 
 export class PlayerInteractionCollider extends BaseEntity {
   public interactableEntityInRange: BaseEntity | null = null;

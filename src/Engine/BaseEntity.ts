@@ -2,8 +2,8 @@ import { ICollisionComponent } from "./Components/CollisionComponent";
 import { IInteractionComponent } from "./Components/InteractionComponent";
 import { IPositionComponent } from "./Components/PositionComponent";
 import { IRenderComponent } from "./Components/RenderComponent";
-import { InputManager } from "./InputManager";
 import { Renderer } from "./Renderer";
+import { GameState } from "./GameState";
 import { getKey } from "./utils";
 
 type Components = {
@@ -38,9 +38,9 @@ export class BaseEntity {
     this.components.render?.render(this.components.position, renderer);
   }
 
-  update(inputManager: InputManager) {
+  update(state: GameState) {
     this.children.forEach((child) => {
-      child.update(inputManager);
+      child.update(state);
     });
   }
 }

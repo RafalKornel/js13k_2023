@@ -1,6 +1,5 @@
-import { InputManager } from "./InputManager.ts";
-import { PortalCollisionEvent, observer } from "./Observer.ts";
-import { Renderer } from "./Renderer.ts";
+import { Renderer } from "../Renderer.ts";
+import { GameState } from "../GameState.ts";
 import { Scene, SceneKey } from "./Scene.ts";
 
 export class SceneManager {
@@ -8,19 +7,13 @@ export class SceneManager {
 
   readonly scenes: Map<SceneKey, Scene>;
 
-  constructor(initialScene: Scene) {
+  constructor(scenes: Scene[]) {
     this.scenes = new Map();
 
-    this._currentScene = initialScene;
+    this._currentScene = scenes[0];
 
-    observer.registerCallback("portal-collision", (e) => {
-      const portalEvent = e as PortalCollisionEvent;
-
-      const portal = portalEvent.data.portal;
-
-      const sceneKey = Scene.portalSceneMap.get(portal.key);
-
-      this.changeScene(sceneKey!);
+    scenes.forEach((scene) => {
+      this.registerScene(scene);
     });
   }
 
@@ -32,12 +25,12 @@ export class SceneManager {
     this._currentScene.render(renderer);
   }
 
-  registerScene(scene: Scene) {
+  private registerScene(scene: Scene) {
     this.scenes.set(scene.sceneKey, scene);
   }
 
-  update(inputManager: InputManager): void {
-    const kp = inputManager.keysPressed;
+  update(state: GameState): void {
+    const kp = state.inputManager.keysPressed;
 
     if (kp.has("l") || kp.has("j")) {
       this.changeScene("horizontalTunnel");
@@ -52,7 +45,7 @@ export class SceneManager {
     }
 
     this.scene.children.forEach((child) => {
-      child.update(inputManager);
+      child.update(state);
     });
   }
 

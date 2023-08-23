@@ -1,50 +1,21 @@
-import { Portal } from "../Portal";
-import { BaseEntity } from "./BaseEntity";
-import { Direction } from "./types";
-
-// TODO: REFACTORY TYPES
-
-type BaseGameEvent<TData = any, TKey extends string = string> = {
+export type BaseGameEvent<TKey extends string = string, TData = any> = {
   name: TKey;
   data: TData;
 };
 
-export type SolidCollisionEvent = BaseGameEvent<
-  { entity: BaseEntity; directions: Direction[] },
-  "solid-collision"
->;
-
-export type OpaqueCollisionEvent = BaseGameEvent<
-  { entity: BaseEntity },
-  "opaque-collision"
->;
-
-export type WallCollisionEvent = BaseGameEvent<
-  { direction: Direction },
-  "wall-collision"
->;
-
-export type PortalCollisionEvent = BaseGameEvent<
-  { portal: Portal },
-  "portal-collision"
->;
-
-type GameEvent =
-  | SolidCollisionEvent
-  | WallCollisionEvent
-  | OpaqueCollisionEvent
-  | PortalCollisionEvent;
-
-type Callback = (ge: BaseGameEvent) => void;
+type Callback<TEvent> = (ge: TEvent) => void;
 
 class Observer {
-  private callbacksMap: Map<string, Callback[]>;
+  private callbacksMap: Map<string, Callback<any>[]>;
 
   constructor() {
-    this.callbacksMap = new Map<string, Callback[]>();
+    this.callbacksMap = new Map<string, Callback<any>[]>();
   }
 
-  registerCallback(eventName: GameEvent["name"], callback: Callback) {
+  registerCallback<TEvent extends BaseGameEvent>(
+    eventName: TEvent["name"],
+    callback: Callback<TEvent>
+  ) {
     const callbacks = this.callbacksMap.get(eventName);
 
     if (!callbacks) {
@@ -54,7 +25,7 @@ class Observer {
     callbacks?.push(callback);
   }
 
-  emitEvent(event: GameEvent) {
+  emitEvent<TEvent extends BaseGameEvent>(event: TEvent) {
     const callbacks = this.callbacksMap.get(event.name);
 
     if (!callbacks) return;

@@ -1,64 +1,47 @@
-import { BaseEntity } from "./BaseEntity.ts";
-import { WallCollisionEvent, observer } from "./Observer.ts";
-import { Direction } from "./types.ts";
-import { Scene } from "./Scene.ts";
-import { mult, subtract } from "./utils.ts";
-import { Player } from "../Player/Player.ts";
+import { BaseEntity, EntityKey } from "./BaseEntity.ts";
+import { Scene } from "./Scene/Scene.ts";
+import { PairKey } from "./types.ts";
+import { getEntityPairKey, mult, subtract } from "./utils.ts";
+
+type CollisionMap = Map<PairKey<EntityKey>, { a: BaseEntity; b: BaseEntity }>;
 
 export class CollisionManager {
-  handle(player: Player, scene: Scene) {
+  readonly collisions: CollisionMap = new Map();
+
+  handle(player: BaseEntity, scene: Scene) {
     this.handleCollisions([player, ...scene.children.values()]);
 
     this.handleWallsCollision(player, scene);
   }
 
-  private handleWallsCollision(player: Player, scene: Scene) {
+  private handleWallsCollision(player: BaseEntity, scene: Scene) {
     const { position } = player.components;
     // TODO: optimize for rectangles?
     const halfW = position.w / 2;
     const halfH = position.h / 2;
 
-    let direction: Direction | undefined = undefined;
-
     const { x, y, w, h } = scene.components.position;
 
     if (position.x - halfW <= x) {
-      direction = "l";
-
       position.x = x + halfW;
     }
 
     if (position.x + halfW > x + w) {
-      direction = "r";
-
       position.x = x + w - halfW;
     }
 
     if (position.y - halfH <= y) {
-      direction = "t";
-
       position.y = y + halfH;
     }
 
     if (position.y + halfH > y + h) {
-      direction = "d";
-
       position.y = y + h - halfH;
-    }
-
-    if (direction) {
-      const event = {
-        name: "wall-collision",
-        data: {
-          direction: direction,
-        },
-      } as WallCollisionEvent;
-
-      observer.emitEvent(event);
     }
   }
 
   private handleCollisions(entities: BaseEntity[]) {
+    this.collisions.clear();
+
     const allEntities = [...entities];
 
     const traverse = (entity: BaseEntity) => {
@@ -106,6 +89,11 @@ export class CollisionManager {
         if (!areColliding) continue;
 
         entityA.components.collision!.onCollide?.(entityA, entityB);
+
+        this.collisions.set(getEntityPairKey(entityA.key, entityB.key), {
+          a: entityA,
+          b: entityB,
+        });
       }
     }
   }

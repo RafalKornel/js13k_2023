@@ -1,8 +1,8 @@
-import { PositionComponent } from "./Engine/Components/PositionComponent";
-import { RectRenderComponent } from "./Engine/Components/RenderComponent";
-import { SceneKey, Scene } from "./Engine/Scene";
-import { CONFIG } from "./Engine/config";
-import { convertTileVecToGlobal } from "./Engine/utils";
+import { PositionComponent } from "../Engine/Components/PositionComponent";
+import { RectRenderComponent } from "../Engine/Components/RenderComponent";
+import { SceneKey, Scene } from "../Engine/Scene/Scene";
+import { CONFIG } from "../Engine/config";
+import { convertTileVecToGlobal } from "../Engine/utils";
 import { TestInteractableEntity } from "./InteractableEntity";
 
 const createFullScenePositionComponent = () =>

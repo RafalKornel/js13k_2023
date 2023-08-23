@@ -1,15 +1,16 @@
-import { BaseEntity } from "./Engine/BaseEntity";
+import { BaseEntity } from "../Engine/BaseEntity";
 import {
   ComponentState,
   IInteractionComponent,
   TestInteractionComponent,
-} from "./Engine/Components/InteractionComponent";
-import { PositionComponent } from "./Engine/Components/PositionComponent";
-import { RectRenderComponent } from "./Engine/Components/RenderComponent";
-import { InputManager } from "./Engine/InputManager";
-import { Renderer } from "./Engine/Renderer";
-import { Vec2 } from "./Engine/types";
-import { add, convertTileVecToGlobal } from "./Engine/utils";
+} from "../Engine/Components/InteractionComponent";
+import { PositionComponent } from "../Engine/Components/PositionComponent";
+import { RectRenderComponent } from "../Engine/Components/RenderComponent";
+import { Renderer } from "../Engine/Renderer";
+import { GameState } from "../Engine/GameState";
+import { Vec2 } from "../Engine/types";
+import { add, convertTileVecToGlobal, getEntityPairKey } from "../Engine/utils";
+import { PLAYER_INTERACTION_COLLIDER_KEY } from "../Engine/Player/PlayerInteractionCollider";
 
 const colors: Record<ComponentState, string> = {
   active: "#FFC436",
@@ -36,6 +37,8 @@ export class TestInteractableEntity extends BaseEntity {
     if (this.components.interaction!.state === "available") {
       const p = this.components.position.pos;
 
+      // TODO: implement dialogue system
+
       renderer.drawText(
         "1) Greeting traveler! Mind a beer?",
         ...add(p, convertTileVecToGlobal([1, 0] as Vec2))
@@ -55,17 +58,24 @@ export class TestInteractableEntity extends BaseEntity {
     }
   }
 
-  update(inputManager: InputManager) {
+  update(state: GameState) {
     const ic: IInteractionComponent = this.components.interaction!;
+    const kp: Set<string> = state.inputManager.keysPressed;
 
     if (
-      (ic.state === "available" && inputManager.keysPressed.has("1")) ||
-      inputManager.keysPressed.has("2")
+      !state.collisionManager.collisions.has(
+        getEntityPairKey(this.key, PLAYER_INTERACTION_COLLIDER_KEY)
+      ) &&
+      ic.state === "active"
     ) {
+      ic.endInteraction();
+    }
+
+    if ((ic.state === "available" && kp.has("1")) || kp.has("2")) {
       ic.startInteraction();
     }
 
-    if (ic.state === "active" && inputManager.keysPressed.has("x")) {
+    if (ic.state === "active" && kp.has("x")) {
       ic.endInteraction();
     }
 

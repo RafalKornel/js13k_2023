@@ -1,4 +1,4 @@
-import { Game } from "./Game.ts";
+import { Game } from "./Game/Game.ts";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./Engine/config.ts";
 
 const body = document.querySelector("body")!;

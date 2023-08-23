@@ -52,33 +52,21 @@ export abstract class Renderer {
     color,
     dim,
     pos,
-    dimPecent, // obsolete?
     anchor = "center",
   }: {
     pos?: Vec2;
     dim?: Vec2;
-    dimPecent?: Vec2;
     color: string;
     anchor?: Anchor;
   }) => {
     this.ctx.fillStyle = color;
 
-    // const [x = 0, y = 0, w = this.width, h = this.height] = bounds || [];
-
     const x = pos?.[0] || 0;
     const y = pos?.[1] || 0;
 
-    const w = dim
-      ? Math.min(dim[0], this.width)
-      : dimPecent
-      ? dimPecent[0] * this.width
-      : this.width;
+    const w = dim ? Math.min(dim[0], this.width) : this.width;
 
-    const h = dim
-      ? Math.min(dim[1], this.height)
-      : dimPecent
-      ? dimPecent[1] * this.height
-      : this.height;
+    const h = dim ? Math.min(dim[1], this.height) : this.height;
 
     const xOffset = anchor === "center" ? w / 2 : 0;
     const yOffset = anchor === "center" ? h / 2 : 0;
@@ -90,7 +78,7 @@ export abstract class Renderer {
     return this.textCanvas.width / this.gameCanvas.width;
   }
 
-  drawText(text: string, gameX: number, gameY: number) {
+  drawText(text: string, gameX: number, gameY: number): [w: number, h: number] {
     this.textCtx.font = `${TEXT_CONFIG.fontSize}px ${TEXT_CONFIG.fontFace}`;
 
     const textWidth =
@@ -112,6 +100,8 @@ export abstract class Renderer {
       textWidth,
       lineHeight
     );
+
+    return [textWidth, lineHeight];
   }
 
   public start() {

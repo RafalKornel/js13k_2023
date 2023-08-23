@@ -1,19 +1,19 @@
 import { Player } from "./Player";
-import { Portal } from "../Portal";
-import { BaseEntity } from "../Engine/BaseEntity";
-import { Scene } from "../Engine/Scene";
-import { SceneManager } from "../Engine/SceneManager";
+import { Portal } from "../Scene/Portal";
+import { BaseEntity } from "../BaseEntity";
+import { Scene } from "../Scene/Scene";
+import { SceneManager } from "../Scene/SceneManager";
 import {
   OPPOSITE_DIRECTIONS,
   convertTileVecToGlobal,
   PORTAL_OFFSET,
   add,
-} from "../Engine/utils";
+} from "../utils";
 import {
   ICollisionComponent,
   CollisionType,
-} from "../Engine/Components/CollisionComponent";
-import { Direction } from "../Engine/types";
+} from "../Components/CollisionComponent";
+import { Direction } from "../types";
 
 export class PlayerCollisionComponent implements ICollisionComponent {
   collisionSet: Set<Direction> = new Set();
@@ -26,9 +26,11 @@ export class PlayerCollisionComponent implements ICollisionComponent {
   onCollide?(self: BaseEntity, other: BaseEntity) {
     if (self.children.has(other.key)) return;
 
-    if (other.components.collision?.type === "portal") {
+    const t = other.components.collision?.type;
+
+    if (t === "portal") {
       this.handlePortalCollision(self as Player, other as Portal);
-    } else if (other.components.collision?.type === "solid") {
+    } else if (t === "solid" || t === "interactable") {
       this.handleSolidCollision(self as Player, other);
     }
   }

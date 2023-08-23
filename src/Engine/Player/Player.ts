@@ -1,41 +1,41 @@
-import { InputManager } from "../Engine/InputManager.ts";
-import { Vec2 } from "../Engine/types.ts";
-import { BaseEntity } from "../Engine/BaseEntity.ts";
-import { RectRenderComponent } from "../Engine/Components/RenderComponent.ts";
+import { Direction, Vec2 } from "../types.ts";
+import { BaseEntity } from "../BaseEntity.ts";
+import { RectRenderComponent } from "../Components/RenderComponent.ts";
 
-import { add, convertTileVecToGlobal } from "../Engine/utils.ts";
-import { Game } from "../Game.ts";
-import { PLAYER_KEY } from "../constants.ts";
+import { add, convertTileVecToGlobal } from "../utils.ts";
 import { PlayerCollisionComponent } from "./PlayerCollisionComponent.ts";
-import { PositionComponent } from "../Engine/Components/PositionComponent.ts";
+import { PositionComponent } from "../Components/PositionComponent.ts";
 import { PlayerInteractionCollider } from "./PlayerInteractionCollider.ts";
+import { GameState } from "../GameState.ts";
+
+export const PLAYER_KEY = "player";
 
 export class Player extends BaseEntity {
   public interactionCollider: PlayerInteractionCollider;
 
   velocity = 1;
 
-  constructor(readonly game: Game, pos: Vec2, dim: Vec2) {
+  constructor(readonly state: GameState, pos: Vec2, dim: Vec2) {
     super(
       {
         position: new PositionComponent(pos, convertTileVecToGlobal(dim)),
         render: new RectRenderComponent("#ff0000"),
-        collision: new PlayerCollisionComponent("solid", game.sceneManager),
+        collision: new PlayerCollisionComponent("solid", state.sceneManager),
       },
       PLAYER_KEY
     );
 
     this.interactionCollider = new PlayerInteractionCollider(
       this.components.position.pos,
-      convertTileVecToGlobal(add(dim, [1, 1]))
+      convertTileVecToGlobal(add(dim, [2, 2]))
     );
 
     this.addChild(this.interactionCollider);
   }
 
-  update(inputManager: InputManager): void {
-    const cs = this.components.collision!.collisionSet!;
-    const kp = inputManager.keysPressed;
+  update(state: GameState): void {
+    const cs: Set<Direction> = this.components.collision!.collisionSet!;
+    const kp: Set<string> = state.inputManager.keysPressed;
 
     const d: Vec2 = [0, 0];
 
@@ -62,6 +62,6 @@ export class Player extends BaseEntity {
 
     cs.clear();
 
-    this.children.forEach((child) => child.update(inputManager));
+    this.children.forEach((child) => child.update(state));
   }
 }
