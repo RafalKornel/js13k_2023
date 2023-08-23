@@ -1,20 +1,23 @@
 import { ICollisionComponent } from "./Components/CollisionComponent";
+import { IInteractionComponent } from "./Components/InteractionComponent";
 import { IPositionComponent } from "./Components/PositionComponent";
 import { IRenderComponent } from "./Components/RenderComponent";
 import { Renderer } from "./Renderer";
 import { getKey } from "./utils";
+
+type Components = {
+  position: IPositionComponent;
+  render: IRenderComponent;
+  collision?: ICollisionComponent;
+  interaction?: IInteractionComponent;
+};
 
 export type EntityKey = string;
 
 export class BaseEntity {
   readonly children: Map<EntityKey, BaseEntity>;
 
-  constructor(
-    public positionComponent: IPositionComponent,
-    public renderComponent: IRenderComponent,
-    public collisionComponent: ICollisionComponent = { type: "none" },
-    public key: EntityKey = getKey()
-  ) {
+  constructor(public components: Components, public key: EntityKey = getKey()) {
     this.children = new Map();
   }
 
@@ -31,7 +34,7 @@ export class BaseEntity {
       child.render(renderer);
     });
 
-    this.renderComponent.render(this.positionComponent, renderer);
+    this.components.render.render(this.components.position, renderer);
   }
 
   update(...args: any[]) {}

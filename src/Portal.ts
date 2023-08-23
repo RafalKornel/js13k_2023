@@ -6,10 +6,10 @@ import { convertTileVecToGlobal } from "./Engine/utils";
 
 export class Portal extends BaseEntity {
   constructor(pos: Vec2, public dir: Direction) {
-    super(
-      new PositionComponent(pos, convertTileVecToGlobal([1, 1])),
-      new RectRenderComponent("#0000ff"),
-      { type: "portal" }
-    );
+    super({
+      position: new PositionComponent(pos, convertTileVecToGlobal([1, 1])),
+      render: new RectRenderComponent("#0000ff"),
+      collision: { type: "portal" },
+    });
   }
 }

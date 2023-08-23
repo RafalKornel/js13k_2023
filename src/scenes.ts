@@ -63,14 +63,14 @@ const sceneInitial = new Scene(
 );
 
 sceneInitial.addChild(
-  new BaseEntity(
-    new PositionComponent(
+  new BaseEntity({
+    position: new PositionComponent(
       convertTileVecToGlobal([4, 4]),
       convertTileVecToGlobal([1, 1])
     ),
-    new RectRenderComponent("#0000f0"),
-    { type: "interactable" }
-  )
+    render: new RectRenderComponent("#0000f0"),
+    collision: { type: "interactable" },
+  })
 );
 
 const sceneA = new Scene(

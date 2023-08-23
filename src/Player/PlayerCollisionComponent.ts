@@ -13,8 +13,11 @@ import {
   ICollisionComponent,
   CollisionType,
 } from "../Engine/Components/CollisionComponent";
+import { Direction } from "../Engine/types";
 
 export class PlayerCollisionComponent implements ICollisionComponent {
+  collisionSet: Set<Direction> = new Set();
+
   constructor(
     readonly type: CollisionType,
     readonly sceneManager: SceneManager
@@ -23,9 +26,9 @@ export class PlayerCollisionComponent implements ICollisionComponent {
   onCollide?(self: BaseEntity, other: BaseEntity) {
     if (self.children.has(other.key)) return;
 
-    if (other.collisionComponent.type === "portal") {
+    if (other.components.collision?.type === "portal") {
       this.handlePortalCollision(self as Player, other as Portal);
-    } else if (other.collisionComponent.type === "solid") {
+    } else if (other.components.collision?.type === "solid") {
       this.handleSolidCollision(self as Player, other);
     }
   }
@@ -39,16 +42,16 @@ export class PlayerCollisionComponent implements ICollisionComponent {
 
     const offset = convertTileVecToGlobal(PORTAL_OFFSET[newPortal.dir]);
 
-    const newPos = add(newPortal.positionComponent.pos, offset);
+    const newPos = add(newPortal.components.position.pos, offset);
 
     this.sceneManager.changeScene(sceneKey);
 
-    self.positionComponent.updatePos(newPos[0], newPos[1]);
+    self.components.position.updatePos(newPos[0], newPos[1]);
   }
 
   private handleSolidCollision(self: Player, entity: BaseEntity) {
-    const s = self.positionComponent;
-    const e = entity.positionComponent;
+    const s = self.components.position;
+    const e = entity.components.position;
 
     const dx = s.x - e.x;
     const dw = s.w / 2 + e.w / 2;
@@ -56,7 +59,7 @@ export class PlayerCollisionComponent implements ICollisionComponent {
     if (Math.abs(Math.abs(dx) + 1 - Math.abs(dw)) < self.velocity) {
       const dir = dx > 0 ? "l" : "r";
 
-      self.collisionSet.add(dir);
+      this.collisionSet.add(dir);
 
       s.x = e.x + (dir === "l" ? 1 : -1) * dw;
     }
@@ -67,7 +70,7 @@ export class PlayerCollisionComponent implements ICollisionComponent {
     if (Math.abs(Math.abs(dy) + 1 - Math.abs(dh)) < self.velocity) {
       const dir = dy > 0 ? "t" : "d";
 
-      self.collisionSet.add(dir);
+      this.collisionSet.add(dir);
 
       s.y = e.y + (dir === "t" ? 1 : -1) * dh;
     }

@@ -14,9 +14,14 @@ class PlayerInteractionCollider extends BaseEntity {
 
   constructor(pos: Vec2, dim: Vec2) {
     super(
-      new PositionComponent(pos, dim),
-      new RectRenderComponent("#00ff00"),
-      { type: "solid", onCollide: (_self, other) => this.onCollide(other) },
+      {
+        position: new PositionComponent(pos, dim),
+        render: new RectRenderComponent("#00ff00"),
+        collision: {
+          type: "solid",
+          onCollide: (_self, other) => this.onCollide(other),
+        },
+      },
       PLAYER_INTERACTION_COLLIDER_KEY
     );
   }
@@ -24,7 +29,7 @@ class PlayerInteractionCollider extends BaseEntity {
   onCollide(other: BaseEntity) {
     if (other.key === PLAYER_KEY) return;
 
-    if (other.collisionComponent.type === "interactable") {
+    if (other.components.collision?.type === "interactable") {
       this.interactableEntityInRange = other;
       console.log(this.interactableEntityInRange);
       // this.interactableEntitiesInRange.add(other);
@@ -53,18 +58,18 @@ export class Player extends BaseEntity {
 
   velocity = 1;
 
-  collisionSet: Set<Direction> = new Set();
-
   constructor(readonly game: Game, pos: Vec2, dim: Vec2) {
     super(
-      new PositionComponent(pos, convertTileVecToGlobal(dim)),
-      new RectRenderComponent("#ff0000"),
-      new PlayerCollisionComponent("solid", game.sceneManager),
+      {
+        position: new PositionComponent(pos, convertTileVecToGlobal(dim)),
+        render: new RectRenderComponent("#ff0000"),
+        collision: new PlayerCollisionComponent("solid", game.sceneManager),
+      },
       PLAYER_KEY
     );
 
     this.interactionCollider = new PlayerInteractionCollider(
-      this.positionComponent.pos,
+      this.components.position.pos,
       convertTileVecToGlobal(add(dim, [1, 1]))
     );
 
@@ -72,30 +77,32 @@ export class Player extends BaseEntity {
   }
 
   update(keysPressed: Set<InputKey>): void {
+    const cs = this.components.collision!.collisionSet!;
+
     const d: Vec2 = [0, 0];
 
-    if (keysPressed.has("a") && !this.collisionSet.has("l")) {
+    if (keysPressed.has("a") && !cs.has("l")) {
       d[0] -= 1;
     }
 
-    if (keysPressed.has("d") && !this.collisionSet.has("r")) {
+    if (keysPressed.has("d") && !cs.has("r")) {
       d[0] += 1;
     }
 
-    if (keysPressed.has("w") && !this.collisionSet.has("t")) {
+    if (keysPressed.has("w") && !cs.has("t")) {
       d[1] -= 1;
     }
 
-    if (keysPressed.has("s") && !this.collisionSet.has("d")) {
+    if (keysPressed.has("s") && !cs.has("d")) {
       d[1] += 1;
     }
 
-    this.positionComponent.x =
-      this.positionComponent.x + Math.floor(d[0] * this.velocity);
-    this.positionComponent.y =
-      this.positionComponent.y + Math.floor(d[1] * this.velocity);
+    this.components.position.x =
+      this.components.position.x + Math.floor(d[0] * this.velocity);
+    this.components.position.y =
+      this.components.position.y + Math.floor(d[1] * this.velocity);
 
-    this.collisionSet.clear();
+    cs.clear();
 
     this.children.forEach((child) => child.update());
   }

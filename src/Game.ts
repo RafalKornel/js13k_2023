@@ -24,6 +24,8 @@ export class Game extends Renderer {
       this.sceneManager.registerScene(scene);
     });
 
+    console.log(this.sceneManager.scene);
+
     this.collisionManager = new CollisionManager();
   }
 
@@ -34,7 +36,7 @@ export class Game extends Renderer {
 
     this.collisionManager.handleCollisions([
       this.player,
-      ...this.sceneManager.scene.children,
+      ...this.sceneManager.scene.children.values(),
     ]);
 
     this.collisionManager.handleWallsCollision(
