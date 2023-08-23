@@ -7,7 +7,6 @@ export class InputManager {
     this._keysPressed = new Set<InputKey>();
 
     window.addEventListener("keydown", (e) => {
-      console.log(e.key);
       this._keysPressed.add(e.key);
     });
 

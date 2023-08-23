@@ -1,5 +1,7 @@
+import { ICollisionComponent } from "./Components/CollisionComponent";
+import { IPositionComponent } from "./Components/PositionComponent";
+import { IRenderComponent } from "./Components/RenderComponent";
 import { Renderer } from "./Renderer";
-import { Vec2, CollisionType } from "./types";
 import { getKey } from "./utils";
 
 export type EntityKey = string;
@@ -8,10 +10,9 @@ export class BaseEntity {
   readonly children: Map<EntityKey, BaseEntity>;
 
   constructor(
-    public pos: Vec2,
-    public dim: Vec2,
-    public color: string,
-    public readonly collision: CollisionType,
+    public positionComponent: IPositionComponent,
+    public renderComponent: IRenderComponent,
+    public collisionComponent: ICollisionComponent = { type: "none" },
     public key: EntityKey = getKey()
   ) {
     this.children = new Map();
@@ -30,12 +31,8 @@ export class BaseEntity {
       child.render(renderer);
     });
 
-    renderer.renderRect({
-      pos: this.pos,
-      dim: this.dim,
-      color: this.color,
-    });
+    this.renderComponent.render(this.positionComponent, renderer);
   }
 
-  onCollide(_other: BaseEntity) {}
+  update(...args: any[]) {}
 }

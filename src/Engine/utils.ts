@@ -13,9 +13,11 @@ function KeyGenerator() {
 
 export const { getKey } = KeyGenerator();
 
-export const convertTileToGlobal = (v: Vec2): Vec2 => [
-  v[0] * CONFIG.tileSize,
-  v[1] * CONFIG.tileSize,
+export const convertTileToGlobal = (v: number): number => v * CONFIG.tileSize;
+
+export const convertTileVecToGlobal = (v: Vec2): Vec2 => [
+  convertTileToGlobal(v[0]),
+  convertTileToGlobal(v[1]),
 ];
 
 export const OPPOSITE_DIRECTIONS: Record<Direction, Direction> = {
@@ -38,3 +40,4 @@ export const subtract = (v1: Vec2, v2: Vec2): Vec2 => [
   v1[1] - v2[1],
 ];
 export const mult = (v: Vec2, c: number): Vec2 => [v[0] * c, v[1] * c];
+export const len = (v: Vec2) => Math.sqrt(v[0] ** 2 + v[1] ** 2);

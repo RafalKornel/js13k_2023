@@ -1,7 +1,9 @@
 import { Portal } from "../Portal.ts";
 import { BaseEntity, EntityKey } from "./BaseEntity.ts";
+import { PositionComponent } from "./Components/PositionComponent.ts";
+import { RectRenderComponent } from "./Components/RenderComponent.ts";
 import { Renderer } from "./Renderer.ts";
-import { Direction, Vec2 } from "./types.ts";
+import { Direction } from "./types.ts";
 import { add, convertTileToGlobal } from "./utils.ts";
 
 export type SceneKey = string;
@@ -14,9 +16,8 @@ export class Scene {
 
   constructor(
     public readonly sceneKey: SceneKey,
-    public readonly dim: Vec2,
-    public readonly offset: Vec2,
-    public readonly bg: string,
+    public readonly positionComponent: PositionComponent,
+    public readonly renderComponent: RectRenderComponent,
     public readonly connectedScenes: ConnectedScenes = {}
   ) {
     this.portals = {};
@@ -36,24 +37,22 @@ export class Scene {
     return [...this._children.values(), ...Object.values(this.portals)];
   }
 
-  render(renrerer: Renderer) {
-    renrerer.renderRect({
-      color: this.bg,
-      pos: convertTileToGlobal(this.offset),
-      dim: convertTileToGlobal(this.dim),
-      anchor: "topLeft",
-    });
+  render(renderer: Renderer) {
+    this.renderComponent.render(this.positionComponent, renderer);
 
-    Object.values(this.portals).forEach((portal) => portal.render(renrerer));
+    Object.values(this.portals).forEach((portal) => portal.render(renderer));
 
     this._children.forEach((child) => {
-      child.render?.(renrerer);
+      child.render?.(renderer);
     });
   }
 
   private setupPortals(connectedScenes: ConnectedScenes) {
+    const portalOffset = convertTileToGlobal(0.5);
+
+    const { pos, w, h } = this.positionComponent;
     if (connectedScenes.l) {
-      const p = new Portal(add(this.offset, [0.5, this.dim[1] / 2]), "l");
+      const p = new Portal(add(pos, [portalOffset, h / 2]), "l");
 
       this.portals.l = p;
 
@@ -61,10 +60,7 @@ export class Scene {
     }
 
     if (connectedScenes.r) {
-      const p = new Portal(
-        add(this.offset, [this.dim[0] - 0.5, this.dim[1] / 2]),
-        "r"
-      );
+      const p = new Portal(add(pos, [w - portalOffset, h / 2]), "r");
 
       this.portals.r = p;
 
@@ -72,17 +68,14 @@ export class Scene {
     }
 
     if (connectedScenes.t) {
-      const p = new Portal(add(this.offset, [this.dim[0] / 2, 0.5]), "t");
+      const p = new Portal(add(pos, [w / 2, portalOffset]), "t");
 
       this.portals.t = p;
       Scene.registerPortal(p.key, connectedScenes.t);
     }
 
     if (connectedScenes.d) {
-      const p = new Portal(
-        add(this.offset, [this.dim[0] / 2, this.dim[1] - 0.5]),
-        "d"
-      );
+      const p = new Portal(add(pos, [w / 2, h - portalOffset]), "d");
 
       this.portals.d = p;
       Scene.registerPortal(p.key, connectedScenes.d);

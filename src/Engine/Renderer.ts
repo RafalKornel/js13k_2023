@@ -1,4 +1,4 @@
-import { Vec2 } from "./types";
+import { Anchor, Vec2 } from "./types";
 
 export type RenderEngineParams = {
   width?: number;
@@ -47,7 +47,7 @@ export abstract class Renderer {
     dim?: Vec2;
     dimPecent?: Vec2;
     color: string;
-    anchor?: "topLeft" | "center";
+    anchor?: Anchor;
   }) => {
     this.ctx.fillStyle = color;
 

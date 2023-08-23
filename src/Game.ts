@@ -1,6 +1,6 @@
 import { Renderer, RenderEngineParams } from "./Engine/Renderer.ts";
 import { InputManager } from "./Engine/InputKey.ts";
-import { Player } from "./Player.ts";
+import { Player } from "./Player/Player.ts";
 import { CollisionManager } from "./Engine/CollisionManager.ts";
 import { SceneManager } from "./Engine/SceneManager.ts";
 import { scenes } from "./scenes.ts";
@@ -16,9 +16,9 @@ export class Game extends Renderer {
 
     this.inputManager = new InputManager();
 
-    this.player = new Player(this, [this.width / 2, this.height / 2], [1, 1]);
-
     this.sceneManager = new SceneManager(scenes[0]);
+
+    this.player = new Player(this, [this.width / 2, this.height / 2], [1, 1]);
 
     scenes.forEach((scene) => {
       this.sceneManager.registerScene(scene);
