@@ -7,8 +7,17 @@
   </head>
   <body>
     <div id="app">
-      <canvas></canvas>
+      <canvas id="game"></canvas>
+      <canvas id="text"></canvas>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
+  <style>
+    canvas {
+      position: absolute;
+      width: calc(100vh * 4 / 3);
+      height: 100%;
+      image-rendering: pixelated;
+    }
+  </style>
 </html>

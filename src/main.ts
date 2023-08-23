@@ -6,14 +6,10 @@ const body = document.querySelector("body")!;
 body.style.background = "#000";
 body.style.margin = "0";
 
-const canvas = document.querySelector<HTMLCanvasElement>("canvas")!;
+const gameCanvas = document.querySelector<HTMLCanvasElement>("#game")!;
+const textCanvas = document.querySelector<HTMLCanvasElement>("#text")!;
 
-canvas.style.height = "100%";
-canvas.style.width = "calc(100vh * 4 / 3)";
-// canvas.style.imageRendering = "optimizeSpeed";
-canvas.style.imageRendering = "pixelated";
-
-const game = new Game(canvas, {
+const game = new Game(gameCanvas, textCanvas, {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
 });

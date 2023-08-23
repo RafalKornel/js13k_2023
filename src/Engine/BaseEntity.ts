@@ -2,12 +2,13 @@ import { ICollisionComponent } from "./Components/CollisionComponent";
 import { IInteractionComponent } from "./Components/InteractionComponent";
 import { IPositionComponent } from "./Components/PositionComponent";
 import { IRenderComponent } from "./Components/RenderComponent";
+import { InputManager } from "./InputManager";
 import { Renderer } from "./Renderer";
 import { getKey } from "./utils";
 
 type Components = {
   position: IPositionComponent;
-  render: IRenderComponent;
+  render?: IRenderComponent;
   collision?: ICollisionComponent;
   interaction?: IInteractionComponent;
 };
@@ -34,8 +35,12 @@ export class BaseEntity {
       child.render(renderer);
     });
 
-    this.components.render.render(this.components.position, renderer);
+    this.components.render?.render(this.components.position, renderer);
   }
 
-  update(...args: any[]) {}
+  update(inputManager: InputManager) {
+    this.children.forEach((child) => {
+      child.update(inputManager);
+    });
+  }
 }

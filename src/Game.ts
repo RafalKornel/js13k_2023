@@ -1,5 +1,5 @@
 import { Renderer, RenderEngineParams } from "./Engine/Renderer.ts";
-import { InputManager } from "./Engine/InputKey.ts";
+import { InputManager } from "./Engine/InputManager.ts";
 import { Player } from "./Player/Player.ts";
 import { CollisionManager } from "./Engine/CollisionManager.ts";
 import { SceneManager } from "./Engine/SceneManager.ts";
@@ -11,8 +11,12 @@ export class Game extends Renderer {
   sceneManager: SceneManager;
   collisionManager: CollisionManager;
 
-  constructor(canvas: HTMLCanvasElement, options: RenderEngineParams = {}) {
-    super(canvas, options);
+  constructor(
+    gameCanvas: HTMLCanvasElement,
+    textCanvas: HTMLCanvasElement,
+    options: RenderEngineParams = {}
+  ) {
+    super(gameCanvas, textCanvas, options);
 
     this.inputManager = new InputManager();
 
@@ -24,25 +28,18 @@ export class Game extends Renderer {
       this.sceneManager.registerScene(scene);
     });
 
-    console.log(this.sceneManager.scene);
-
     this.collisionManager = new CollisionManager();
   }
 
   private update() {
-    this.player.update(this.inputManager.keysPressed);
+    this.sceneManager.update(this.inputManager);
+    this.player.update(this.inputManager);
 
-    this.sceneManager.update(this.inputManager.keysPressed);
+    this.collisionManager.handle(this.player, this.sceneManager.scene);
 
-    this.collisionManager.handleCollisions([
-      this.player,
-      ...this.sceneManager.scene.children.values(),
-    ]);
-
-    this.collisionManager.handleWallsCollision(
-      this.player,
-      this.sceneManager.scene
-    );
+    if (this.inputManager.keysPressed.has("e")) {
+      this.inputManager.keysPressed.delete("e");
+    }
   }
 
   private render() {

@@ -1,9 +1,9 @@
-import { BaseEntity } from "./Engine/BaseEntity";
 import { PositionComponent } from "./Engine/Components/PositionComponent";
 import { RectRenderComponent } from "./Engine/Components/RenderComponent";
 import { SceneKey, Scene } from "./Engine/Scene";
 import { CONFIG } from "./Engine/config";
 import { convertTileVecToGlobal } from "./Engine/utils";
+import { TestInteractableEntity } from "./InteractableEntity";
 
 const createFullScenePositionComponent = () =>
   new PositionComponent(
@@ -42,9 +42,6 @@ const createVerticalTunnel = (top: SceneKey, down: SceneKey): Scene =>
     }
   );
 
-// const SCENES = ["initial", "a", "b", "c", "d"] as const;
-// const TUNNELS = ["horizontal", "vertical"] as const;
-
 const tunnelAInit = createHorizontalTunnel("a", "initial");
 const tunnelCInit = createVerticalTunnel("c", "initial");
 const tunnelInitB = createHorizontalTunnel("initial", "b");
@@ -62,16 +59,9 @@ const sceneInitial = new Scene(
   }
 );
 
-sceneInitial.addChild(
-  new BaseEntity({
-    position: new PositionComponent(
-      convertTileVecToGlobal([4, 4]),
-      convertTileVecToGlobal([1, 1])
-    ),
-    render: new RectRenderComponent("#0000f0"),
-    collision: { type: "interactable" },
-  })
-);
+const testInteractionEntity = new TestInteractableEntity();
+
+sceneInitial.addChild(testInteractionEntity);
 
 const sceneA = new Scene(
   "a",

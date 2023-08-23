@@ -6,7 +6,13 @@ import { mult, subtract } from "./utils.ts";
 import { Player } from "../Player/Player.ts";
 
 export class CollisionManager {
-  handleWallsCollision(player: Player, scene: Scene) {
+  handle(player: Player, scene: Scene) {
+    this.handleCollisions([player, ...scene.children.values()]);
+
+    this.handleWallsCollision(player, scene);
+  }
+
+  private handleWallsCollision(player: Player, scene: Scene) {
     const { position } = player.components;
     // TODO: optimize for rectangles?
     const halfW = position.w / 2;
@@ -52,14 +58,11 @@ export class CollisionManager {
     }
   }
 
-  handleCollisions(entities: BaseEntity[]) {
-    // console.log(entities);
-
+  private handleCollisions(entities: BaseEntity[]) {
     const allEntities = [...entities];
 
     const traverse = (entity: BaseEntity) => {
       for (const [_, child] of entity.children) {
-        // console.log(child);
         if (!child.components.collision) continue;
 
         allEntities.push(child);
@@ -70,8 +73,6 @@ export class CollisionManager {
     for (const entity of entities) {
       if (entity.components.collision) traverse(entity);
     }
-
-    // console.log(allEntities);
 
     for (let i = 0; i < allEntities.length; i++) {
       for (let j = 0; j < allEntities.length; j++) {

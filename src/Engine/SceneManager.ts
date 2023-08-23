@@ -1,4 +1,4 @@
-import { InputKey } from "./InputKey.ts";
+import { InputManager } from "./InputManager.ts";
 import { PortalCollisionEvent, observer } from "./Observer.ts";
 import { Renderer } from "./Renderer.ts";
 import { Scene, SceneKey } from "./Scene.ts";
@@ -36,18 +36,24 @@ export class SceneManager {
     this.scenes.set(scene.sceneKey, scene);
   }
 
-  update(keysPressed: Set<InputKey>): void {
-    if (keysPressed.has("l") || keysPressed.has("j")) {
+  update(inputManager: InputManager): void {
+    const kp = inputManager.keysPressed;
+
+    if (kp.has("l") || kp.has("j")) {
       this.changeScene("horizontalTunnel");
     }
 
-    if (keysPressed.has("i") || keysPressed.has("k")) {
+    if (kp.has("i") || kp.has("k")) {
       this.changeScene("verticalTunnel");
     }
 
-    if (keysPressed.has("r")) {
+    if (kp.has("r")) {
       this.changeScene("initial");
     }
+
+    this.scene.children.forEach((child) => {
+      child.update(inputManager);
+    });
   }
 
   changeScene(key: SceneKey) {

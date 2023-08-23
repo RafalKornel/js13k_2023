@@ -7,7 +7,7 @@ export interface IRenderComponent {
 }
 
 export class RectRenderComponent implements IRenderComponent {
-  constructor(readonly color: string, readonly anchor: Anchor = "center") {}
+  constructor(public color: string, readonly anchor: Anchor = "center") {}
 
   render(position: IPositionComponent, renderer: Renderer) {
     renderer.renderRect({
