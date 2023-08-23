@@ -1,13 +1,9 @@
 import { BaseEntity } from "./BaseEntity.ts";
-import { Player } from "../Player.ts";
-import {
-  SolidCollisionEvent,
-  WallCollisionEvent,
-  observer,
-} from "./Observer.ts";
+import { WallCollisionEvent, observer } from "./Observer.ts";
 import { Direction } from "./types.ts";
 import { Scene } from "./Scene.ts";
-import { convertTileToGlobal } from "./utils.ts";
+import { convertTileToGlobal, mult, subtract } from "./utils.ts";
+import { Player } from "../Player.ts";
 
 export class CollisionManager {
   handleWallsCollision(player: Player, scene: Scene) {
@@ -56,58 +52,43 @@ export class CollisionManager {
     }
   }
 
-  handleEntityCollisions(player: Player, entities: BaseEntity[]) {
-    for (let i = 0; i < entities.length; i++) {
-      const entity = entities[i];
+  handleCollisions(entities: BaseEntity[]) {
+    const allEntities = [...entities];
 
-      const { collision } = entity;
+    const traverse = (entity: BaseEntity) => {
+      entity.children.forEach((child) => {
+        allEntities.push(child);
+        traverse(child);
+      });
+    };
 
-      if (collision.type === "none") {
-        continue;
-      }
+    for (const entity of entities) {
+      traverse(entity);
+    }
 
-      const areColliding =
-        player.pos[0] < entity.pos[0] + entity.dim[0] &&
-        player.pos[0] + player.dim[0] > entity.pos[0] &&
-        player.pos[1] < entity.pos[1] + entity.dim[1] &&
-        player.pos[1] + player.dim[1] > entity.pos[1];
+    for (let i = 0; i < allEntities.length; i++) {
+      for (let j = 0; j < allEntities.length; j++) {
+        if (i === j) continue;
 
-      if (!areColliding) continue;
+        const entityA = allEntities[i];
+        const entityB = allEntities[j];
 
-      collision.onCollide?.(entity, player);
+        if (entityA.collision === "none" || entityB.collision === "none") {
+          continue;
+        }
 
-      const directions: Direction[] = [];
+        const p1 = subtract(entityA.pos, mult(entityA.dim, 0.5));
+        const p2 = subtract(entityB.pos, mult(entityB.dim, 0.5));
 
-      const dx = player.pos[0] - entity.pos[0];
-      const dw = player.dim[0] / 2 + entity.dim[0] / 2;
+        const areColliding =
+          p1[0] < p2[0] + entityB.dim[0] &&
+          p1[0] + entityA.dim[0] > p2[0] &&
+          p1[1] < p2[1] + entityB.dim[1] &&
+          p1[1] + entityA.dim[1] > p2[1];
 
-      if (Math.abs(Math.abs(dx) + 1 - Math.abs(dw)) < player.velocity) {
-        const dir = dx > 0 ? "l" : "r";
+        if (!areColliding) continue;
 
-        directions.push(dir);
-
-        player.pos[0] = entity.pos[0] + (dir === "l" ? 1 : -1) * dw;
-      }
-
-      const dy = player.pos[1] - entity.pos[1];
-      const dh = player.dim[1] / 2 + entity.dim[1] / 2;
-
-      if (Math.abs(Math.abs(dy) + 1 - Math.abs(dh)) < player.velocity) {
-        const dir = dy > 0 ? "t" : "d";
-
-        directions.push(dir);
-
-        player.pos[1] = entity.pos[1] + (dir === "t" ? 1 : -1) * dh;
-      }
-
-      if (collision.type === "solid") {
-        observer.emitEvent({
-          name: "solid-collision",
-          data: {
-            entity,
-            directions,
-          },
-        } as SolidCollisionEvent);
+        entityA.onCollide?.(entityB);
       }
     }
   }

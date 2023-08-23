@@ -2,7 +2,6 @@ import { Renderer, RenderEngineParams } from "./Engine/Renderer.ts";
 import { InputManager } from "./Engine/InputKey.ts";
 import { Player } from "./Player.ts";
 import { CollisionManager } from "./Engine/CollisionManager.ts";
-import { CONFIG } from "./Engine/config.ts";
 import { SceneManager } from "./Engine/SceneManager.ts";
 import { scenes } from "./scenes.ts";
 
@@ -17,11 +16,7 @@ export class Game extends Renderer {
 
     this.inputManager = new InputManager();
 
-    this.player = new Player(
-      this,
-      [this.width / 2, this.height / 2],
-      [CONFIG.tileSize, CONFIG.tileSize]
-    );
+    this.player = new Player(this, [this.width / 2, this.height / 2], [1, 1]);
 
     this.sceneManager = new SceneManager(scenes[0]);
 
@@ -37,10 +32,10 @@ export class Game extends Renderer {
 
     this.sceneManager.update(this.inputManager.keysPressed);
 
-    this.collisionManager.handleEntityCollisions(
+    this.collisionManager.handleCollisions([
       this.player,
-      this.sceneManager.scene.children
-    );
+      ...this.sceneManager.scene.children,
+    ]);
 
     this.collisionManager.handleWallsCollision(
       this.player,

@@ -33,3 +33,8 @@ export const PORTAL_OFFSET: Record<Direction, Vec2> = {
 };
 
 export const add = (v1: Vec2, v2: Vec2): Vec2 => [v1[0] + v2[0], v1[1] + v2[1]];
+export const subtract = (v1: Vec2, v2: Vec2): Vec2 => [
+  v1[0] - v2[0],
+  v1[1] - v2[1],
+];
+export const mult = (v: Vec2, c: number): Vec2 => [v[0] * c, v[1] * c];

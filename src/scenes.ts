@@ -66,7 +66,7 @@ const sceneB = new Scene(
 );
 
 const sceneC = new Scene(
-  "a",
+  "c",
   [CONFIG.width, CONFIG.height],
   [0, 0],
   "#9e3333",
@@ -76,7 +76,7 @@ const sceneC = new Scene(
 );
 
 const sceneD = new Scene(
-  "a",
+  "d",
   [CONFIG.width, CONFIG.height],
   [0, 0],
   "#9e3333",
