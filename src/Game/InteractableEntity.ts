@@ -14,7 +14,7 @@ import { GameState } from "../Engine/GameState";
 import { Vec2 } from "../Engine/types";
 import { add, convertTileVecToGlobal, getEntityPairKey } from "../Engine/utils";
 import { PLAYER_INTERACTION_COLLIDER_KEY } from "../Engine/Player/PlayerInteractionCollider";
-import { IMAGES_MAP } from "../Engine/config";
+import { IMAGES_KEY } from "../assets";
 
 const colors: Record<ComponentState, string> = {
   active: "#FFC436",
@@ -29,7 +29,7 @@ export class TestInteractableEntity extends BaseEntity {
         convertTileVecToGlobal([4, 4]),
         convertTileVecToGlobal([1, 1])
       ),
-      render: new ImageRenderComponent(IMAGES_MAP.smile),
+      render: new ImageRenderComponent(IMAGES_KEY.smile),
       collision: { type: "interactable" },
       interaction: new TestInteractionComponent(),
     });

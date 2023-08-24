@@ -6,8 +6,8 @@ import { PlayerCollisionComponent } from "./PlayerCollisionComponent.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
 import { PlayerInteractionCollider } from "./PlayerInteractionCollider.ts";
 import { GameState } from "../GameState.ts";
-import { IMAGES_MAP } from "../config.ts";
 import { ImageRenderComponent } from "../Components/RenderComponent.ts";
+import { IMAGES_KEY } from "../../assets.ts";
 
 export const PLAYER_KEY = "player";
 
@@ -20,7 +20,7 @@ export class Player extends BaseEntity {
     super(
       {
         position: new PositionComponent(pos, convertTileVecToGlobal(dim)),
-        render: new ImageRenderComponent(IMAGES_MAP.pointer),
+        render: new ImageRenderComponent(IMAGES_KEY.pointer),
         collision: new PlayerCollisionComponent("solid", state.sceneManager),
       },
       PLAYER_KEY

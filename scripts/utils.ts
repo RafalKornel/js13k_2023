@@ -15,10 +15,6 @@ export function RGBTAoHex(r: number, g: number, b: number, a?: number) {
   return "#" + rs + gs + bs + (as || "");
 }
 
-export const encodeArray = (arr: Uint8ClampedArray) => {
-  return Buffer.from(arr).toString("base64");
-};
-
 export const getDirname = () => {
   const __filename = fileURLToPath(import.meta.url);
 

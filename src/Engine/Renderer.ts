@@ -1,10 +1,10 @@
-import { IMAGES_MAP, TEXT_CONFIG } from "./config";
-import { Anchor, ImageId, Vec2 } from "./types";
+import { TEXT_CONFIG } from "./config";
+import { Anchor, Vec2 } from "./types";
 
 import { CustomImageDecoder } from "./ImageDecoder";
 
-import { colors, images } from "../assets";
 import { mult, subtract } from "./utils";
+import { IMAGES_MAP, ImageId, colors } from "../assets";
 
 export type RenderEngineParams = {
   width?: number;
@@ -69,17 +69,15 @@ export abstract class Renderer {
   renderImage(imageId: ImageId, pos: Vec2) {
     const size: Vec2 = [8, 8];
 
-    const img = images[imageId];
+    const compressedImage = IMAGES_MAP[imageId];
 
-    if (!img) {
-      throw new Error(
-        `Could not find image with id: ${imageId}. Images: ${IMAGES_MAP}`
-      );
-    }
+    const image = this._imageDecoder.decompressImage(
+      compressedImage,
+      ...size,
+      4
+    );
 
-    const decodedImg = this._imageDecoder.decodeImg(img, ...size, 4);
-
-    const imgData = new ImageData(decodedImg, ...size);
+    const imgData = new ImageData(image, ...size);
 
     const translatedSize = subtract(pos, mult(size, 0.5));
 

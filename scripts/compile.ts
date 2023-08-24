@@ -2,18 +2,20 @@ import * as fs from "fs";
 import * as png from "fast-png";
 
 // @ts-ignore
-import { encodeArray, RGBTAoHex, getDirname } from "./utils.ts";
+import { RGBTAoHex, getDirname } from "./utils.ts";
 import path from "path";
 
+type Images = { name: string; data: Uint8ClampedArray };
+
 function encodeImages(inputPath: string, outputPath: string) {
-  const images: string[] = [];
+  const images: Images[] = [];
 
   const colorsMap = new Map<string, number>();
 
   let currentColorIdx = 0;
 
   const BYTES_PER_COLOR = 4;
-  const COLORS_IN_PALETTE = 64;
+  const COLORS_IN_PALETTE = 8;
 
   const colors = new Uint8ClampedArray(BYTES_PER_COLOR * COLORS_IN_PALETTE);
 
@@ -31,29 +33,22 @@ function encodeImages(inputPath: string, outputPath: string) {
 
       const imageEncoded = encodeImage(`${inputPath}/${name}`);
 
-      images.push(imageEncoded);
+      images.push({ name: name.replace(".png", ""), data: imageEncoded });
     }
 
-    const colorsEncoded = encodeArray(colors);
-
-    generateAssetsFile(colorsEncoded, images);
+    generateAssetsFile(colors, images);
   } catch (e) {
     console.error(e);
   }
 
-  function generateAssetsFile(colors: string, images: string[]) {
-    let newFileContents = [
-      `export const colors = "${colors}";`,
-      `export const images = [${images.map((img) => `"${img}"`)}];`,
-    ];
+  function generateAssetsFile(colors: Uint8ClampedArray, images: Images[]) {
+    console.log("Compiling images to binary files...");
 
-    console.log("Writing results to file: ", outputPath);
+    images.forEach(({ data, name }) => {
+      fs.writeFileSync(outputPath + "/" + name, data, "binary");
+    });
 
-    fs.writeFileSync(
-      outputPath,
-      newFileContents.reduce((p, n) => `${p}\n${n}`, ""),
-      { flag: "w" }
-    );
+    fs.writeFileSync(outputPath + "/colors", colors, "binary");
 
     console.log("Success!");
   }
@@ -101,15 +96,14 @@ function encodeImages(inputPath: string, outputPath: string) {
       }
     }
 
-    const imageEncoded = encodeArray(arr);
-
-    return imageEncoded;
+    return arr;
   }
 }
 
 const __dirname = getDirname();
 
-const INPUT_PATH = path.resolve(__dirname + "/../assets");
-const OUTPUT_PATH = path.resolve(__dirname + "/../src/assets.ts");
+const INPUT_PATH = path.resolve(__dirname + "/../assets/raw/");
+const OUTPUT_PATH = path.resolve(__dirname + "/../assets/compiled/");
+// const OUTPUT_PATH = path.resolve(__dirname + "/../src/assets.ts");
 
 encodeImages(INPUT_PATH, OUTPUT_PATH);

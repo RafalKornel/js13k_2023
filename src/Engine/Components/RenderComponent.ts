@@ -1,5 +1,6 @@
+import { ImageId } from "../../assets";
 import { Renderer } from "../Renderer";
-import { Anchor, ImageId } from "../types";
+import { Anchor } from "../types";
 import { IPositionComponent } from "./PositionComponent";
 
 export interface IRenderComponent {
