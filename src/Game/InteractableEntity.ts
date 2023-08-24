@@ -5,12 +5,16 @@ import {
   TestInteractionComponent,
 } from "../Engine/Components/InteractionComponent";
 import { PositionComponent } from "../Engine/Components/PositionComponent";
-import { RectRenderComponent } from "../Engine/Components/RenderComponent";
+import {
+  ImageRenderComponent,
+  RectRenderComponent,
+} from "../Engine/Components/RenderComponent";
 import { Renderer } from "../Engine/Renderer";
 import { GameState } from "../Engine/GameState";
 import { Vec2 } from "../Engine/types";
 import { add, convertTileVecToGlobal, getEntityPairKey } from "../Engine/utils";
 import { PLAYER_INTERACTION_COLLIDER_KEY } from "../Engine/Player/PlayerInteractionCollider";
+import { IMAGES_MAP } from "../Engine/config";
 
 const colors: Record<ComponentState, string> = {
   active: "#FFC436",
@@ -25,7 +29,7 @@ export class TestInteractableEntity extends BaseEntity {
         convertTileVecToGlobal([4, 4]),
         convertTileVecToGlobal([1, 1])
       ),
-      render: new RectRenderComponent("#0000f0"),
+      render: new ImageRenderComponent(IMAGES_MAP.smile),
       collision: { type: "interactable" },
       interaction: new TestInteractionComponent(),
     });

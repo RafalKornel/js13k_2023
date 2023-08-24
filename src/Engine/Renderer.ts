@@ -1,5 +1,10 @@
-import { TEXT_CONFIG } from "./config";
-import { Anchor, Vec2 } from "./types";
+import { IMAGES_MAP, TEXT_CONFIG } from "./config";
+import { Anchor, ImageId, Vec2 } from "./types";
+
+import { CustomImageDecoder } from "./ImageDecoder";
+
+import { colors, images } from "../assets";
+import { mult, subtract } from "./utils";
 
 export type RenderEngineParams = {
   width?: number;
@@ -10,8 +15,13 @@ export abstract class Renderer {
   protected ctx: CanvasRenderingContext2D;
   protected textCtx: CanvasRenderingContext2D;
 
+  private _sideCtx: CanvasRenderingContext2D;
+  private _sideCanvas: HTMLCanvasElement;
+
   protected width: number;
   protected height: number;
+
+  private _imageDecoder: CustomImageDecoder;
 
   /** Main entry point to renderer - implement this in children classes, by
    * modifying buffer property.
@@ -37,15 +47,55 @@ export abstract class Renderer {
     const gameCtx = gameCanvas.getContext("2d");
     const textCtx = textCanvas.getContext("2d");
 
-    if (!gameCtx || !textCtx) {
+    const sideCanvas = document.createElement("canvas");
+    const sideContext = sideCanvas.getContext("2d");
+
+    if (!gameCtx || !textCtx || !sideContext) {
       throw new Error("Your browser doesn't support canvas");
     }
+
+    this._sideCanvas = sideCanvas;
+    this._sideCtx = sideContext;
 
     // ctx.imageSmoothingEnabled = false;
 
     this.ctx = gameCtx;
 
     this.textCtx = textCtx;
+
+    this._imageDecoder = new CustomImageDecoder(colors);
+  }
+
+  renderImage(imageId: ImageId, pos: Vec2) {
+    const size: Vec2 = [8, 8];
+
+    const img = images[imageId];
+
+    if (!img) {
+      throw new Error(
+        `Could not find image with id: ${imageId}. Images: ${IMAGES_MAP}`
+      );
+    }
+
+    const decodedImg = this._imageDecoder.decodeImg(img, ...size, 4);
+
+    const imgData = new ImageData(decodedImg, ...size);
+
+    const translatedSize = subtract(pos, mult(size, 0.5));
+
+    this._sideCtx.clearRect(
+      0,
+      0,
+      this._sideCanvas.width,
+      this._sideCanvas.height
+    );
+
+    this._sideCtx.putImageData(imgData, 0, 0);
+
+    const i = new Image(...size);
+
+    i.src = this._sideCanvas.toDataURL();
+    this.ctx.drawImage(i, ...translatedSize);
   }
 
   renderRect = ({

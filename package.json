@@ -7,11 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "ts-check": "tsc",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "compile": "ts-node --esm scripts/compile.ts"
   },
   "devDependencies": {
+    "@types/bmp-js": "^0.1.0",
+    "@types/node": "^20.5.4",
+    "bmp-js": "^0.1.0",
+    "bmp-ts": "^1.0.4",
+    "fast-png": "^6.2.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
-  },
-  "dependencies": {}
+  }
 }

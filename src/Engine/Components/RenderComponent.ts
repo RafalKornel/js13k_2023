@@ -1,5 +1,5 @@
 import { Renderer } from "../Renderer";
-import { Anchor } from "../types";
+import { Anchor, ImageId } from "../types";
 import { IPositionComponent } from "./PositionComponent";
 
 export interface IRenderComponent {
@@ -16,5 +16,13 @@ export class RectRenderComponent implements IRenderComponent {
       color: this.color,
       anchor: this.anchor,
     });
+  }
+}
+
+export class ImageRenderComponent implements IRenderComponent {
+  constructor(readonly imageId: ImageId) {}
+
+  render(position: IPositionComponent, renderer: Renderer): void {
+    renderer.renderImage(this.imageId, position.pos);
   }
 }

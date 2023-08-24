@@ -17,3 +17,8 @@ export const TEXT_CONFIG = {
   marginX: 8,
   offset: [0.5, -0.6],
 } as const;
+
+export const IMAGES_MAP = {
+  smile: 1,
+  pointer: 0,
+};

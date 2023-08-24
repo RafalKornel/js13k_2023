@@ -1,12 +1,13 @@
 import { Direction, Vec2 } from "../types.ts";
 import { BaseEntity } from "../BaseEntity.ts";
-import { RectRenderComponent } from "../Components/RenderComponent.ts";
 
 import { add, convertTileVecToGlobal } from "../utils.ts";
 import { PlayerCollisionComponent } from "./PlayerCollisionComponent.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
 import { PlayerInteractionCollider } from "./PlayerInteractionCollider.ts";
 import { GameState } from "../GameState.ts";
+import { IMAGES_MAP } from "../config.ts";
+import { ImageRenderComponent } from "../Components/RenderComponent.ts";
 
 export const PLAYER_KEY = "player";
 
@@ -19,7 +20,7 @@ export class Player extends BaseEntity {
     super(
       {
         position: new PositionComponent(pos, convertTileVecToGlobal(dim)),
-        render: new RectRenderComponent("#ff0000"),
+        render: new ImageRenderComponent(IMAGES_MAP.pointer),
         collision: new PlayerCollisionComponent("solid", state.sceneManager),
       },
       PLAYER_KEY

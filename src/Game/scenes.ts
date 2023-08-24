@@ -1,3 +1,4 @@
+import { BaseEntity } from "../Engine/BaseEntity";
 import { PositionComponent } from "../Engine/Components/PositionComponent";
 import { RectRenderComponent } from "../Engine/Components/RenderComponent";
 import { SceneKey, Scene } from "../Engine/Scene/Scene";
@@ -62,6 +63,17 @@ const sceneInitial = new Scene(
 const testInteractionEntity = new TestInteractableEntity();
 
 sceneInitial.addChild(testInteractionEntity);
+
+const renderTest = new BaseEntity({
+  position: new PositionComponent(
+    convertTileVecToGlobal([12, 3]),
+    convertTileVecToGlobal([1, 1])
+  ),
+  render: new RectRenderComponent("#5c9a12"),
+  collision: { type: "none" },
+});
+
+sceneInitial.addChild(renderTest);
 
 const sceneA = new Scene(
   "a",
