@@ -10,12 +10,17 @@ This project is a game created for [js13kGames contest](https://js13kgames.com/)
 - [ ] game state / decision tree system
 - [ ] content
 
-# Build
-
-### Install dependencies:
+# Installing dependencies 
 ``` bash
 yarn
 ```
+
+# Run locally
+``` bash
+yarn dev
+```
+
+# Build
 
 ### Build project:
 ``` bash
