@@ -3,6 +3,7 @@ import colorsData from "../assets/compiled/colors?binary";
 
 // @ts-ignore
 import smile from "../assets/compiled/smile?binary";
+
 // @ts-ignore
 import pointer from "../assets/compiled/pointer?binary";
 

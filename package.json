@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "yarn compile && vite build",
     "ts-check": "tsc",
     "preview": "vite preview",
     "compile": "ts-node --esm scripts/compile.ts"
   },
   "devDependencies": {
     "@types/node": "^20.5.4",
+    "advzip-bin": "^2.0.0",
     "fast-png": "^6.2.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2",

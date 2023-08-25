@@ -15,7 +15,7 @@ function encodeImages(inputPath: string, outputPath: string) {
   let currentColorIdx = 0;
 
   const BYTES_PER_COLOR = 4;
-  const COLORS_IN_PALETTE = 8;
+  const COLORS_IN_PALETTE = 64;
 
   const colors = new Uint8ClampedArray(BYTES_PER_COLOR * COLORS_IN_PALETTE);
 
