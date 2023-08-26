@@ -1,8 +1,9 @@
-import { Vec2 } from "../types";
+import { LookDirection, Vec2 } from "../types";
 
 export interface IPositionComponent {
   pos: Vec2;
   dim: Vec2;
+  dir?: LookDirection;
 
   get x(): number;
   get y(): number;
@@ -17,7 +18,11 @@ export interface IPositionComponent {
 }
 
 export class PositionComponent implements IPositionComponent {
-  constructor(readonly pos: Vec2, readonly dim: Vec2) {}
+  constructor(
+    readonly pos: Vec2,
+    readonly dim: Vec2,
+    public dir: LookDirection = "r"
+  ) {}
 
   get x() {
     return this.pos[0];

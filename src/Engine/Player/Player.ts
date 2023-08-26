@@ -20,7 +20,7 @@ export class Player extends BaseEntity {
     super(
       {
         position: new PositionComponent(pos, convertTileVecToGlobal(dim)),
-        render: new ImageRenderComponent(IMAGES_KEY.pointer),
+        render: new ImageRenderComponent(IMAGES_KEY.hero),
         collision: new PlayerCollisionComponent("solid", state.sceneManager),
       },
       PLAYER_KEY
@@ -35,6 +35,8 @@ export class Player extends BaseEntity {
   }
 
   update(state: GameState): void {
+    const pos = this.components.position;
+
     const cs: Set<Direction> = this.components.collision!.collisionSet!;
     const kp: Set<string> = state.inputManager.keysPressed;
 
@@ -42,10 +44,12 @@ export class Player extends BaseEntity {
 
     if (kp.has("a") && !cs.has("l")) {
       d[0] -= 1;
+      pos.dir = "l";
     }
 
     if (kp.has("d") && !cs.has("r")) {
       d[0] += 1;
+      pos.dir = "r";
     }
 
     if (kp.has("w") && !cs.has("t")) {
@@ -56,10 +60,8 @@ export class Player extends BaseEntity {
       d[1] += 1;
     }
 
-    this.components.position.x =
-      this.components.position.x + Math.floor(d[0] * this.velocity);
-    this.components.position.y =
-      this.components.position.y + Math.floor(d[1] * this.velocity);
+    pos.x = pos.x + Math.floor(d[0] * this.velocity);
+    pos.y = pos.y + Math.floor(d[1] * this.velocity);
 
     cs.clear();
 

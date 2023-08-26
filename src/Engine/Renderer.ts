@@ -1,5 +1,5 @@
 import { TEXT_CONFIG } from "./config";
-import { Anchor, Vec2 } from "./types";
+import { Anchor, LookDirection, Vec2 } from "./types";
 
 import { CustomImageDecoder } from "./ImageDecoder";
 
@@ -66,10 +66,12 @@ export abstract class Renderer {
     this._imageDecoder = new CustomImageDecoder(colors);
   }
 
-  renderImage(imageId: ImageId, pos: Vec2) {
+  renderImage(imageId: ImageId, pos: Vec2, dir: LookDirection = "r") {
+    // console.log(dir);
+
     const size: Vec2 = [8, 8];
 
-    const compressedImage = IMAGES_MAP[imageId];
+    const compressedImage = IMAGES_MAP[imageId][dir];
 
     const image = this._imageDecoder.decompressImage(
       compressedImage,
@@ -93,7 +95,8 @@ export abstract class Renderer {
     const i = new Image(...size);
 
     i.src = this._sideCanvas.toDataURL();
-    this.ctx.drawImage(i, ...translatedSize);
+
+    this.ctx.drawImage(i, translatedSize[0], translatedSize[1]);
   }
 
   renderRect = ({

@@ -92,6 +92,10 @@ function encodeImages(inputPath: string, outputPath: string) {
           arr[flatIndex] = currentColorIdx;
 
           currentColorIdx++;
+
+          if (currentColorIdx === COLORS_IN_PALETTE) {
+            throw new Error(`Too many colors! Colors map: ${colorsMap}`);
+          }
         }
       }
     }

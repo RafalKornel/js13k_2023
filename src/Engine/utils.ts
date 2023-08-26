@@ -47,3 +47,22 @@ export const subtract = (v1: Vec2, v2: Vec2): Vec2 => [
 ];
 export const mult = (v: Vec2, c: number): Vec2 => [v[0] * c, v[1] * c];
 export const len = (v: Vec2) => Math.sqrt(v[0] ** 2 + v[1] ** 2);
+
+export const flipImage = (
+  data: Uint8ClampedArray,
+  size = 8
+): Uint8ClampedArray => {
+  const copy = [...data];
+  const res = new Uint8ClampedArray(data);
+
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const i1 = y * size + x;
+      const i2 = y * size + (size - x);
+
+      res[i1] = copy[i2];
+    }
+  }
+
+  return res;
+};
