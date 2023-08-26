@@ -1,6 +1,7 @@
 import { IMAGES_MAP, ImageId } from "../../assets";
 import { Renderer } from "../Renderer";
-import { Anchor, ImageMetaData } from "../types";
+import { Anchor, ImageMetaData, Vec2 } from "../types";
+import { convertTileVecToGlobal } from "../utils";
 import { IPositionComponent } from "./PositionComponent";
 
 export interface IRenderComponent {
@@ -29,5 +30,46 @@ export class ImageRenderComponent implements IRenderComponent {
 
   render(position: IPositionComponent, renderer: Renderer): void {
     renderer.renderImage(this._imageData, position.pos, position.dir);
+  }
+}
+
+// TODO potentially remove
+export class BackgroundRenderComponent implements IRenderComponent {
+  private _imageData: ImageMetaData;
+
+  constructor(readonly imageId: ImageId, readonly dim: Vec2) {
+    const imageData = IMAGES_MAP[imageId];
+
+    const { s } = imageData;
+
+    const globalDim = convertTileVecToGlobal(dim);
+
+    const scaledImageData = new Uint8ClampedArray(globalDim[0] * globalDim[1]);
+
+    for (let y = 0; y < globalDim[1]; y++) {
+      for (let x = 0; x < globalDim[0]; x++) {
+        const imgY = y % s[1];
+        const imgX = x % s[0];
+
+        const v = imageData.r[imgY * s[1] + imgX];
+
+        scaledImageData[y * globalDim[0] + x] = v;
+      }
+    }
+
+    this._imageData = {
+      l: scaledImageData,
+      r: scaledImageData,
+      s: globalDim,
+    };
+  }
+
+  render(position: IPositionComponent, renderer: Renderer) {
+    renderer.renderImage(
+      this._imageData,
+      position.pos,
+      position.dir,
+      "topLeft"
+    );
   }
 }

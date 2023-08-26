@@ -1,7 +1,7 @@
 import { Portal } from "./Portal.ts";
 import { BaseEntity, EntityKey } from "../BaseEntity.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
-import { RectRenderComponent } from "../Components/RenderComponent.ts";
+import { IRenderComponent } from "../Components/RenderComponent.ts";
 import { Renderer } from "../Renderer.ts";
 import { Direction } from "../types.ts";
 import { add, convertTileToGlobal } from "../utils.ts";
@@ -16,7 +16,7 @@ export class Scene extends BaseEntity {
   constructor(
     public readonly sceneKey: SceneKey,
     public readonly positionComponent: PositionComponent,
-    public readonly renderComponent: RectRenderComponent,
+    public readonly renderComponent: IRenderComponent,
     public readonly connectedScenes: ConnectedScenes = {}
   ) {
     super({ position: positionComponent, render: renderComponent }, sceneKey);

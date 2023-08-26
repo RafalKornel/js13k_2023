@@ -6,6 +6,7 @@ import {
 } from "../Engine/Components/RenderComponent";
 import { SceneKey, Scene } from "../Engine/Scene/Scene";
 import { CONFIG } from "../Engine/config";
+import { Vec2 } from "../Engine/types";
 import { convertTileVecToGlobal } from "../Engine/utils";
 import { IMAGES_KEY } from "../assets";
 import { TestInteractableEntity } from "./InteractableEntity";
@@ -16,17 +17,18 @@ const createFullScenePositionComponent = () =>
     convertTileVecToGlobal([CONFIG.width, CONFIG.height])
   );
 
-const createBrickSceneRenderComponent = () =>
-  new RectRenderComponent("#9e3333", "topLeft");
+const createBrickSceneRenderComponent = (dim: Vec2) =>
+  new RectRenderComponent("#371415", "topLeft");
+// new BackgroundRenderComponent(IMAGES_KEY.floor, dim);
 
 const createHorizontalTunnel = (left: SceneKey, right: SceneKey): Scene =>
   new Scene(
     `horizontal-${left}-${right}`,
     new PositionComponent(
       convertTileVecToGlobal([0, CONFIG.height / 2 - 1.5]),
-      convertTileVecToGlobal([CONFIG.width, CONFIG.height / 4])
+      convertTileVecToGlobal([CONFIG.width, 3])
     ),
-    createBrickSceneRenderComponent(),
+    createBrickSceneRenderComponent([CONFIG.width, 3]),
     {
       l: left,
       r: right,
@@ -37,10 +39,10 @@ const createVerticalTunnel = (top: SceneKey, down: SceneKey): Scene =>
   new Scene(
     `vertical-${top}-${down}`,
     new PositionComponent(
-      convertTileVecToGlobal([CONFIG.width / 2 - 2, 0]),
-      convertTileVecToGlobal([CONFIG.width / 4, CONFIG.height])
+      convertTileVecToGlobal([CONFIG.width / 2 - 1.5, 0]),
+      convertTileVecToGlobal([3, CONFIG.height])
     ),
-    createBrickSceneRenderComponent(),
+    createBrickSceneRenderComponent([3, CONFIG.height]),
     {
       t: top,
       d: down,
@@ -55,7 +57,7 @@ const tunnelInitD = createVerticalTunnel("initial", "d");
 const sceneInitial = new Scene(
   "initial",
   createFullScenePositionComponent(),
-  createBrickSceneRenderComponent(),
+  createBrickSceneRenderComponent([CONFIG.width, CONFIG.height]),
   {
     l: tunnelAInit.sceneKey,
     r: tunnelInitB.sceneKey,
@@ -82,7 +84,7 @@ sceneInitial.addChild(renderTest);
 const sceneA = new Scene(
   "a",
   createFullScenePositionComponent(),
-  createBrickSceneRenderComponent(),
+  createBrickSceneRenderComponent([CONFIG.width, CONFIG.height]),
   {
     r: tunnelAInit.sceneKey,
   }
@@ -91,7 +93,7 @@ const sceneA = new Scene(
 const sceneB = new Scene(
   "b",
   createFullScenePositionComponent(),
-  createBrickSceneRenderComponent(),
+  createBrickSceneRenderComponent([CONFIG.width, CONFIG.height]),
   {
     l: tunnelInitB.sceneKey,
   }
@@ -100,7 +102,7 @@ const sceneB = new Scene(
 const sceneC = new Scene(
   "c",
   createFullScenePositionComponent(),
-  createBrickSceneRenderComponent(),
+  createBrickSceneRenderComponent([CONFIG.width, CONFIG.height]),
   {
     d: tunnelCInit.sceneKey,
   }
@@ -109,7 +111,7 @@ const sceneC = new Scene(
 const sceneD = new Scene(
   "d",
   createFullScenePositionComponent(),
-  createBrickSceneRenderComponent(),
+  createBrickSceneRenderComponent([CONFIG.width, CONFIG.height]),
   {
     t: tunnelInitD.sceneKey,
   }
