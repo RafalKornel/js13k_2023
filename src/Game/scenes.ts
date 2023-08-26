@@ -1,9 +1,13 @@
 import { BaseEntity } from "../Engine/BaseEntity";
 import { PositionComponent } from "../Engine/Components/PositionComponent";
-import { RectRenderComponent } from "../Engine/Components/RenderComponent";
+import {
+  ImageRenderComponent,
+  RectRenderComponent,
+} from "../Engine/Components/RenderComponent";
 import { SceneKey, Scene } from "../Engine/Scene/Scene";
 import { CONFIG } from "../Engine/config";
 import { convertTileVecToGlobal } from "../Engine/utils";
+import { IMAGES_KEY } from "../assets";
 import { TestInteractableEntity } from "./InteractableEntity";
 
 const createFullScenePositionComponent = () =>
@@ -67,10 +71,10 @@ sceneInitial.addChild(testInteractionEntity);
 const renderTest = new BaseEntity({
   position: new PositionComponent(
     convertTileVecToGlobal([12, 3]),
-    convertTileVecToGlobal([1, 1])
+    convertTileVecToGlobal([2, 2])
   ),
-  render: new RectRenderComponent("#5c9a12"),
-  collision: { type: "none" },
+  render: new ImageRenderComponent(IMAGES_KEY.floor),
+  collision: { type: "solid" },
 });
 
 sceneInitial.addChild(renderTest);

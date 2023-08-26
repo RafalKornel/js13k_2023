@@ -1,6 +1,6 @@
-import { ImageId } from "../../assets";
+import { IMAGES_MAP, ImageId } from "../../assets";
 import { Renderer } from "../Renderer";
-import { Anchor } from "../types";
+import { Anchor, ImageMetaData } from "../types";
 import { IPositionComponent } from "./PositionComponent";
 
 export interface IRenderComponent {
@@ -21,9 +21,13 @@ export class RectRenderComponent implements IRenderComponent {
 }
 
 export class ImageRenderComponent implements IRenderComponent {
-  constructor(readonly imageId: ImageId) {}
+  private _imageData: ImageMetaData;
+
+  constructor(readonly imageId: ImageId) {
+    this._imageData = IMAGES_MAP[imageId];
+  }
 
   render(position: IPositionComponent, renderer: Renderer): void {
-    renderer.renderImage(this.imageId, position.pos, position.dir);
+    renderer.renderImage(this._imageData, position.pos, position.dir);
   }
 }

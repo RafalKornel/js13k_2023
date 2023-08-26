@@ -1,10 +1,10 @@
 import { TEXT_CONFIG } from "./config";
-import { Anchor, LookDirection, Vec2 } from "./types";
+import { Anchor, ImageMetaData, LookDirection, Vec2 } from "./types";
 
 import { CustomImageDecoder } from "./ImageDecoder";
 
 import { mult, subtract } from "./utils";
-import { IMAGES_MAP, ImageId, colors } from "../assets";
+import { colors } from "../assets";
 
 export type RenderEngineParams = {
   width?: number;
@@ -66,22 +66,20 @@ export abstract class Renderer {
     this._imageDecoder = new CustomImageDecoder(colors);
   }
 
-  renderImage(imageId: ImageId, pos: Vec2, dir: LookDirection = "r") {
-    // console.log(dir);
+  renderImage(
+    imageData: ImageMetaData,
+    pos: Vec2,
+    dir: LookDirection = "r",
+    anchor: Anchor = "center"
+  ) {
+    const { s } = imageData;
 
-    const size: Vec2 = [8, 8];
+    const image = this._imageDecoder.decompressImage(imageData[dir], ...s, 4);
 
-    const compressedImage = IMAGES_MAP[imageId][dir];
+    const imgData = new ImageData(image, ...s);
 
-    const image = this._imageDecoder.decompressImage(
-      compressedImage,
-      ...size,
-      4
-    );
-
-    const imgData = new ImageData(image, ...size);
-
-    const translatedSize = subtract(pos, mult(size, 0.5));
+    const translatedSize =
+      anchor === "center" ? subtract(pos, mult(s, 0.5)) : pos;
 
     this._sideCtx.clearRect(
       0,
@@ -92,7 +90,7 @@ export abstract class Renderer {
 
     this._sideCtx.putImageData(imgData, 0, 0);
 
-    const i = new Image(...size);
+    const i = new Image(...s);
 
     i.src = this._sideCanvas.toDataURL();
 
