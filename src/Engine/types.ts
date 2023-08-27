@@ -15,8 +15,20 @@ export type ImageMetaData = {
 };
 
 export type Interaction = {
-  key: string;
   text: string;
+  key: string;
+  action?: (ws: any) => void;
 };
 
 export type TextSize = "m" | "l";
+
+export type WorldState = Record<string, any>;
+
+export type DialogueOption = Interaction & {
+  response: string;
+};
+
+export type DialogueConfig = {
+  init: string;
+  options: Array<DialogueOption>;
+};

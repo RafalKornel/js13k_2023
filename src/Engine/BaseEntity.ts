@@ -10,7 +10,7 @@ type Components = {
   position: IPositionComponent;
   render?: IRenderComponent;
   collision?: ICollisionComponent;
-  interaction?: IInteractionComponent;
+  interaction?: IInteractionComponent<any>;
 };
 
 export type EntityKey = string;

@@ -9,7 +9,8 @@ import { CONFIG } from "../Engine/config";
 import { Vec2 } from "../Engine/types";
 import { convertTileVecToGlobal } from "../Engine/utils";
 import { IMAGES_KEY } from "../assets";
-import { TestInteractableEntity } from "./InteractableEntity";
+import { NPC } from "./NPC";
+import { GameWorldState } from "./WorldState";
 
 const createFullScenePositionComponent = () =>
   new PositionComponent(
@@ -66,7 +67,42 @@ const sceneInitial = new Scene(
   }
 );
 
-const johnTestInteractionEntity = new TestInteractableEntity([4, 4], "John");
+const johnTestInteractionEntity = new NPC(
+  [4, 4],
+  "John",
+  IMAGES_KEY.hero,
+  {
+    init: "Hello brave advenruter!\nWhat can I do for you?",
+    options: [
+      {
+        key: "1",
+        text: "Give me a beer!",
+        response: "I'm not giving you any beer!\nYou are drunk already!!",
+      },
+      {
+        key: "2",
+        text: "Do you know anything about John?",
+        response: "I am John!",
+      },
+    ],
+  },
+  [
+    {
+      key: "p",
+      text: "<pickpocket>",
+      action: (ws: GameWorldState) => {
+        ws.isDead = true;
+      },
+    },
+    {
+      key: "k",
+      text: "<kill>",
+      action: (ws: GameWorldState) => {
+        ws.isDead = true;
+      },
+    },
+  ]
+);
 
 sceneInitial.addChild(johnTestInteractionEntity);
 

@@ -30,20 +30,6 @@ export class SceneManager {
   }
 
   update(state: GameState): void {
-    const kp = state.inputManager.keysPressed;
-
-    if (kp.has("l") || kp.has("j")) {
-      this.changeScene("horizontalTunnel");
-    }
-
-    if (kp.has("i") || kp.has("k")) {
-      this.changeScene("verticalTunnel");
-    }
-
-    if (kp.has("r")) {
-      this.changeScene("initial");
-    }
-
     this.scene.children.forEach((child) => {
       child.update(state);
     });

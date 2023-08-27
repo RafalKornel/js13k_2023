@@ -5,10 +5,11 @@ import { CollisionManager } from "../Engine/CollisionManager.ts";
 import { SceneManager } from "../Engine/Scene/SceneManager.ts";
 import { scenes } from "./scenes.ts";
 import { GameState } from "../Engine/GameState.ts";
+import { GameWorldState, getWorldState } from "./WorldState.ts";
 
 export class Game extends Renderer {
   player: Player;
-  state: GameState;
+  state: GameState<GameWorldState>;
 
   constructor(
     gameCanvas: HTMLCanvasElement,
@@ -20,7 +21,8 @@ export class Game extends Renderer {
     this.state = new GameState(
       new InputManager(),
       new SceneManager(scenes),
-      new CollisionManager()
+      new CollisionManager(),
+      getWorldState()
     );
 
     this.player = new Player(
@@ -31,6 +33,10 @@ export class Game extends Renderer {
   }
 
   private update() {
+    if (this.state.worldState.isDead) {
+      return;
+    }
+
     this.state.sceneManager.update(this.state);
     this.player.update(this.state);
 
@@ -41,6 +47,23 @@ export class Game extends Renderer {
   }
 
   private render() {
+    if (this.state.worldState.isDead) {
+      this.renderRect({
+        color: "#000000aa",
+        anchor: "topLeft",
+      });
+
+      this.drawText(
+        "You are dead",
+        "l",
+        this.width / 2,
+        this.height / 2,
+        "#ff0000"
+      );
+
+      return;
+    }
+
     this.state.sceneManager.render(this as Renderer);
 
     this.player.render(this as Renderer);

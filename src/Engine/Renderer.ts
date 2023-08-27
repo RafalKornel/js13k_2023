@@ -135,8 +135,14 @@ export abstract class Renderer {
     return this.textCanvas.width / this.gameCanvas.width;
   }
 
-  drawText(text: string, size: "m" | "l", gameX: number, gameY: number) {
-    this.setupTextProperties(size);
+  drawText(
+    text: string,
+    size: "m" | "l",
+    gameX: number,
+    gameY: number,
+    color?: string
+  ) {
+    this.setupTextProperties(size, color);
 
     const textX = gameX * this.scale - this.textCtx.measureText(text).width / 2;
     const textY = gameY * this.scale;
@@ -144,7 +150,7 @@ export abstract class Renderer {
     this.textCtx.fillText(text, textX, textY);
   }
 
-  dialogueModal(npcName: string, left: string, options: Interaction[]) {
+  dialogueModal(left: string, options: Interaction[]) {
     const size = mult(convertTileVecToGlobal([8, 6]), this.scale);
 
     const pos = mult(
@@ -173,7 +179,7 @@ export abstract class Renderer {
 
     const [lineHeight] = this.setupTextProperties("m");
 
-    const leftLines = [`${npcName} says:`, ...left.split("\n")];
+    const leftLines = left.split("\n");
 
     leftLines.forEach((line, i) => {
       ctx.fillText(line, ...add(textBoxWithMargin, [0, lineHeight * i]));
@@ -192,7 +198,10 @@ export abstract class Renderer {
     );
   }
 
-  private setupTextProperties(size: TextSize) {
+  private setupTextProperties(
+    size: TextSize,
+    color: string = TEXT_CONFIG.color
+  ) {
     const fontSize = TEXT_CONFIG.fontSize[size];
 
     this.textCtx.font = `${fontSize}px ${TEXT_CONFIG.fontFace}`;
@@ -201,7 +210,7 @@ export abstract class Renderer {
 
     this.textCtx.textBaseline = TEXT_CONFIG.textBaseline;
 
-    this.textCtx.fillStyle = TEXT_CONFIG.color;
+    this.textCtx.fillStyle = color;
 
     const lineHeight = TEXT_CONFIG.lineHeight * fontSize;
 
