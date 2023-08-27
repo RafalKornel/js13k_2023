@@ -23,18 +23,18 @@ const colors: Record<ComponentState, string> = {
 };
 
 export class TestInteractableEntity extends BaseEntity {
-  constructor() {
+  constructor(pos: Vec2, key: string) {
     super(
       {
         position: new PositionComponent(
-          convertTileVecToGlobal([4, 4]),
+          convertTileVecToGlobal(pos),
           convertTileVecToGlobal([1, 1])
         ),
         render: new ImageRenderComponent(IMAGES_KEY.smile),
         collision: { type: "interactable" },
         interaction: new TestInteractionComponent(),
       },
-      "test npc"
+      key
     );
   }
 

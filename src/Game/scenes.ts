@@ -66,9 +66,9 @@ const sceneInitial = new Scene(
   }
 );
 
-const testInteractionEntity = new TestInteractableEntity();
+const johnTestInteractionEntity = new TestInteractableEntity([4, 4], "John");
 
-sceneInitial.addChild(testInteractionEntity);
+sceneInitial.addChild(johnTestInteractionEntity);
 
 const renderTest = new BaseEntity({
   position: new PositionComponent(
