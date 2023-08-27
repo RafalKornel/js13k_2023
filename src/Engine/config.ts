@@ -9,11 +9,17 @@ export const SCREEN_WIDTH = CONFIG.width * CONFIG.tileSize;
 export const SCREEN_HEIGHT = CONFIG.height * CONFIG.tileSize;
 
 export const TEXT_CONFIG = {
-  fontSize: 48,
+  fontSize: {
+    m: 18,
+    l: 36,
+  },
   fontFace: "serif",
   textAlign: "left",
   textBaseline: "top",
-  lineHeight: 1,
-  marginX: 8,
+  lineHeight: 1.4,
+  margin: 16,
   offset: [0.5, -0.6],
+  color: "#ffffff",
+  borderColor: "#ffffff",
+  borderBackground: "#0000008f",
 } as const;

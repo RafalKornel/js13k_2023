@@ -1,10 +1,18 @@
 import { TEXT_CONFIG } from "./config";
-import { Anchor, ImageMetaData, LookDirection, Vec2 } from "./types";
+import {
+  Anchor,
+  ImageMetaData,
+  Interaction,
+  LookDirection,
+  TextSize,
+  Vec2,
+} from "./types";
 
 import { CustomImageDecoder } from "./ImageDecoder";
 
-import { mult, subtract } from "./utils";
+import { add, convertTileVecToGlobal, mult, subtract } from "./utils";
 import { colors } from "../assets";
+import { CONFIG } from "./config";
 
 export type RenderEngineParams = {
   width?: number;
@@ -127,30 +135,77 @@ export abstract class Renderer {
     return this.textCanvas.width / this.gameCanvas.width;
   }
 
-  drawText(text: string, gameX: number, gameY: number): [w: number, h: number] {
-    this.textCtx.font = `${TEXT_CONFIG.fontSize}px ${TEXT_CONFIG.fontFace}`;
+  drawText(text: string, size: "m" | "l", gameX: number, gameY: number) {
+    this.setupTextProperties(size);
 
-    const textWidth =
-      this.textCtx.measureText(text).width + TEXT_CONFIG.marginX * 2;
-    const lineHeight = TEXT_CONFIG.fontSize * TEXT_CONFIG.lineHeight;
+    const textX = gameX * this.scale - this.textCtx.measureText(text).width / 2;
+    const textY = gameY * this.scale;
+
+    this.textCtx.fillText(text, textX, textY);
+  }
+
+  dialogueModal(npcName: string, left: string, options: Interaction[]) {
+    const size = mult(convertTileVecToGlobal([8, 6]), this.scale);
+
+    const pos = mult(
+      convertTileVecToGlobal([CONFIG.width / 2, CONFIG.height / 2]),
+      this.scale
+    );
+
+    const halfOffset: Vec2 = [size[0] / 2, 0];
+
+    const textBox = subtract(pos, mult(size, 0.5));
+
+    const textBoxWithMargin = add(textBox, [
+      TEXT_CONFIG.margin,
+      TEXT_CONFIG.margin,
+    ]);
+
+    const ctx = this.textCtx;
+
+    ctx.strokeStyle = TEXT_CONFIG.borderColor;
+    ctx.fillStyle = TEXT_CONFIG.borderBackground;
+
+    ctx.strokeRect(...textBox, ...size);
+    ctx.fillRect(...textBox, ...size);
+
+    ctx.strokeRect(...add(textBox, halfOffset), 0.5, size[1]);
+
+    const [lineHeight] = this.setupTextProperties("m");
+
+    const leftLines = [`${npcName} says:`, ...left.split("\n")];
+
+    leftLines.forEach((line, i) => {
+      ctx.fillText(line, ...add(textBoxWithMargin, [0, lineHeight * i]));
+    });
+
+    options.forEach((line, i) => {
+      ctx.fillText(
+        `${line.key}: ${line.text}`,
+        ...add(textBoxWithMargin, [size[0] / 2, lineHeight * i])
+      );
+    });
+
+    ctx.fillText(
+      "x: close",
+      ...add(textBoxWithMargin, [size[0] / 2, size[1] - lineHeight * 2])
+    );
+  }
+
+  private setupTextProperties(size: TextSize) {
+    const fontSize = TEXT_CONFIG.fontSize[size];
+
+    this.textCtx.font = `${fontSize}px ${TEXT_CONFIG.fontFace}`;
 
     this.textCtx.textAlign = TEXT_CONFIG.textAlign;
 
     this.textCtx.textBaseline = TEXT_CONFIG.textBaseline;
 
-    const textX = gameX * this.scale;
-    const textY = gameY * this.scale;
+    this.textCtx.fillStyle = TEXT_CONFIG.color;
 
-    this.textCtx.fillText(text, textX, textY);
+    const lineHeight = TEXT_CONFIG.lineHeight * fontSize;
 
-    this.textCtx.strokeRect(
-      textX - TEXT_CONFIG.marginX,
-      textY,
-      textWidth,
-      lineHeight
-    );
-
-    return [textWidth, lineHeight];
+    return [lineHeight];
   }
 
   public start() {

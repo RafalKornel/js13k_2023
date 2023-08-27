@@ -13,3 +13,10 @@ export type ImageMetaData = {
   l: Uint8ClampedArray;
   s: Vec2;
 };
+
+export type Interaction = {
+  key: string;
+  text: string;
+};
+
+export type TextSize = "m" | "l";
