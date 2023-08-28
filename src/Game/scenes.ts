@@ -2,53 +2,14 @@ import { BaseEntity } from "../Engine/BaseEntity";
 import { PositionComponent } from "../Engine/Components/PositionComponent";
 import {
   ImageRenderComponent,
-  RectRenderComponent,
 } from "../Engine/Components/RenderComponent";
-import { SceneKey, Scene } from "../Engine/Scene/Scene";
+import { Scene } from "../Engine/Scene/Scene";
 import { CONFIG } from "../Engine/config";
-import { Vec2 } from "../Engine/types";
 import { convertTileVecToGlobal } from "../Engine/utils";
 import { IMAGES_KEY } from "../assets";
 import { NPC } from "./NPC";
 import { GameWorldState } from "./WorldState";
-
-const createFullScenePositionComponent = () =>
-  new PositionComponent(
-    convertTileVecToGlobal([0, 0]),
-    convertTileVecToGlobal([CONFIG.width, CONFIG.height])
-  );
-
-const createBrickSceneRenderComponent = (dim: Vec2) =>
-  new RectRenderComponent("#371415", "topLeft");
-// new BackgroundRenderComponent(IMAGES_KEY.floor, dim);
-
-const createHorizontalTunnel = (left: SceneKey, right: SceneKey): Scene =>
-  new Scene(
-    `horizontal-${left}-${right}`,
-    new PositionComponent(
-      convertTileVecToGlobal([0, CONFIG.height / 2 - 1.5]),
-      convertTileVecToGlobal([CONFIG.width, 3])
-    ),
-    createBrickSceneRenderComponent([CONFIG.width, 3]),
-    {
-      l: left,
-      r: right,
-    }
-  );
-
-const createVerticalTunnel = (top: SceneKey, down: SceneKey): Scene =>
-  new Scene(
-    `vertical-${top}-${down}`,
-    new PositionComponent(
-      convertTileVecToGlobal([CONFIG.width / 2 - 1.5, 0]),
-      convertTileVecToGlobal([3, CONFIG.height])
-    ),
-    createBrickSceneRenderComponent([3, CONFIG.height]),
-    {
-      t: top,
-      d: down,
-    }
-  );
+import { createHorizontalTunnel, createVerticalTunnel, createFullScenePositionComponent, createBrickSceneRenderComponent } from "./Scenes/helpers";
 
 const tunnelAInit = createHorizontalTunnel("a", "initial");
 const tunnelCInit = createVerticalTunnel("c", "initial");

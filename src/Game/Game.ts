@@ -3,9 +3,9 @@ import { InputManager } from "../Engine/InputManager.ts";
 import { Player } from "../Engine/Player/Player.ts";
 import { CollisionManager } from "../Engine/CollisionManager.ts";
 import { SceneManager } from "../Engine/Scene/SceneManager.ts";
-import { scenes } from "./scenes.ts";
 import { GameState } from "../Engine/GameState.ts";
 import { GameWorldState, getWorldState } from "./WorldState.ts";
+import { PLAYER_INITIAL_POS, jailScene } from "./Scenes/Jail.ts";
 
 export class Game extends Renderer {
   player: Player;
@@ -20,16 +20,12 @@ export class Game extends Renderer {
 
     this.state = new GameState(
       new InputManager(),
-      new SceneManager(scenes),
+      new SceneManager([jailScene]),
       new CollisionManager(),
       getWorldState()
     );
 
-    this.player = new Player(
-      this.state,
-      [this.width / 2, this.height / 2],
-      [1, 1]
-    );
+    this.player = new Player(this.state, PLAYER_INITIAL_POS, [1, 1]);
   }
 
   private update() {
