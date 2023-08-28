@@ -6,9 +6,15 @@ This project is a game created for [js13kGames contest](https://js13kgames.com/)
 - [x] canvas rendering and basic infrastructure
 - [x] assets compiler and image decoder
 - [x] scene manager, scenes with connections (portals, doors)
-- [ ] dialogue / interaction system
-- [ ] game state / decision tree system
-- [ ] content
+- [x] dialogue / interaction system
+- [x] game state / decision tree system
+- [x] Initial scene - jail
+- [ ] Well scene
+- [ ] Doctor's office scene
+- [ ] Bakery scene
+- [ ] Laundry room scene
+- [ ] Tavern scene
+- [ ] Tavern's stash scene
 
 # Installing dependencies 
 ``` bash
