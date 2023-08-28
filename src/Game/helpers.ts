@@ -48,8 +48,8 @@ export function createGameInteraction(
   key: GameInteraction["key"],
   text: GameInteraction["text"],
   response: GameInteraction["response"],
-  action: GameInteraction["action"],
-  isAvailable: GameInteraction["isAvailable"]
+  action?: GameInteraction["action"],
+  isAvailable?: GameInteraction["isAvailable"]
 ) {
   return { key, text, response, action, isAvailable };
 }

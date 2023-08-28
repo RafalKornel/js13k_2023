@@ -5,6 +5,7 @@ import { IRenderComponent } from "../Components/RenderComponent.ts";
 import { Renderer } from "../Renderer.ts";
 import { Direction } from "../types.ts";
 import { add, convertTileToGlobal } from "../utils.ts";
+import { CONFIG } from "../config.ts";
 
 export type SceneKey = string;
 
@@ -40,6 +41,8 @@ export class Scene extends BaseEntity {
 
   render(renderer: Renderer) {
     this.components.render?.render(this.components.position, renderer);
+
+    renderer.drawText(this.key, "l", convertTileToGlobal(CONFIG.width / 2), 2);
 
     Object.values(this.portals).forEach((portal) => portal.render(renderer));
 

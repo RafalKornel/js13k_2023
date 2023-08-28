@@ -16,36 +16,35 @@ export const createPrisoner = () => {
     {
       init: "<Looks at you distrustfully>",
       options: [
-        createGameInteraction({
-          key: "1",
-          text: "Hey! What are you here for?",
-          response:
-            "I'm here for killing\nannoying people like you!\n<Stabs you in the chest>",
-          action: killPlayer,
-        }),
-        createGameInteraction({
-          key: "2",
-          text: "This guard... I would slash his throat...",
-          response:
-            "Heyy buddy, I like your attitude!\nTake this knife and make a good use\nof it. But don't forget to come\nfor me too!",
-          action: (ws) => {
+        createGameInteraction(
+          "1",
+          "Hey! What are you here for?",
+          "I'm here for killing\nannoying people like you!\n<Stabs you in the chest>",
+          killPlayer
+        ),
+        createGameInteraction(
+          "2",
+          "This guard... I would slash his throat...",
+
+          "Heyy buddy, I like your attitude!\nTake this knife and make a good use\nof it. But don't forget to come\nfor me too!",
+          (ws) => {
             ws.items.add(KNIFE);
-          },
-        }),
+          }
+        ),
       ],
     },
     [
-      createGameInteraction({
-        key: "1",
-        text: "Let's get out!",
-        response: "Thanks buddy...\nNow I don't want to kill you",
-        action: (ws) => {
+      createGameInteraction(
+        "1",
+        "Let's get out!",
+        "Thanks buddy...\nNow I don't want to kill you",
+        (ws) => {
           withTimeout(() => {
             ws.isPrisonerFreed = true;
           });
         },
-        isAvailable: (ws) => ws.isPrisonerDoorOpen,
-      }),
+        (ws) => ws.isPrisonerDoorOpen
+      ),
     ]
   );
 

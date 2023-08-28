@@ -36,16 +36,16 @@ export const createGuard = () => {
       ],
     },
     [
-      createGameInteraction({
-        key: "q",
-        response: "Arrgghh...",
-        text: "<Kill the guard and take cell key>",
-        action: (ws) => {
+      createGameInteraction(
+        "q",
+        "<Kill the guard and take cell key>",
+        "Arrgghh...",
+        (ws) => {
           ws.isGuardKilled = true;
           ws.items.add(CELL_KEY);
         },
-        isAvailable: (ws) => ws.items.has(KNIFE) && !ws.isGuardKilled,
-      }),
+        (ws) => ws.items.has(KNIFE) && !ws.isGuardKilled
+      ),
     ]
   );
 
