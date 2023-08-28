@@ -3,7 +3,7 @@ import { BaseEntity } from "../BaseEntity.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
 import { PLAYER_KEY } from "./Player.ts";
 
-export const PLAYER_INTERACTION_COLLIDER_KEY = "player_interaction_collider";
+export const PLAYER_INTERACTION_COLLIDER_KEY = "p_i_c";
 
 export const INTERACTION_COLLIDER_SIZE: Vec2 = [2.5, 2.5];
 

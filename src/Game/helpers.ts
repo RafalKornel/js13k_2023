@@ -42,10 +42,16 @@ export const withTimeout = (callback: () => void, time: number = 3000) => {
   setTimeout(callback, time);
 };
 
+type GameInteraction = Interaction<GameWorldState>;
+
 export function createGameInteraction(
-  interaction: Interaction<GameWorldState>
+  key: GameInteraction["key"],
+  text: GameInteraction["text"],
+  response: GameInteraction["response"],
+  action: GameInteraction["action"],
+  isAvailable: GameInteraction["isAvailable"]
 ) {
-  return interaction;
+  return { key, text, response, action, isAvailable };
 }
 
 export const createPickpocketInteraction = (

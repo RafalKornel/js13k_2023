@@ -10,16 +10,12 @@ import pointer from "../assets/compiled/pointer?binary";
 // @ts-ignore
 import hero from "../assets/compiled/bohater1?binary";
 
-// @ts-ignore
-import floor from "../assets/compiled/floor?binary";
-
 import { ImageMetaData, Vec2 } from "./Engine/types";
 
 const IMAGES_KEY = {
   pointer: 0,
   smile: 1,
   hero: 2,
-  floor: 3,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -33,7 +29,6 @@ const IMAGES_MAP: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.pointer]: { data: pointer, s: size8 },
   [IMAGES_KEY.smile]: { data: smile, s: size8 },
   [IMAGES_KEY.hero]: { data: hero, s: size8 },
-  [IMAGES_KEY.floor]: { data: floor, s: size16 },
 };
 
 const colors = colorsData as Uint8ClampedArray;
