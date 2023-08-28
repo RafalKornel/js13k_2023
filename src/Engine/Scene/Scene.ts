@@ -30,6 +30,10 @@ export class Scene extends BaseEntity {
     this.children.set(child.key, child);
   }
 
+  hasChild(childKey: EntityKey) {
+    return this.children.has(childKey);
+  }
+
   removeChild(key: EntityKey) {
     this.children.delete(key);
   }

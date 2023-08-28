@@ -1,5 +1,3 @@
-import { flipImage } from "./Engine/utils";
-
 // @ts-ignore
 import colorsData from "../assets/compiled/colors?binary";
 
@@ -32,15 +30,15 @@ const size8: Vec2 = [8, 8];
 const size16: Vec2 = [16, 16];
 
 const IMAGES_MAP: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
-  [IMAGES_KEY.pointer]: { l: flipImage(pointer), r: pointer, s: size8 },
-  [IMAGES_KEY.smile]: { l: flipImage(smile), r: smile, s: size8 },
-  [IMAGES_KEY.hero]: { l: flipImage(hero), r: hero, s: size8 },
-  [IMAGES_KEY.floor]: { l: floor, r: floor, s: size16 },
+  [IMAGES_KEY.pointer]: { data: pointer, s: size8 },
+  [IMAGES_KEY.smile]: { data: smile, s: size8 },
+  [IMAGES_KEY.hero]: { data: hero, s: size8 },
+  [IMAGES_KEY.floor]: { data: floor, s: size16 },
 };
 
 const colors = colorsData as Uint8ClampedArray;
 
-[...Object.values(IMAGES_MAP).map(({ l, r }) => [l, r]), colors]
+[...Object.values(IMAGES_MAP).map(({ data }) => data), colors]
   .flat()
   .forEach((asset) => {
     if (!(asset instanceof Uint8ClampedArray)) {

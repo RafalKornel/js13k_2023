@@ -66,3 +66,19 @@ export const flipImage = (
 
   return res;
 };
+
+export const rotate90Deg = (data: Uint8ClampedArray, size = 8) => {
+  const copy = [...data];
+  const res = new Uint8ClampedArray(data);
+
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const i1 = y * size + x;
+      const i2 = x * size + y;
+
+      res[i1] = copy[i2];
+    }
+  }
+
+  return res;
+};

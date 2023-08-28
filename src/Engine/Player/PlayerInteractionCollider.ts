@@ -5,6 +5,8 @@ import { PLAYER_KEY } from "./Player.ts";
 
 export const PLAYER_INTERACTION_COLLIDER_KEY = "player_interaction_collider";
 
+export const INTERACTION_COLLIDER_SIZE: Vec2 = [2.5, 2.5];
+
 export class PlayerInteractionCollider extends BaseEntity {
   public interactableEntityInRange: BaseEntity | null = null;
 

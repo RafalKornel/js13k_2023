@@ -21,5 +21,5 @@ export const TEXT_CONFIG = {
   offset: [0.5, -0.6],
   color: "#ffffff",
   borderColor: "#ffffff",
-  borderBackground: "#0000008f",
+  borderBackground: "#000000bf",
 } as const;

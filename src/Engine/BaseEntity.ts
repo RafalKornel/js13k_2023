@@ -16,10 +16,23 @@ type Components = {
 export type EntityKey = string;
 
 export class BaseEntity {
+  public _isKilled: boolean;
+
   readonly children: Map<EntityKey, BaseEntity>;
 
   constructor(public components: Components, public key: EntityKey = getKey()) {
     this.children = new Map();
+
+    this._isKilled = false;
+  }
+
+  kill() {
+    this._isKilled = true;
+    this.components.position.dir = "t";
+  }
+
+  get isKilled() {
+    return this._isKilled;
   }
 
   addChild(child: BaseEntity) {

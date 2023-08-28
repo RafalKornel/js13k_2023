@@ -30,6 +30,8 @@ export class SceneManager {
   }
 
   update(state: GameState): void {
+    this.scene.update?.(state);
+
     this.scene.children.forEach((child) => {
       child.update(state);
     });

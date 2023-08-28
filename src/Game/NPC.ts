@@ -1,12 +1,11 @@
 import { BaseEntity } from "../Engine/BaseEntity";
 import { DialogueInteractionComponent } from "../Engine/Components/InteractionComponent";
-import { PositionComponent } from "../Engine/Components/PositionComponent";
 import { ImageRenderComponent } from "../Engine/Components/RenderComponent";
 import { Renderer } from "../Engine/Renderer";
 import { GameState } from "../Engine/GameState";
 import { DialogueConfig, Interaction, Vec2 } from "../Engine/types";
-import { convertTileVecToGlobal } from "../Engine/utils";
 import { ImageId } from "../assets";
+import { createOffsetPositionComponent } from "./helpers";
 
 export class NPC extends BaseEntity {
   constructor(
@@ -18,10 +17,7 @@ export class NPC extends BaseEntity {
   ) {
     super(
       {
-        position: new PositionComponent(
-          convertTileVecToGlobal(pos),
-          convertTileVecToGlobal([1, 1])
-        ),
+        position: createOffsetPositionComponent(pos),
         render: new ImageRenderComponent(imageId),
         collision: { type: "interactable" },
         interaction: new DialogueInteractionComponent(

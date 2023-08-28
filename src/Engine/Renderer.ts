@@ -1,18 +1,31 @@
 import { TEXT_CONFIG } from "./config";
 import {
   Anchor,
+  Direction,
   ImageMetaData,
   Interaction,
-  LookDirection,
   TextSize,
   Vec2,
 } from "./types";
 
 import { CustomImageDecoder } from "./ImageDecoder";
 
-import { add, convertTileVecToGlobal, mult, subtract } from "./utils";
+import {
+  add,
+  convertTileVecToGlobal,
+  flipImage,
+  mult,
+  rotate90Deg,
+  subtract,
+} from "./utils";
 import { colors } from "../assets";
 import { CONFIG } from "./config";
+
+type DrawTextParams = {
+  color?: string;
+  backgroundColor?: string;
+  anchor?: "left" | "center";
+};
 
 export type RenderEngineParams = {
   width?: number;
@@ -20,6 +33,8 @@ export type RenderEngineParams = {
 };
 
 export abstract class Renderer {
+  private _raf?: number;
+
   protected ctx: CanvasRenderingContext2D;
   protected textCtx: CanvasRenderingContext2D;
 
@@ -77,16 +92,27 @@ export abstract class Renderer {
   renderImage(
     imageData: ImageMetaData,
     pos: Vec2,
-    dir: LookDirection = "r",
+    dir: Direction = "r",
     anchor: Anchor = "center"
   ) {
     const { s } = imageData;
 
-    const image = this._imageDecoder.decompressImage(imageData[dir], ...s, 4);
+    const adjustedImageData =
+      dir === "l"
+        ? flipImage(imageData.data, s[0])
+        : dir === "t"
+        ? rotate90Deg(imageData.data, s[0])
+        : imageData.data;
+
+    const image = this._imageDecoder.decompressImage(
+      adjustedImageData,
+      ...s,
+      4
+    );
 
     const imgData = new ImageData(image, ...s);
 
-    const translatedSize =
+    const translatedPos =
       anchor === "center" ? subtract(pos, mult(s, 0.5)) : pos;
 
     this._sideCtx.clearRect(
@@ -102,7 +128,7 @@ export abstract class Renderer {
 
     i.src = this._sideCanvas.toDataURL();
 
-    this.ctx.drawImage(i, translatedSize[0], translatedSize[1]);
+    this.ctx.drawImage(i, translatedPos[0], translatedPos[1]);
   }
 
   renderRect = ({
@@ -140,17 +166,38 @@ export abstract class Renderer {
     size: "m" | "l",
     gameX: number,
     gameY: number,
-    color?: string
+    options?: DrawTextParams
   ) {
-    this.setupTextProperties(size, color);
+    const {
+      color = TEXT_CONFIG.color,
+      anchor = "center",
+      backgroundColor,
+    } = options || {};
 
-    const textX = gameX * this.scale - this.textCtx.measureText(text).width / 2;
+    const [lineHeight] = this.setupTextProperties(size, color);
+
+    const textWidth = this.textCtx.measureText(text).width;
+
+    const xOff = anchor === "center" ? textWidth / 2 : 0;
+
+    const textX = gameX * this.scale - xOff;
     const textY = gameY * this.scale;
+
+    if (backgroundColor) {
+      this.textCtx.fillStyle = backgroundColor;
+      this.textCtx.fillRect(
+        textX - TEXT_CONFIG.margin,
+        textY - TEXT_CONFIG.margin,
+        textWidth + TEXT_CONFIG.margin * 2,
+        lineHeight + TEXT_CONFIG.margin
+      );
+      this.textCtx.fillStyle = color;
+    }
 
     this.textCtx.fillText(text, textX, textY);
   }
 
-  dialogueModal(left: string, options: Interaction[]) {
+  dialogueModal(left: string[], options: Interaction[]) {
     const size = mult(convertTileVecToGlobal([8, 6]), this.scale);
 
     const pos = mult(
@@ -172,16 +219,18 @@ export abstract class Renderer {
     ctx.strokeStyle = TEXT_CONFIG.borderColor;
     ctx.fillStyle = TEXT_CONFIG.borderBackground;
 
+    ctx.lineWidth = 2;
+
     ctx.strokeRect(...textBox, ...size);
     ctx.fillRect(...textBox, ...size);
 
-    ctx.strokeRect(...add(textBox, halfOffset), 0.5, size[1]);
+    ctx.strokeRect(...add(textBox, halfOffset), 0, size[1]);
 
-    const [lineHeight] = this.setupTextProperties("m");
+    const [lineHeight] = this.setupTextProperties("m", TEXT_CONFIG.color);
 
-    const leftLines = left.split("\n");
+    const lines = left.map((value) => value.split("\n")).flat();
 
-    leftLines.forEach((line, i) => {
+    lines.forEach((line, i) => {
       ctx.fillText(line, ...add(textBoxWithMargin, [0, lineHeight * i]));
     });
 
@@ -198,10 +247,7 @@ export abstract class Renderer {
     );
   }
 
-  private setupTextProperties(
-    size: TextSize,
-    color: string = TEXT_CONFIG.color
-  ) {
+  private setupTextProperties(size: TextSize, color: string) {
     const fontSize = TEXT_CONFIG.fontSize[size];
 
     this.textCtx.font = `${fontSize}px ${TEXT_CONFIG.fontFace}`;
@@ -218,15 +264,23 @@ export abstract class Renderer {
   }
 
   public start() {
-    this.loopWrapper();
+    this._raf = this.loopWrapper();
   }
 
-  private loopWrapper() {
+  private loopWrapper(): number {
     this.clear();
 
     this.loop();
 
-    requestAnimationFrame(() => this.loopWrapper());
+    return requestAnimationFrame(() => this.loopWrapper());
+  }
+
+  public stop() {
+    if (!this._raf) {
+      return;
+    }
+
+    cancelAnimationFrame(this._raf);
   }
 
   private clear() {

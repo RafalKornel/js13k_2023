@@ -4,7 +4,10 @@ import { BaseEntity } from "../BaseEntity.ts";
 import { add, convertTileVecToGlobal } from "../utils.ts";
 import { PlayerCollisionComponent } from "./PlayerCollisionComponent.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
-import { PlayerInteractionCollider } from "./PlayerInteractionCollider.ts";
+import {
+  INTERACTION_COLLIDER_SIZE,
+  PlayerInteractionCollider,
+} from "./PlayerInteractionCollider.ts";
 import { GameState } from "../GameState.ts";
 import { ImageRenderComponent } from "../Components/RenderComponent.ts";
 import { IMAGES_KEY } from "../../assets.ts";
@@ -19,7 +22,10 @@ export class Player extends BaseEntity {
   constructor(readonly state: GameState, pos: Vec2, dim: Vec2) {
     super(
       {
-        position: new PositionComponent(pos, convertTileVecToGlobal(dim)),
+        position: new PositionComponent(
+          convertTileVecToGlobal(pos),
+          convertTileVecToGlobal(dim)
+        ),
         render: new ImageRenderComponent(IMAGES_KEY.hero),
         collision: new PlayerCollisionComponent("solid", state.sceneManager),
       },
@@ -28,7 +34,7 @@ export class Player extends BaseEntity {
 
     this.interactionCollider = new PlayerInteractionCollider(
       this.components.position.pos,
-      convertTileVecToGlobal(add(dim, [2, 2]))
+      convertTileVecToGlobal(add(dim, INTERACTION_COLLIDER_SIZE))
     );
 
     this.addChild(this.interactionCollider);

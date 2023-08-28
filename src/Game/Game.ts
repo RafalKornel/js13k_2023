@@ -5,31 +5,62 @@ import { CollisionManager } from "../Engine/CollisionManager.ts";
 import { SceneManager } from "../Engine/Scene/SceneManager.ts";
 import { GameState } from "../Engine/GameState.ts";
 import { GameWorldState, getWorldState } from "./WorldState.ts";
-import { PLAYER_INITIAL_POS, jailScene } from "./Scenes/Jail.ts";
+import { PLAYER_INITIAL_POS, createJailScene } from "./Scenes/Jail/Jail.ts";
+import { convertTileVecToGlobal } from "../Engine/utils.ts";
+import { CONFIG } from "../Engine/config.ts";
+import { createJailTunnel } from "./Scenes/JailTunnel.ts";
+
+const createGameState = () =>
+  new GameState(
+    new InputManager(),
+    new SceneManager([createJailScene(), createJailTunnel()]),
+    new CollisionManager(),
+    getWorldState()
+  );
+
+const createPlayer = (state: GameState) =>
+  new Player(state, PLAYER_INITIAL_POS, [1, 1]);
 
 export class Game extends Renderer {
   player: Player;
   state: GameState<GameWorldState>;
 
   constructor(
-    gameCanvas: HTMLCanvasElement,
-    textCanvas: HTMLCanvasElement,
-    options: RenderEngineParams = {}
+    readonly gameCanvas: HTMLCanvasElement,
+    readonly textCanvas: HTMLCanvasElement,
+    readonly options: RenderEngineParams = {}
   ) {
     super(gameCanvas, textCanvas, options);
 
-    this.state = new GameState(
-      new InputManager(),
-      new SceneManager([jailScene]),
-      new CollisionManager(),
-      getWorldState()
-    );
+    this.state = createGameState();
 
-    this.player = new Player(this.state, PLAYER_INITIAL_POS, [1, 1]);
+    this.player = createPlayer(this.state);
+  }
+
+  private renderUI() {
+    const items = [...this.state.worldState.items.values()];
+
+    this.drawText(
+      `Items: ${items.reduce(
+        (p, n, i) => p + (i !== 0 && i !== items.length ? " | " : "") + n,
+        ""
+      )}`,
+      "m",
+      ...convertTileVecToGlobal([1, CONFIG.height - 0.5]),
+      { anchor: "left" }
+    );
   }
 
   private update() {
     if (this.state.worldState.isDead) {
+      if (!this.player.isKilled) {
+        this.player.kill();
+      }
+
+      if (this.state.inputManager.keysPressed.has("r")) {
+        this.restart();
+      }
+
       return;
     }
 
@@ -42,6 +73,11 @@ export class Game extends Renderer {
     );
   }
 
+  private restart() {
+    this.state = createGameState();
+    this.player = createPlayer(this.state);
+  }
+
   private render() {
     if (this.state.worldState.isDead) {
       this.renderRect({
@@ -49,18 +85,24 @@ export class Game extends Renderer {
         anchor: "topLeft",
       });
 
+      this.drawText("You are dead", "l", this.width / 2, this.height / 2, {
+        color: "#ff0000",
+      });
+
       this.drawText(
-        "You are dead",
-        "l",
+        "Press R to restart",
+        "m",
         this.width / 2,
-        this.height / 2,
-        "#ff0000"
+        this.height / 2 + 10,
+        {
+          color: "#ffffff",
+        }
       );
+    } else {
+      this.state.sceneManager.render(this as Renderer);
 
-      return;
+      this.renderUI();
     }
-
-    this.state.sceneManager.render(this as Renderer);
 
     this.player.render(this as Renderer);
   }

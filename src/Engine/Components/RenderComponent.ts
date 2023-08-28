@@ -51,15 +51,14 @@ export class BackgroundRenderComponent implements IRenderComponent {
         const imgY = y % s[1];
         const imgX = x % s[0];
 
-        const v = imageData.r[imgY * s[1] + imgX];
+        const v = imageData.data[imgY * s[1] + imgX];
 
         scaledImageData[y * globalDim[0] + x] = v;
       }
     }
 
     this._imageData = {
-      l: scaledImageData,
-      r: scaledImageData,
+      data: scaledImageData,
       s: globalDim,
     };
   }

@@ -2,22 +2,12 @@ import { BaseEntity } from "../BaseEntity";
 import { GameState } from "../GameState";
 import { PLAYER_INTERACTION_COLLIDER_KEY } from "../Player/PlayerInteractionCollider";
 import { Renderer } from "../Renderer";
-import {
-  DialogueConfig,
-  DialogueOption,
-  Interaction,
-  Vec2,
-  WorldState,
-} from "../types";
+import { DialogueConfig, Interaction, Vec2, WorldState } from "../types";
 import { add, convertTileVecToGlobal, getEntityPairKey } from "../utils";
 
 export type ComponentState = "idle" | "available" | "active";
 
 export interface IInteractionComponent<TWorldState extends WorldState> {
-  readonly dialogueConfig: DialogueConfig;
-  readonly interactions: Interaction[];
-  selectedOption?: DialogueOption;
-
   state: ComponentState;
 
   startInteraction(): void;
@@ -29,16 +19,10 @@ export interface IInteractionComponent<TWorldState extends WorldState> {
   update?(entity: BaseEntity, state: GameState<TWorldState>): void;
 }
 
-export class DialogueInteractionComponent<TWorldState extends WorldState>
+export class BaseInteractionComponent<TWorldState extends WorldState>
   implements IInteractionComponent<TWorldState>
 {
-  selectedOption?: DialogueOption = undefined;
   state: ComponentState = "idle";
-
-  constructor(
-    readonly dialogueConfig: DialogueConfig,
-    readonly interactions: Interaction[]
-  ) {}
 
   startInteraction(): void {
     this.state = "active";
@@ -56,68 +40,144 @@ export class DialogueInteractionComponent<TWorldState extends WorldState>
     }
   }
 
+  public renderTooltip(entity: BaseEntity, renderer: Renderer) {
+    const p = entity.components.position.pos;
+
+    renderer.drawText(
+      `${entity.key} (e)`,
+      "l",
+      ...add(p, convertTileVecToGlobal([0, -1] as Vec2)),
+      {
+        color: "#ffffff",
+        backgroundColor: "#000000aa",
+      }
+    );
+  }
+
   render(entity: BaseEntity, renderer: Renderer): void {
     if (this.state === "available") {
-      // TOOLTIP
+      this.renderTooltip(entity, renderer);
+    }
+  }
 
-      const p = entity.components.position.pos;
-      renderer.drawText(
-        `${entity.key} (e)`,
-        "l",
-        ...add(p, convertTileVecToGlobal([0, -1] as Vec2))
-      );
-    } else if (entity.components.interaction!.state === "active") {
-      const es = `${entity.key} says:\n`;
+  update(entity: BaseEntity, state: GameState<TWorldState>): void {
+    const kp: Set<string> = state.inputManager.keysPressed;
 
-      const leftText = this.selectedOption
-        ? `${es}${this.dialogueConfig.init}\n\nYou:\n${this.selectedOption.text}\n\n${es}${this.selectedOption.response}`
-        : `${es}${this.dialogueConfig.init}`;
+    const isColliding = state.collisionManager.collisions.has(
+      getEntityPairKey(entity.key, PLAYER_INTERACTION_COLLIDER_KEY)
+    );
 
-      const options = this.selectedOption
-        ? this.interactions
-        : [...this.dialogueConfig.options, ...this.interactions];
+    if (!isColliding && this.state === "available") {
+      this.state = "idle";
+    }
 
-      renderer.dialogueModal(leftText, options);
+    if (!isColliding && this.state === "active") {
+      this.endInteraction();
+    }
+
+    if (this.state === "available" && kp.has("e")) {
+      this.startInteraction();
+    }
+
+    if (this.state === "active" && kp.has("x")) {
+      this.endInteraction();
+    }
+  }
+}
+
+export interface IDIalogueInteractionComponent<TWorldState extends WorldState>
+  extends IInteractionComponent<TWorldState> {
+  readonly dialogueConfig: DialogueConfig;
+  readonly interactions: Interaction[];
+  selectedOption?: Interaction;
+}
+
+export class DialogueInteractionComponent<
+  TWorldState extends WorldState
+> extends BaseInteractionComponent<TWorldState> {
+  private _availableInteractions: Interaction[];
+  private _performedInteractions: Set<Interaction>;
+
+  selectedOption?: Interaction = undefined;
+
+  constructor(
+    readonly dialogueConfig: DialogueConfig,
+    readonly interactions: Interaction[]
+  ) {
+    super();
+
+    this._availableInteractions = [];
+    this._performedInteractions = new Set();
+  }
+
+  render(entity: BaseEntity, renderer: Renderer): void {
+    super.render(entity, renderer);
+
+    if (entity.components.interaction!.state === "active") {
+      const npcLabel = `${entity.key}:\n`;
+      const youLabel = `You:\n`;
+
+      const lines: string[] = [`${npcLabel}${this.dialogueConfig.init}\n`];
+
+      if (this.selectedOption) {
+        lines.push(`${youLabel}${this.selectedOption.text}\n`);
+        lines.push(`${npcLabel}${this.selectedOption.response}\n`);
+      }
+
+      for (const performedInteraction of this._performedInteractions) {
+        lines.push(`${youLabel}${performedInteraction.text}\n`);
+        lines.push(`${npcLabel}${performedInteraction.response}\n`);
+      }
+
+      let options: Interaction[] = [];
+
+      if (entity.isKilled) {
+        //
+      } else if (this.selectedOption) {
+        options = this._availableInteractions;
+      } else {
+        options = [
+          ...this.dialogueConfig.options,
+          ...this._availableInteractions,
+        ];
+      }
+
+      renderer.dialogueModal(lines, options);
     }
   }
 
   update(entity: BaseEntity, state: GameState<TWorldState>) {
+    super.update(entity, state);
+
+    this._availableInteractions = this.interactions.filter((interaction) =>
+      interaction.isAvailable ? interaction.isAvailable(state.worldState) : true
+    );
+
     const ic: IInteractionComponent<TWorldState> =
       entity.components.interaction!;
 
     const kp: Set<string> = state.inputManager.keysPressed;
 
-    if (
-      !state.collisionManager.collisions.has(
-        getEntityPairKey(entity.key, PLAYER_INTERACTION_COLLIDER_KEY)
-      ) &&
-      ic.state === "active"
-    ) {
-      ic.endInteraction();
-    }
-
-    if (ic.state === "available" && kp.has("e")) {
-      ic.startInteraction();
-    }
-
-    if (ic.state === "active" && kp.has("x")) {
-      ic.endInteraction();
-    }
-
     for (const dialogueOption of this.dialogueConfig.options) {
-      if (kp.has(dialogueOption.key)) {
+      if (ic.state !== "active") return;
+
+      if (kp.has(dialogueOption.key) && !this.selectedOption) {
         dialogueOption.action?.(state.worldState);
 
         this.selectedOption = dialogueOption;
       }
     }
 
-    for (const interaction of this.interactions) {
-      if (kp.has(interaction.key)) {
-        console.log(interaction);
-        this.endInteraction();
+    for (const interaction of this._availableInteractions) {
+      if (ic.state !== "active") return;
 
+      if (
+        kp.has(interaction.key) &&
+        !this._performedInteractions.has(interaction)
+      ) {
         interaction.action?.(state.worldState);
+
+        this._performedInteractions.add(interaction);
 
         break;
       }
