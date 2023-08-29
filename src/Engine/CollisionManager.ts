@@ -1,4 +1,5 @@
 import { BaseEntity, EntityKey } from "./BaseEntity.ts";
+import { Player } from "./Player/Player.ts";
 import { Scene } from "./Scene/Scene.ts";
 import { PairKey } from "./types.ts";
 import { getEntityPairKey, mult, subtract } from "./utils.ts";
@@ -8,13 +9,13 @@ type CollisionMap = Map<PairKey<EntityKey>, { a: BaseEntity; b: BaseEntity }>;
 export class CollisionManager {
   readonly collisions: CollisionMap = new Map();
 
-  handle(player: BaseEntity, scene: Scene) {
-    this.handleCollisions([player, ...scene.children.values()]);
+  handle(player: Player, scene: Scene) {
+    this.handleCollisions(player, [...scene.children.values()]);
 
     this.handleWallsCollision(player, scene);
   }
 
-  private handleWallsCollision(player: BaseEntity, scene: Scene) {
+  private handleWallsCollision(player: Player, scene: Scene) {
     const { position } = player.components;
     // TODO: optimize for rectangles?
     const halfW = position.w / 2;
@@ -39,8 +40,10 @@ export class CollisionManager {
     }
   }
 
-  private handleCollisions(entities: BaseEntity[]) {
+  private handleCollisions(player: Player, entities: BaseEntity[]) {
     this.collisions.clear();
+
+    const playerEntities = [player, player.interactionCollider];
 
     const allEntities = [...entities];
 
@@ -57,11 +60,9 @@ export class CollisionManager {
       if (entity.components.collision) traverse(entity);
     }
 
-    for (let i = 0; i < allEntities.length; i++) {
+    for (let i = 0; i < playerEntities.length; i++) {
       for (let j = 0; j < allEntities.length; j++) {
-        if (i === j) continue;
-
-        const entityA = allEntities[i];
+        const entityA = playerEntities[i];
         const entityB = allEntities[j];
 
         if (
@@ -89,6 +90,7 @@ export class CollisionManager {
         if (!areColliding) continue;
 
         entityA.components.collision!.onCollide?.(entityA, entityB);
+        entityB.components.collision!.onCollide?.(entityB, entityA);
 
         this.collisions.set(getEntityPairKey(entityA.key, entityB.key), {
           a: entityA,

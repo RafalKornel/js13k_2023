@@ -42,20 +42,6 @@ export class Game extends Renderer {
     this.player = createPlayer(this.state);
   }
 
-  private renderUI() {
-    const items = [...this.state.worldState.items.values()];
-
-    this.drawText(
-      `Items: ${items.reduce(
-        (p, n, i) => p + (i !== 0 && i !== items.length ? " | " : "") + n,
-        ""
-      )}`,
-      "m",
-      ...convertTileVecToGlobal([1, CONFIG.height - 0.5]),
-      { anchor: "left" }
-    );
-  }
-
   private update() {
     if (this.state.worldState.isDead) {
       if (!this.player.isKilled) {
@@ -76,11 +62,6 @@ export class Game extends Renderer {
       this.player,
       this.state.sceneManager.scene
     );
-  }
-
-  private restart() {
-    this.state = createGameState();
-    this.player = createPlayer(this.state);
   }
 
   private render() {
@@ -110,6 +91,25 @@ export class Game extends Renderer {
     }
 
     this.player.render(this as Renderer);
+  }
+
+  private renderUI() {
+    const items = [...this.state.worldState.items.values()];
+
+    this.drawText(
+      `Items: ${items.reduce(
+        (p, n, i) => p + (i !== 0 && i !== items.length ? " | " : "") + n,
+        ""
+      )}`,
+      "m",
+      ...convertTileVecToGlobal([1, CONFIG.height - 0.5]),
+      { anchor: "left" }
+    );
+  }
+
+  private restart() {
+    this.state = createGameState();
+    this.player = createPlayer(this.state);
   }
 
   loop(): void {

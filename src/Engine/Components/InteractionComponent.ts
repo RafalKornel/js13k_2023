@@ -64,7 +64,7 @@ export class BaseInteractionComponent<TWorldState extends WorldState>
     const kp: Set<string> = state.inputManager.keysPressed;
 
     const isColliding = state.collisionManager.collisions.has(
-      getEntityPairKey(entity.key, PLAYER_INTERACTION_COLLIDER_KEY)
+      getEntityPairKey(PLAYER_INTERACTION_COLLIDER_KEY, entity.key)
     );
 
     if (!isColliding && this.state === "available") {
