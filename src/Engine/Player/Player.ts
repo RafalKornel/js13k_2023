@@ -1,7 +1,7 @@
 import { Direction, Vec2 } from "../types.ts";
 import { BaseEntity } from "../BaseEntity.ts";
 
-import { add, convertTileVecToGlobal } from "../utils.ts";
+import { add } from "../utils.ts";
 import { PlayerCollisionComponent } from "./PlayerCollisionComponent.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
 import {
@@ -22,10 +22,7 @@ export class Player extends BaseEntity {
   constructor(readonly state: GameState, pos: Vec2, dim: Vec2) {
     super(
       {
-        position: new PositionComponent(
-          convertTileVecToGlobal(pos),
-          convertTileVecToGlobal(dim)
-        ),
+        position: new PositionComponent(pos, dim),
         render: new ImageRenderComponent(IMAGES_KEY.hero),
         collision: new PlayerCollisionComponent("solid", state.sceneManager),
       },
@@ -33,8 +30,8 @@ export class Player extends BaseEntity {
     );
 
     this.interactionCollider = new PlayerInteractionCollider(
-      this.components.position.pos,
-      convertTileVecToGlobal(add(dim, INTERACTION_COLLIDER_SIZE))
+      pos,
+      add(dim, INTERACTION_COLLIDER_SIZE)
     );
 
     this.addChild(this.interactionCollider);
@@ -42,6 +39,8 @@ export class Player extends BaseEntity {
 
   update(state: GameState): void {
     const pos = this.components.position;
+
+    this.interactionCollider.components.position.pos = pos.pos;
 
     const cs: Set<Direction> = this.components.collision!.collisionSet!;
     const kp: Set<string> = state.inputManager.keysPressed;

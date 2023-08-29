@@ -3,8 +3,8 @@ import { BaseEntity, EntityKey } from "../BaseEntity.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
 import { IRenderComponent } from "../Components/RenderComponent.ts";
 import { Renderer } from "../Renderer.ts";
-import { Direction } from "../types.ts";
-import { add, convertTileToGlobal } from "../utils.ts";
+import { Direction, Vec2 } from "../types.ts";
+import { add, convertTileToGlobal, mult, subtract } from "../utils.ts";
 import { CONFIG } from "../config.ts";
 
 export type SceneKey = string;
@@ -52,37 +52,34 @@ export class Scene extends BaseEntity {
   }
 
   private setupPortals(connectedScenes: ConnectedScenes) {
-    const portalOffset = convertTileToGlobal(0.5);
+    const portalOffset = mult([1, 1], 0.5);
 
-    const { pos, w, h } = this.components.position;
+    const { tilePos, tileDim } = this.components.position;
+
+    const [w, h] = tileDim;
+
+    const registerPortal = (pos: Vec2, dir: Direction) => {
+      const p = new Portal(add(tilePos, subtract(pos, portalOffset)), dir);
+
+      this.portals[dir] = p;
+
+      this.registerPortal(p, connectedScenes[dir]!);
+    };
+
     if (connectedScenes.l) {
-      const p = new Portal(add(pos, [portalOffset, h / 2]), "l");
-
-      this.portals.l = p;
-
-      this.registerPortal(p, connectedScenes.l);
+      registerPortal([1, Math.floor(h / 2) + 1], "l");
     }
 
     if (connectedScenes.r) {
-      const p = new Portal(add(pos, [w - portalOffset, h / 2]), "r");
-
-      this.portals.r = p;
-
-      this.registerPortal(p, connectedScenes.r);
+      registerPortal([w, Math.floor(h / 2) + 1], "r");
     }
 
     if (connectedScenes.t) {
-      const p = new Portal(add(pos, [w / 2, portalOffset]), "t");
-
-      this.portals.t = p;
-      this.registerPortal(p, connectedScenes.t);
+      registerPortal([1 + Math.floor(w / 2), 1], "t");
     }
 
     if (connectedScenes.d) {
-      const p = new Portal(add(pos, [w / 2, h - portalOffset]), "d");
-
-      this.portals.d = p;
-      this.registerPortal(p, connectedScenes.d);
+      registerPortal([1 + Math.floor(w / 2), h], "d");
     }
   }
 

@@ -1,9 +1,13 @@
-import { LookDirection, Vec2 } from "../types";
+import { Direction, Vec2 } from "../types";
+import { convertTileVecToGlobal } from "../utils";
 
 export interface IPositionComponent {
+  tilePos: Vec2;
+  tileDim: Vec2;
+
   pos: Vec2;
   dim: Vec2;
-  dir?: LookDirection;
+  dir?: Direction;
 
   get x(): number;
   get y(): number;
@@ -18,11 +22,16 @@ export interface IPositionComponent {
 }
 
 export class PositionComponent implements IPositionComponent {
+  public pos: Vec2;
+  public dim: Vec2;
   constructor(
-    readonly pos: Vec2,
-    readonly dim: Vec2,
-    public dir: LookDirection = "r"
-  ) {}
+    public tilePos: Vec2,
+    public tileDim: Vec2,
+    public dir: Direction = "r"
+  ) {
+    this.pos = convertTileVecToGlobal(tilePos);
+    this.dim = convertTileVecToGlobal(tileDim);
+  }
 
   get x() {
     return this.pos[0];

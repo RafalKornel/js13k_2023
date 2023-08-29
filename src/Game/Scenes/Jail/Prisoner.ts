@@ -1,8 +1,8 @@
-import { Vec2 } from "../../Engine/types";
-import { IMAGES_KEY } from "../../assets";
-import { NPC } from "../NPC";
-import { KNIFE } from "../items";
-import { createGameInteraction, killPlayer, withTimeout } from "../helpers";
+import { Vec2 } from "../../../Engine/types";
+import { IMAGES_KEY } from "../../../assets";
+import { NPC } from "../../NPC";
+import { createGameInteraction, killPlayer, withTimeout } from "../../helpers";
+import { KNIFE } from "../../items";
 
 export const PRISONER_JAIL_POS: Vec2 = [3, 7];
 

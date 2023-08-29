@@ -1,10 +1,10 @@
-import { Vec2 } from "../../Engine/types";
-import { IMAGES_KEY } from "../../assets";
-import { NPC } from "../NPC";
-import { CELL_KEY, KNIFE } from "../items";
-import { createGameInteraction } from "../helpers";
-import { GameState } from "../../Engine/GameState";
-import { GameWorldState } from "../WorldState";
+import { Vec2 } from "../../../Engine/types";
+import { IMAGES_KEY } from "../../../assets";
+import { NPC } from "../../NPC";
+import { CELL_KEY, KNIFE } from "../../items";
+import { createGameInteraction } from "../../helpers";
+import { GameState } from "../../../Engine/GameState";
+import { GameWorldState } from "../../WorldState";
 
 const GUARD_KEY = "Guard";
 

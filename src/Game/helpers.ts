@@ -12,24 +12,17 @@ import {
   InteractionResponseCallback,
   Vec2,
 } from "../Engine/types";
-import { add, convertTileVecToGlobal, mult } from "../Engine/utils";
+import { add, mult } from "../Engine/utils";
 import { ImageId } from "../assets";
 import { GameWorldState } from "./WorldState";
 
 export const createScenePositionComponent = (
-  pos: Vec2 = [1, 1],
-  dim: Vec2 = [CONFIG.width - 2, CONFIG.height - 2]
-) =>
-  new PositionComponent(
-    convertTileVecToGlobal(pos),
-    convertTileVecToGlobal(dim)
-  );
+  pos: Vec2 = [0, 1],
+  dim: Vec2 = [CONFIG.width, CONFIG.height - 1]
+) => new PositionComponent(pos, dim);
 
 export const createOffsetPositionComponent = (pos: Vec2, dim: Vec2 = [1, 1]) =>
-  new PositionComponent(
-    convertTileVecToGlobal(add(pos, mult(dim, 0.5))),
-    convertTileVecToGlobal(dim)
-  );
+  new PositionComponent(add(pos, mult(dim, 0.5)), dim);
 
 export const createSolidEntity = (pos: Vec2, imageId: ImageId) =>
   new BaseEntity({
@@ -79,11 +72,8 @@ export const killPlayer = (worldState: GameWorldState) =>
     worldState.isDead = true;
   });
 
-export const createFullScenePositionComponent = () =>
-  new PositionComponent(
-    convertTileVecToGlobal([1, 1]),
-    convertTileVecToGlobal([CONFIG.width - 2, CONFIG.height - 2])
-  );
+// export const createFullScenePositionComponent = () =>
+//   new PositionComponent([1, 1], [CONFIG.width - 2, CONFIG.height - 2]);
 
 export const createBrickSceneRenderComponent = () =>
   new RectRenderComponent("#371415", "topLeft");
@@ -96,10 +86,7 @@ export const createHorizontalTunnel = (
 ): Scene =>
   new Scene(
     key,
-    createScenePositionComponent(
-      [0, CONFIG.height / 2 - 1.5],
-      [CONFIG.width, 3]
-    ),
+    createScenePositionComponent([0, CONFIG.height / 2 - 1], [CONFIG.width, 3]),
     createBrickSceneRenderComponent(),
     {
       l: left,

@@ -5,13 +5,13 @@ import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { GameWorldState } from "../../WorldState";
 import { JailDoor } from "./JailDoor";
-import { createGuard } from "../../NPCs/guard";
+import { createGuard } from "./Guard";
 import {
   createBrickSceneRenderComponent,
   createScenePositionComponent,
   createSolidEntity,
 } from "../../helpers";
-import { PRISONER_KEY, createPrisoner } from "../../NPCs/prisoner";
+import { PRISONER_KEY, createPrisoner } from "./Prisoner";
 import { SCENE_KEYS } from "../constants";
 
 export const PLAYER_INITIAL_POS: Vec2 = [4, 4];
@@ -36,7 +36,9 @@ export const createJailScene = () => {
     JAIL_SCENE_KEY,
     createScenePositionComponent(),
     createBrickSceneRenderComponent(),
-    { r: SCENE_KEYS.jailTunnel }
+    {
+      r: SCENE_KEYS.jailTunnel,
+    }
   );
 
   for (let y = 1; y < CONFIG.height - 1; y++) {

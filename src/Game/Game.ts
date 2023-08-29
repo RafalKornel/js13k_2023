@@ -8,7 +8,7 @@ import { GameWorldState, getWorldState } from "./WorldState.ts";
 import { PLAYER_INITIAL_POS, createJailScene } from "./Scenes/Jail/Jail.ts";
 import { convertTileVecToGlobal } from "../Engine/utils.ts";
 import { CONFIG } from "../Engine/config.ts";
-import { createJailTunnel } from "./Scenes/JailTunnel.ts";
+import { createJailTunnel } from "./Scenes/JailTunnel/JailTunnel.ts";
 
 const createGameState = () =>
   new GameState(
