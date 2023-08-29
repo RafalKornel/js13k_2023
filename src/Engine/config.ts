@@ -16,7 +16,7 @@ export const TEXT_CONFIG = {
   fontFace: "serif",
   textAlign: "left",
   textBaseline: "top",
-  lineHeight: 1.4,
+  lineHeight: 1.3,
   margin: 16,
   offset: [0.5, -0.6],
   color: "#ffffff",

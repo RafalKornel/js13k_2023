@@ -2,7 +2,7 @@ import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
 import { CELL_KEY, KNIFE } from "../../items";
-import { createGameInteraction } from "../../helpers";
+import { createGameInteraction, withTimeout } from "../../helpers";
 import { GameState } from "../../../Engine/GameState";
 import { GameWorldState } from "../../WorldState";
 
@@ -38,11 +38,13 @@ export const createGuard = () =>
     [
       createGameInteraction(
         "q",
-        "<Kill the guard and take cell key>",
-        "Arrgghh...",
+        "<Kill the guard>",
+        "Arrgghh... <You take the cell key>",
         (ws) => {
-          ws.killedEntities.add(GUARD_KEY);
-          ws.items.add(CELL_KEY.key);
+          withTimeout(() => {
+            ws.killedEntities.add(GUARD_KEY);
+            ws.items.add(CELL_KEY.key);
+          });
         },
         (ws) => ws.items.has(KNIFE.key) && !ws.killedEntities.has(GUARD_KEY)
       ),

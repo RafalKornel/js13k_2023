@@ -76,7 +76,7 @@ export class TextRenderer implements ITextRenderer {
   }
 
   dialogueModal(left: string[], options: Interaction[]) {
-    const size = mult(convertTileVecToGlobal([8, 6]), this.scale);
+    const size = mult(convertTileVecToGlobal([10, 8]), this.scale);
 
     const pos = mult(
       convertTileVecToGlobal([CONFIG.width / 2, CONFIG.height / 2]),

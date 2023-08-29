@@ -19,7 +19,7 @@ export class Scene extends BaseEntity {
   constructor(
     public readonly sceneKey: SceneKey,
     public readonly positionComponent: PositionComponent,
-    public readonly renderComponent: IRenderComponent,
+    public readonly renderComponent?: IRenderComponent,
     public readonly connectedScenes: ConnectedScenes = {}
   ) {
     super({ position: positionComponent, render: renderComponent }, sceneKey);
@@ -90,8 +90,6 @@ export class Scene extends BaseEntity {
       const pp = p.components.position;
       return subtract(pp.tilePos, mult(pp.tileDim, 0.5));
     });
-
-    console.log(portalPositions);
 
     brickPositions = brickPositions.filter(
       (p) => !portalPositions.find((pp) => pp[0] === p[0] && pp[1] === p[1])
