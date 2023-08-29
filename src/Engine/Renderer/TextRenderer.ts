@@ -6,7 +6,7 @@ import { CONFIG } from "../config";
 export type DrawTextParams = {
   color?: string;
   backgroundColor?: string;
-  anchor?: "left" | "center";
+  anchor?: "left" | "center" | "right";
 };
 
 export interface ITextRenderer {
@@ -55,7 +55,8 @@ export class TextRenderer implements ITextRenderer {
 
     const textWidth = this.textCtx.measureText(text).width;
 
-    const xOff = anchor === "center" ? textWidth / 2 : 0;
+    const xOff =
+      anchor === "center" ? textWidth / 2 : anchor === "right" ? textWidth : 0;
 
     const textX = gameX * this.scale - xOff;
     const textY = gameY * this.scale;

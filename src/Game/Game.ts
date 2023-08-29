@@ -105,7 +105,7 @@ export class Game extends Renderer {
         ""
       )}`,
       "m",
-      ...convertTileVecToGlobal([1, CONFIG.height - 0.5]),
+      ...convertTileVecToGlobal([1, 0.5]),
       { anchor: "left" }
     );
   }

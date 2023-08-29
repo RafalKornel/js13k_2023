@@ -2,10 +2,10 @@ import { Portal } from "./Portal.ts";
 import { BaseEntity, EntityKey } from "../BaseEntity.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
 import { IRenderComponent } from "../Components/RenderComponent.ts";
-import { Renderer } from "../Renderer/Renderer.ts";
 import { Direction, Vec2 } from "../types.ts";
 import { add, convertTileToGlobal, mult, subtract } from "../utils.ts";
 import { CONFIG } from "../config.ts";
+import { Renderer } from "../Renderer/Renderer.ts";
 
 export type SceneKey = string;
 
@@ -42,7 +42,9 @@ export class Scene extends BaseEntity {
   render(renderer: Renderer) {
     this.components.render?.render(this.components.position, renderer);
 
-    renderer.drawText(this.key, "l", convertTileToGlobal(CONFIG.width / 2), 2);
+    renderer.drawText(this.key, "l", convertTileToGlobal(CONFIG.width - 1), 2, {
+      anchor: "right",
+    });
 
     Object.values(this.portals).forEach((portal) => portal.render(renderer));
 

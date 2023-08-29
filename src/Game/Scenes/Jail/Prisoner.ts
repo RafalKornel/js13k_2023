@@ -38,9 +38,9 @@ export const createPrisoner = () => {
     },
     [
       createGameInteraction(
-        "1",
+        "q",
         "Let's get out!",
-        "Thanks buddy...\nNow I don't want to kill you",
+        "Thanks buddy...\nNow I don't want to kill you hehe...",
         (ws) => {
           withTimeout(() => {
             ws.isPrisonerFreed = true;
