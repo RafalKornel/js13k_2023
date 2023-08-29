@@ -52,7 +52,7 @@ export const createPickpocketInteraction = (
   action?: InteractionActionCallback<GameWorldState>
 ): Interaction => ({
   key: "p",
-  text: "<pickpocket>",
+  text: "<Pickpocket>",
   response,
   action,
 });
@@ -62,15 +62,16 @@ export const createKillInteraction = (
   action?: InteractionActionCallback<GameWorldState>
 ): Interaction => ({
   key: "k",
-  text: "<kill>",
+  text: "<Murder>",
   response,
   action,
 });
 
-export const killPlayer = (worldState: GameWorldState) =>
-  withTimeout(() => {
-    worldState.isDead = true;
-  });
+export const createKillPlayerCallback =
+  (timeInSeconds: number) => (worldState: GameWorldState) =>
+    withTimeout(() => {
+      worldState.isDead = true;
+    }, timeInSeconds * 1000);
 
 // export const createFullScenePositionComponent = () =>
 //   new PositionComponent([1, 1], [CONFIG.width - 2, CONFIG.height - 2]);

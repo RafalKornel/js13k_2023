@@ -19,7 +19,7 @@ export const PLAYER_INITIAL_POS: Vec2 = [4, 4];
 const JAIL_WALL_X = 8;
 const JAIL_WALL_Y = 6;
 
-const JAIL_DOORS_Y = [5, 9];
+const JAIL_DOORS_Y = [5, 11];
 
 const JAIL_SCENE_KEY = "Jail";
 
@@ -41,7 +41,9 @@ export const createJailScene = () => {
     }
   );
 
-  for (let y = 1; y < CONFIG.height - 1; y++) {
+  const { tilePos, tileDim } = jailScene.components.position;
+
+  for (let y = tilePos[1]; y <= tileDim[1]; y++) {
     if (JAIL_DOORS_Y.includes(y)) {
       continue;
     }
@@ -49,7 +51,7 @@ export const createJailScene = () => {
     jailScene.addChild(createSolidEntity([JAIL_WALL_X, y], IMAGES_KEY.pointer));
   }
 
-  for (let x = 1; x < JAIL_WALL_X; x++) {
+  for (let x = tilePos[0]; x < JAIL_WALL_X; x++) {
     jailScene.addChild(createSolidEntity([x, JAIL_WALL_Y], IMAGES_KEY.pointer));
   }
 
@@ -70,7 +72,7 @@ export const createJailScene = () => {
     }
   );
 
-  jailScene.addChild(playerCellDoor);
+  // jailScene.addChild(playerCellDoosr);
   jailScene.addChild(prisonedCellDoor);
 
   return jailScene;

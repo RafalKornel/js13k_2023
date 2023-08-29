@@ -1,7 +1,11 @@
 import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
-import { createGameInteraction, killPlayer, withTimeout } from "../../helpers";
+import {
+  createGameInteraction,
+  createKillPlayerCallback,
+  withTimeout,
+} from "../../helpers";
 import { KNIFE } from "../../items";
 
 export const PRISONER_JAIL_POS: Vec2 = [3, 7];
@@ -20,12 +24,11 @@ export const createPrisoner = () => {
           "1",
           "Hey! What are you here for?",
           "I'm here for killing\nannoying people like you!\n<Stabs you in the chest>",
-          killPlayer
+          createKillPlayerCallback(3)
         ),
         createGameInteraction(
           "2",
           "This guard... I would slash his throat...",
-
           "Heyy buddy, I like your attitude!\nTake this knife and make a good use\nof it. But don't forget to come\nfor me too!",
           (ws) => {
             ws.items.add(KNIFE);
