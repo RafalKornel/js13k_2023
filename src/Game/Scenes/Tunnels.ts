@@ -23,7 +23,7 @@ export const createWellRightTunnel = () =>
 
 export const createWellLeftTunnel = () => {
   const jailTunnel = createTunnel(TUNNELS.wl, "h", {
-    l: SCENE_KEYS.jail,
+    d: SCENE_KEYS.jail,
     r: SCENE_KEYS.well,
   });
 

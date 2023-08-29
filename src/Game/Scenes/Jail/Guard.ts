@@ -8,7 +8,7 @@ import { GameWorldState } from "../../WorldState";
 
 const GUARD_KEY = "Guard";
 
-const GUARD_POS: Vec2 = [9, 1];
+const GUARD_POS: Vec2 = [7, 5];
 
 class Guard extends NPC {
   update(state: GameState<GameWorldState>): void {

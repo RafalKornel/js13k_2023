@@ -8,7 +8,7 @@ import {
 } from "../../helpers";
 import { KNIFE } from "../../items";
 
-export const PRISONER_JAIL_POS: Vec2 = [3, 7];
+export const PRISONER_JAIL_POS: Vec2 = [9, 10];
 
 export const PRISONER_KEY = "Prisoner";
 

@@ -12,7 +12,7 @@ const INTERACTION_TEXT = `What are you trying to do??\n${KILL_TEXT}`;
 
 export const createExecutioner = () => {
   const executioner = new NPC(
-    [6, 7],
+    [1, 7],
     "Executioner",
     IMAGES_KEY.hero,
     {

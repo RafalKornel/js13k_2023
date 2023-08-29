@@ -22,8 +22,8 @@ const BANKER_KEY = "Banker";
 
 class Banker extends NPC {}
 
-export const createBanker = (pos: Vec2) =>
-  new Banker(
+export const createBanker = (pos: Vec2) => {
+  const banker = new Banker(
     pos,
     BANKER_KEY,
     IMAGES_KEY.hero,
@@ -70,3 +70,8 @@ export const createBanker = (pos: Vec2) =>
       ),
     ]
   );
+
+  banker.components.position.dir = "l";
+
+  return banker;
+};
