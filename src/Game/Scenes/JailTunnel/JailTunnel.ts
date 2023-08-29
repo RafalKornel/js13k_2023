@@ -5,7 +5,8 @@ import { createExecutioner } from "./Executioner";
 export const createJailTunnel = () => {
   const jailTunnel = createHorizontalTunnel(
     SCENE_KEYS.jailTunnel,
-    SCENE_KEYS.jail
+    SCENE_KEYS.jail,
+    SCENE_KEYS.well
   );
 
   jailTunnel.addChild(createExecutioner());

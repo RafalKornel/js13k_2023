@@ -1,6 +1,5 @@
 import { GameState } from "../../../Engine/GameState";
 import { Scene } from "../../../Engine/Scene/Scene";
-import { CONFIG } from "../../../Engine/config";
 import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { GameWorldState } from "../../WorldState";

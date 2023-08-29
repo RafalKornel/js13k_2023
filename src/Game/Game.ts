@@ -9,11 +9,16 @@ import { PLAYER_INITIAL_POS, createJailScene } from "./Scenes/Jail/Jail.ts";
 import { convertTileVecToGlobal } from "../Engine/utils.ts";
 import { CONFIG } from "../Engine/config.ts";
 import { createJailTunnel } from "./Scenes/JailTunnel/JailTunnel.ts";
+import { createWellScene } from "./Scenes/Well/Well.ts";
 
 const createGameState = () =>
   new GameState(
     new InputManager(),
-    new SceneManager([createJailScene(), createJailTunnel()]),
+    new SceneManager([
+      createJailScene(),
+      createJailTunnel(),
+      createWellScene(),
+    ]),
     new CollisionManager(),
     getWorldState()
   );
