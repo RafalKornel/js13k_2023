@@ -1,4 +1,5 @@
 export const SCENE_KEYS = {
+  empty: "empty",
   jail: "Jail",
   well: "Well",
   laundry: "Laundry",

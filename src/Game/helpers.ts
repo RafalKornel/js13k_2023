@@ -40,8 +40,11 @@ export const createSolidEntity = (
     key
   );
 
-export const withTimeout = (callback: () => void, time: number = 3000) => {
-  setTimeout(callback, time);
+export const withTimeout = (
+  callback: () => void,
+  timeInSeconds: number = 3
+) => {
+  setTimeout(callback, timeInSeconds * 1000);
 };
 
 type GameInteraction = Interaction<GameWorldState>;
@@ -83,8 +86,11 @@ export const createKillPlayerCallback =
       worldState.isDead = true;
     }, timeInSeconds * 1000);
 
-// export const createFullScenePositionComponent = () =>
-//   new PositionComponent([1, 1], [CONFIG.width - 2, CONFIG.height - 2]);
+export const createWinCallback =
+  (timeInSeconds: number) => (worldState: GameWorldState) =>
+    withTimeout(() => {
+      worldState.hasWon = true;
+    }, timeInSeconds * 1000);
 
 export const createBrickSceneRenderComponent = () =>
   new RectRenderComponent("#371415", "topLeft");
@@ -113,32 +119,3 @@ export const createTunnel = (
     cs
   );
 };
-
-// export const createHorizontalTunnel = (
-//   key: SceneKey,
-//   cs: ConnectedScenes
-// ): Scene =>
-//   new Scene(
-//     key,
-//     createScenePositionComponent([0, CONFIG.height / 2 - 1], [CONFIG.width, 3]),
-//     createBrickSceneRenderComponent(),
-//     cs
-//     // {
-//     //   l: left,
-//     //   r: right,
-//     // }
-//   );
-
-// export const createVerticalTunnel = (
-//   key: SceneKey,
-//   cs: ConnectedScenes
-// ): Scene =>
-//   new Scene(
-//     key,
-//     createScenePositionComponent(
-//       [CONFIG.width / 2 - 1.5, 0],
-//       [3, CONFIG.height]
-//     ),
-//     createBrickSceneRenderComponent(),
-//     cs
-//   );

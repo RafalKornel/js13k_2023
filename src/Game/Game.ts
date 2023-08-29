@@ -21,6 +21,8 @@ import { createLaundryScene } from "./Scenes/Laundry/Laundry.ts";
 import { createTavernScene } from "./Scenes/Tavern/Tavern.ts";
 import { createStashScene } from "./Scenes/Stash/Stash.ts";
 import { createDoctorOfficeScene } from "./Scenes/DoctorOffice/DoctorOffice.ts";
+import { createEmptyScene } from "./Scenes/emptyScene.ts";
+import { SCENE_KEYS } from "./Scenes/constants.ts";
 
 const createGameState = () =>
   new GameState(
@@ -38,6 +40,7 @@ const createGameState = () =>
       createLaundryScene(),
       createStashScene(),
       createStashTavertTunnel(),
+      createEmptyScene(),
     ]),
     new CollisionManager(),
     getWorldState()
@@ -61,13 +64,13 @@ export class Game extends Renderer {
 
     this.state = createGameState();
 
-    console.log(this.state.worldState);
-
     this.player = createPlayer(this.state);
   }
 
   private update() {
-    if (this.state.worldState.isDead) {
+    const ws = this.state.worldState;
+
+    if (ws.isDead) {
       if (!this.player.isKilled) {
         this.player.isKilled = true;
       }
@@ -77,6 +80,16 @@ export class Game extends Renderer {
       }
 
       return;
+    }
+
+    if (ws.hasWon) {
+      if (this.state.inputManager.keysPressed.has("r")) {
+        this.restart();
+
+        return;
+      }
+
+      this.state.sceneManager.changeScene(SCENE_KEYS.empty);
     }
 
     this.state.sceneManager.update(this.state);
@@ -89,25 +102,12 @@ export class Game extends Renderer {
   }
 
   private render() {
-    if (this.state.worldState.isDead) {
-      this.renderRect({
-        color: "#000000aa",
-        anchor: "topLeft",
-      });
+    const ws = this.state.worldState;
 
-      this.drawText("You are dead", "l", this.width / 2, this.height / 2, {
-        color: "#ff0000",
-      });
-
-      this.drawText(
-        "Press R to restart",
-        "m",
-        this.width / 2,
-        this.height / 2 + 10,
-        {
-          color: "#ffffff",
-        }
-      );
+    if (ws.isDead) {
+      this.renderDeadScreen();
+    } else if (ws.hasWon) {
+      this.renderWinningScreen();
     } else {
       this.state.sceneManager.render(this as Renderer);
 
@@ -115,6 +115,43 @@ export class Game extends Renderer {
     }
 
     this.player.render(this as Renderer);
+  }
+
+  private renderWinningScreen() {
+    this.renderFullScreenMessage(
+      "You escaped from the underground!",
+      "#00ff00",
+      "Can you find different methods of escaping?\nPress R to restart"
+    );
+  }
+
+  private renderDeadScreen() {
+    this.renderFullScreenMessage(
+      "You are dead",
+      "#ff0000",
+      "Press R to restart"
+    );
+  }
+
+  private renderFullScreenMessage(
+    message: string,
+    color: string,
+    subMessage: string
+  ) {
+    this.renderRect({
+      color: "#000000aa",
+      anchor: "topLeft",
+    });
+
+    this.drawText(message, "l", this.width / 2, this.height / 2, {
+      color: color,
+    });
+
+    subMessage.split("\n").forEach((str, i) => {
+      this.drawText(str, "m", this.width / 2, this.height / 2 + 10 + i * 3, {
+        color: "#ffffff",
+      });
+    });
   }
 
   private renderUI() {

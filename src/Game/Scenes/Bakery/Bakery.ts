@@ -5,11 +5,12 @@ import {
   createScenePositionComponent,
 } from "../../helpers";
 import { SCENE_KEYS, TUNNELS } from "../constants";
+import { createBaker } from "./Baker";
 
 class BakeryScene extends Scene {}
 
-export const createBakeryScene = () =>
-  new BakeryScene(
+export const createBakeryScene = () => {
+  const bakeryScene = new BakeryScene(
     SCENE_KEYS.bakery,
     createScenePositionComponent([1, 1], [CONFIG.width - 1, CONFIG.height - 2]),
     createBrickSceneRenderComponent(),
@@ -17,3 +18,8 @@ export const createBakeryScene = () =>
       t: TUNNELS.wd,
     }
   );
+
+  bakeryScene.addChild(createBaker());
+
+  return bakeryScene;
+};
