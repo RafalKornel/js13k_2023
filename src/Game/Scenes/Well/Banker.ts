@@ -2,18 +2,20 @@ import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
 import { createGameInteraction } from "../../helpers";
-import { HAMMER, Item, KNIFE } from "../../items";
+import { CELL_KEY, HAMMER, Item, KNIFE } from "../../items";
 
 type BankerInventory = Partial<Record<Item, number>>;
 
 const SELL_PRICES: BankerInventory = {
   [KNIFE]: 2,
   [HAMMER]: 2,
+  [CELL_KEY]: 0,
 };
 
 const BUY_PRICES: BankerInventory = {
   [KNIFE]: 3,
   [HAMMER]: 3,
+  [CELL_KEY]: 1,
 };
 
 const BANKER_KEY = "Banker";
