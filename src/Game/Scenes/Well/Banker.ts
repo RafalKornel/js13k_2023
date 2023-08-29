@@ -2,21 +2,7 @@ import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
 import { createGameInteraction } from "../../helpers";
-import { CELL_KEY, HAMMER, Item, KNIFE } from "../../items";
-
-type BankerInventory = Partial<Record<Item, number>>;
-
-const SELL_PRICES: BankerInventory = {
-  [KNIFE]: 2,
-  [HAMMER]: 2,
-  [CELL_KEY]: 0,
-};
-
-const BUY_PRICES: BankerInventory = {
-  [KNIFE]: 3,
-  [HAMMER]: 3,
-  [CELL_KEY]: 1,
-};
+import { ITEMS, ItemKey } from "../../items";
 
 const BANKER_KEY = "Banker";
 
@@ -32,42 +18,46 @@ export const createBanker = (pos: Vec2) => {
       options: [],
     },
     [
-      ...Object.entries(SELL_PRICES).map(([item, price], i) =>
-        createGameInteraction(
+      ...ITEMS.map(({ key, price }, i) => {
+        const sellPrice = price > 1 ? price - 1 : price;
+
+        return createGameInteraction(
           `${i + 1}`,
-          `<Sell ${item} (${price} coins)>`,
+          `<Sell ${key} (${sellPrice} coins)>`,
           `Here you go!`,
           (ws) => {
-            const i = item as Item;
+            const i = key as ItemKey;
 
             if (!ws.items.has(i)) return;
 
             ws.items.delete(i);
             ws.banker.add(i);
 
-            ws.coins += price;
+            ws.coins += sellPrice;
           },
-          (ws) => ws.items.has(item as Item)
-        )
-      ),
-      ...Object.entries(BUY_PRICES).map(([item, price], i) =>
-        createGameInteraction(
+          (ws) => ws.items.has(key as ItemKey)
+        );
+      }),
+      ...ITEMS.map(({ key: key, price }, i) => {
+        const buyPrice = price + 1;
+
+        return createGameInteraction(
           `${i + 1}`,
-          `<Buy ${item} (${price} coins)>`,
+          `<Buy ${key} (${buyPrice} coins)>`,
           `Here you go!`,
           (ws) => {
-            const i = item as Item;
+            const i = key as ItemKey;
 
             if (!ws.banker.has(i)) return;
 
-            ws.items.add(item as Item);
-            ws.banker.delete(item as Item);
+            ws.items.add(key as ItemKey);
+            ws.banker.delete(key as ItemKey);
 
-            ws.coins -= price;
+            ws.coins -= buyPrice;
           },
-          (ws) => ws.banker.has(item as Item) && ws.coins >= price
-        )
-      ),
+          (ws) => ws.banker.has(key as ItemKey) && ws.coins >= buyPrice
+        );
+      }),
     ]
   );
 

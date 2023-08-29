@@ -27,8 +27,8 @@ const createGameState = () =>
     new InputManager(),
     new SceneManager([
       createJailScene(),
-      createWellScene(),
       createBakeryScene(),
+      createWellScene(),
       createDoctorOfficeScene(),
       createTavernScene(),
       createWellLeftTunnel(),
@@ -69,7 +69,7 @@ export class Game extends Renderer {
   private update() {
     if (this.state.worldState.isDead) {
       if (!this.player.isKilled) {
-        this.player.kill();
+        this.player.isKilled = true;
       }
 
       if (this.state.inputManager.keysPressed.has("r")) {

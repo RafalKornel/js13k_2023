@@ -31,7 +31,7 @@ export const createPrisoner = () => {
           "This guard... I would slash his throat...",
           "Heyy buddy, I like your attitude!\nTake this knife and make a good use\nof it. But don't forget to come\nfor me too!",
           (ws) => {
-            ws.items.add(KNIFE);
+            ws.items.add(KNIFE.key);
           }
         ),
       ],

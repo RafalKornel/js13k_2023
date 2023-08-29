@@ -44,7 +44,7 @@ export class BaseInteractionComponent<TWorldState extends WorldState>
     const p = entity.components.position.pos;
 
     renderer.drawText(
-      `${entity.key} (e)`,
+      `${entity.key} ${entity.isKilled ? "(dead)" : "(e)"}`,
       "l",
       ...add(p, convertTileVecToGlobal([0, -1] as Vec2)),
       {
@@ -75,7 +75,7 @@ export class BaseInteractionComponent<TWorldState extends WorldState>
       this.endInteraction();
     }
 
-    if (this.state === "available" && kp.has("e")) {
+    if (this.state === "available" && kp.has("e") && !entity.isKilled) {
       this.startInteraction();
     }
 
@@ -112,6 +112,9 @@ export class DialogueInteractionComponent<
   render(entity: BaseEntity, renderer: Renderer): void {
     super.render(entity, renderer);
 
+    // TODO: decide if want to display dialogue after death
+    if (entity.isKilled) return;
+
     if (entity.components.interaction!.state === "active") {
       const npcLabel = `${entity.key}:\n`;
       const youLabel = `You:\n`;
@@ -130,9 +133,7 @@ export class DialogueInteractionComponent<
 
       let options: Interaction[] = [];
 
-      if (entity.isKilled) {
-        //
-      } else if (this.selectedOption) {
+      if (this.selectedOption) {
         options = this._availableInteractions;
       } else {
         options = [
@@ -147,6 +148,8 @@ export class DialogueInteractionComponent<
 
   update(entity: BaseEntity, state: GameState<TWorldState>) {
     super.update(entity, state);
+
+    if (entity.isKilled) return;
 
     this._availableInteractions = this.interactions.filter((interaction) =>
       interaction.isAvailable ? interaction.isAvailable(state.worldState) : true
@@ -176,7 +179,6 @@ export class DialogueInteractionComponent<
 
       if (
         kp.has(interaction.key)
-        // !this._performedInteractions.has(interaction)
       ) {
         interaction.action?.(state.worldState);
 

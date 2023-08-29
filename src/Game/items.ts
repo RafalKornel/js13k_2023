@@ -1,9 +1,46 @@
-export const KNIFE = "Knife";
-export const CELL_KEY = "Cell key";
-export const HAMMER = "Hammer";
+import { GameWorldState } from "./WorldState";
 
-const items = [KNIFE, CELL_KEY, HAMMER] as const;
+export const KNIFE = { key: "Knife", price: 1 };
+export const CELL_KEY = { key: "Cell key", price: 0 };
+export const HAMMER = { key: "Hammer", price: 2 };
+export const BREAD = { key: "Bread", price: 2 };
 
-export type Item = (typeof items)[number];
+export const ITEMS = [KNIFE, CELL_KEY, HAMMER, BREAD] as const;
 
-// export type Item = typeof KNIFE;
+export type Item = (typeof ITEMS)[number];
+
+export type ItemKey = Item["key"];
+
+export const buyItem = (
+  item: Item,
+  getEntity?: (ws: GameWorldState) => Set<ItemKey> | undefined
+) => {
+  const buyItemCallback = (ws: GameWorldState) => {
+    const entity = getEntity?.(ws);
+
+    ws.items.add(item.key);
+    ws.coins -= item.price;
+
+    if (entity) {
+      entity.delete(item.key);
+    }
+  };
+
+  const isAvailable = (ws: GameWorldState) => {
+    const entity = getEntity?.(ws);
+
+    const hasSufficientMoney = ws.coins >= item.price;
+    const alreadyHasItem = ws.items.has(item.key);
+    const hasEntityItem = entity ? entity?.has(item.key) : true;
+
+    return hasSufficientMoney && !alreadyHasItem && hasEntityItem;
+  };
+
+  const text = `<Buy ${item.key} (${item.price} coin${
+    item.price > 1 ? "s" : ""
+  })>`;
+
+  const response = "Here you go!";
+
+  return [text, response, buyItemCallback, isAvailable] as const;
+};

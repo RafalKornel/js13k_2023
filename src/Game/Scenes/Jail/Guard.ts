@@ -14,8 +14,8 @@ class Guard extends NPC {
   update(state: GameState<GameWorldState>): void {
     super.update(state);
 
-    if (state.worldState.isGuardKilled) {
-      this.kill();
+    if (state.worldState.killedEntities.has(this.key)) {
+      this.isKilled = true;
     }
   }
 }
@@ -41,10 +41,10 @@ export const createGuard = () =>
         "<Kill the guard and take cell key>",
         "Arrgghh...",
         (ws) => {
-          ws.isGuardKilled = true;
-          ws.items.add(CELL_KEY);
+          ws.killedEntities.add(GUARD_KEY);
+          ws.items.add(CELL_KEY.key);
         },
-        (ws) => ws.items.has(KNIFE) && !ws.isGuardKilled
+        (ws) => ws.items.has(KNIFE.key) && !ws.killedEntities.has(GUARD_KEY)
       ),
     ]
   );

@@ -15,7 +15,7 @@ class DoorInteractionComponent extends BaseInteractionComponent<GameWorldState> 
   update(entity: BaseEntity, state: GameState<GameWorldState>): void {
     super.update(entity, state);
 
-    this._hasKey = state.worldState.items.has(CELL_KEY);
+    this._hasKey = state.worldState.items.has(CELL_KEY.key);
 
     if (this.state === "active" && this._hasKey) {
       this._isOpen = true;

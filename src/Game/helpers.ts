@@ -67,14 +67,14 @@ export const createPickpocketInteraction = (
 });
 
 export const createKillInteraction = (
-  response: string | InteractionResponseCallback<GameWorldState>,
+  response: string | InteractionResponseCallback<GameWorldState> = "Argh...",
   action?: InteractionActionCallback<GameWorldState>
 ): Interaction => ({
   key: "k",
   text: "<Murder>",
   response,
   action,
-  isAvailable: (ws: GameWorldState) => ws.items.has(KNIFE),
+  isAvailable: (ws: GameWorldState) => ws.items.has(KNIFE.key),
 });
 
 export const createKillPlayerCallback =

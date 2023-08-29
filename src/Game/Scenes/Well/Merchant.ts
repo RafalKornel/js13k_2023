@@ -7,7 +7,7 @@ import {
   createKillPlayerCallback,
   createPickpocketInteraction,
 } from "../../helpers";
-import { HAMMER } from "../../items";
+import { HAMMER, buyItem } from "../../items";
 
 const MERCHANT_KEY = "Merchant";
 
@@ -23,17 +23,7 @@ export const createMerchant = (pos: Vec2) =>
       options: [],
     },
     [
-      createGameInteraction(
-        "1",
-        "<Buy hammer (1 coin)>",
-        "Here you go!",
-        (ws) => {
-          ws.items.add(HAMMER);
-          ws.merchant.delete(HAMMER);
-          ws.coins--;
-        },
-        (ws) => ws.coins > 1 && ws.merchant.has(HAMMER)
-      ),
+      createGameInteraction("1", ...buyItem(HAMMER, (ws) => ws.merchant)),
 
       createPickpocketInteraction(
         "What are you trying to do??",
