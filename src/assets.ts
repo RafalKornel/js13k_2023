@@ -10,7 +10,8 @@ import pointer from "../assets/compiled/pointer?binary";
 // @ts-ignore
 import hero from "../assets/compiled/bohater1?binary";
 
-import { ImageMetaData, Vec2 } from "./Engine/types";
+import { Vec2 } from "./Engine/types";
+import { ImageMetaData } from "./Engine/Renderer/types";
 
 const IMAGES_KEY = {
   pointer: 0,
@@ -23,17 +24,17 @@ type ImageKey = keyof typeof IMAGES_KEY;
 type ImageId = (typeof IMAGES_KEY)[ImageKey];
 
 const size8: Vec2 = [8, 8];
-const size16: Vec2 = [16, 16];
+// const size16: Vec2 = [16, 16];
 
-const IMAGES_MAP: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
+const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.pointer]: { data: pointer, s: size8 },
   [IMAGES_KEY.smile]: { data: smile, s: size8 },
   [IMAGES_KEY.hero]: { data: hero, s: size8 },
 };
 
-const colors = colorsData as Uint8ClampedArray;
+const COLORS = colorsData as Uint8ClampedArray;
 
-[...Object.values(IMAGES_MAP).map(({ data }) => data), colors]
+[...Object.values(ASSETS).map(({ data }) => data), COLORS]
   .flat()
   .forEach((asset) => {
     if (!(asset instanceof Uint8ClampedArray)) {
@@ -41,4 +42,4 @@ const colors = colorsData as Uint8ClampedArray;
     }
   });
 
-export { IMAGES_KEY, IMAGES_MAP, colors, type ImageKey, type ImageId };
+export { IMAGES_KEY, ASSETS, COLORS as colors, type ImageKey, type ImageId };

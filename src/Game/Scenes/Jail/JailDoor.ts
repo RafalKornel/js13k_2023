@@ -2,7 +2,7 @@ import { BaseEntity, EntityKey } from "../../../Engine/BaseEntity";
 import { BaseInteractionComponent } from "../../../Engine/Components/InteractionComponent";
 import { RectRenderComponent } from "../../../Engine/Components/RenderComponent";
 import { GameState } from "../../../Engine/GameState";
-import { Renderer } from "../../../Engine/Renderer";
+import { Renderer } from "../../../Engine/Renderer/Renderer";
 import { Vec2 } from "../../../Engine/types";
 import { GameWorldState } from "../../WorldState";
 import { createOffsetPositionComponent } from "../../helpers";

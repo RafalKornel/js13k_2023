@@ -1,4 +1,4 @@
-import { Renderer } from "../Renderer.ts";
+import { Renderer } from "../Renderer/Renderer.ts";
 import { GameState } from "../GameState.ts";
 import { Scene, SceneKey } from "./Scene.ts";
 

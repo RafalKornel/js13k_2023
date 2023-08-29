@@ -1,4 +1,4 @@
-import { Renderer, RenderEngineParams } from "../Engine/Renderer.ts";
+import { Renderer, RenderEngineParams } from "../Engine/Renderer/Renderer.ts";
 import { InputManager } from "../Engine/InputManager.ts";
 import { Player } from "../Engine/Player/Player.ts";
 import { CollisionManager } from "../Engine/CollisionManager.ts";
@@ -10,6 +10,7 @@ import { convertTileVecToGlobal } from "../Engine/utils.ts";
 import { CONFIG } from "../Engine/config.ts";
 import { createJailTunnel } from "./Scenes/JailTunnel/JailTunnel.ts";
 import { createWellScene } from "./Scenes/Well/Well.ts";
+import { Assets, Colors } from "../Engine/Renderer/types.ts";
 
 const createGameState = () =>
   new GameState(
@@ -33,9 +34,11 @@ export class Game extends Renderer {
   constructor(
     readonly gameCanvas: HTMLCanvasElement,
     readonly textCanvas: HTMLCanvasElement,
+    colors: Colors,
+    assets: Assets,
     readonly options: RenderEngineParams = {}
   ) {
-    super(gameCanvas, textCanvas, options);
+    super(gameCanvas, textCanvas, colors, assets, options);
 
     this.state = createGameState();
 

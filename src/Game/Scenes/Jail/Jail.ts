@@ -71,7 +71,7 @@ export const createJailScene = () => {
     }
   );
 
-  // jailScene.addChild(playerCellDoosr);
+  jailScene.addChild(playerCellDoor);
   jailScene.addChild(prisonedCellDoor);
 
   return jailScene;

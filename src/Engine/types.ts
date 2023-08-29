@@ -6,11 +6,6 @@ export type Anchor = "topLeft" | "center";
 
 export type PairKey<Key extends string> = `${Key} | ${Key}`;
 
-export type ImageMetaData = {
-  data: Uint8ClampedArray;
-  s: Vec2;
-};
-
 export type InteractionActionCallback<TWorldState> = (ws: TWorldState) => void;
 
 export type InteractionResponseCallback<TWorldState> = (

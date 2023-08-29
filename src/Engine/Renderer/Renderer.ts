@@ -1,25 +1,13 @@
-import { TEXT_CONFIG } from "./config";
-import {
-  Anchor,
-  Direction,
-  ImageMetaData,
-  Interaction,
-  TextSize,
-  Vec2,
-} from "./types";
+import { TEXT_CONFIG } from "../config";
+import { Anchor, Direction, Interaction, TextSize, Vec2 } from "../types";
+import { Assets, Colors } from "./types";
 
-import { CustomImageDecoder } from "./ImageDecoder";
-
+import { add, convertTileVecToGlobal, mult, subtract } from "../utils";
+import { CONFIG } from "../config";
 import {
-  add,
-  convertTileVecToGlobal,
-  flipImage,
-  mult,
-  rotate90Deg,
-  subtract,
-} from "./utils";
-import { colors } from "../assets";
-import { CONFIG } from "./config";
+  CanvasImageRenderer,
+  ICanvasImageRenderer,
+} from "./CanvasImageRenderer";
 
 type DrawTextParams = {
   color?: string;
@@ -38,13 +26,10 @@ export abstract class Renderer {
   protected ctx: CanvasRenderingContext2D;
   protected textCtx: CanvasRenderingContext2D;
 
-  private _sideCtx: CanvasRenderingContext2D;
-  private _sideCanvas: HTMLCanvasElement;
-
   protected width: number;
   protected height: number;
 
-  private _imageDecoder: CustomImageDecoder;
+  private _canvasImageRenderer: ICanvasImageRenderer;
 
   /** Main entry point to renderer - implement this in children classes, by
    * modifying buffer property.
@@ -54,6 +39,8 @@ export abstract class Renderer {
   constructor(
     readonly gameCanvas: HTMLCanvasElement,
     readonly textCanvas: HTMLCanvasElement,
+    colors: Colors,
+    assets: Assets,
     options: RenderEngineParams = {}
   ) {
     const { height = 640, width = 640 } = options;
@@ -70,15 +57,9 @@ export abstract class Renderer {
     const gameCtx = gameCanvas.getContext("2d");
     const textCtx = textCanvas.getContext("2d");
 
-    const sideCanvas = document.createElement("canvas");
-    const sideContext = sideCanvas.getContext("2d");
-
-    if (!gameCtx || !textCtx || !sideContext) {
+    if (!gameCtx || !textCtx) {
       throw new Error("Your browser doesn't support canvas");
     }
-
-    this._sideCanvas = sideCanvas;
-    this._sideCtx = sideContext;
 
     // ctx.imageSmoothingEnabled = false;
 
@@ -86,49 +67,20 @@ export abstract class Renderer {
 
     this.textCtx = textCtx;
 
-    this._imageDecoder = new CustomImageDecoder(colors);
+    this._canvasImageRenderer = new CanvasImageRenderer(
+      this.ctx,
+      colors,
+      assets
+    );
   }
 
   renderImage(
-    imageData: ImageMetaData,
+    imageId: number,
     pos: Vec2,
     dir: Direction = "r",
     anchor: Anchor = "center"
   ) {
-    const { s } = imageData;
-
-    const adjustedImageData =
-      dir === "l"
-        ? flipImage(imageData.data, s[0])
-        : dir === "t"
-        ? rotate90Deg(imageData.data, s[0])
-        : imageData.data;
-
-    const image = this._imageDecoder.decompressImage(
-      adjustedImageData,
-      ...s,
-      4
-    );
-
-    const imgData = new ImageData(image, ...s);
-
-    const translatedPos =
-      anchor === "center" ? subtract(pos, mult(s, 0.5)) : pos;
-
-    this._sideCtx.clearRect(
-      0,
-      0,
-      this._sideCanvas.width,
-      this._sideCanvas.height
-    );
-
-    this._sideCtx.putImageData(imgData, 0, 0);
-
-    const i = new Image(...s);
-
-    i.src = this._sideCanvas.toDataURL();
-
-    this.ctx.drawImage(i, translatedPos[0], translatedPos[1]);
+    this._canvasImageRenderer.renderImage(imageId, pos, dir, anchor);
   }
 
   renderRect = ({

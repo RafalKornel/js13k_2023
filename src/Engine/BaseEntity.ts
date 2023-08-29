@@ -2,7 +2,7 @@ import { ICollisionComponent } from "./Components/CollisionComponent";
 import { IInteractionComponent } from "./Components/InteractionComponent";
 import { IPositionComponent } from "./Components/PositionComponent";
 import { IRenderComponent } from "./Components/RenderComponent";
-import { Renderer } from "./Renderer";
+import { Renderer } from "./Renderer/Renderer";
 import { GameState } from "./GameState";
 import { getKey } from "./utils";
 

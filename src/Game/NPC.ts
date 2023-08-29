@@ -1,7 +1,7 @@
 import { BaseEntity } from "../Engine/BaseEntity";
 import { DialogueInteractionComponent } from "../Engine/Components/InteractionComponent";
 import { ImageRenderComponent } from "../Engine/Components/RenderComponent";
-import { Renderer } from "../Engine/Renderer";
+import { Renderer } from "../Engine/Renderer/Renderer";
 import { GameState } from "../Engine/GameState";
 import { DialogueConfig, Interaction, Vec2 } from "../Engine/types";
 import { ImageId } from "../assets";

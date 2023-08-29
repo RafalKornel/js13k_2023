@@ -1,7 +1,7 @@
 import { BaseEntity } from "../BaseEntity";
 import { GameState } from "../GameState";
 import { PLAYER_INTERACTION_COLLIDER_KEY } from "../Player/PlayerInteractionCollider";
-import { Renderer } from "../Renderer";
+import { Renderer } from "../Renderer/Renderer";
 import { DialogueConfig, Interaction, Vec2, WorldState } from "../types";
 import { add, convertTileVecToGlobal, getEntityPairKey } from "../utils";
 

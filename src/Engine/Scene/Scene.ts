@@ -2,7 +2,7 @@ import { Portal } from "./Portal.ts";
 import { BaseEntity, EntityKey } from "../BaseEntity.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
 import { IRenderComponent } from "../Components/RenderComponent.ts";
-import { Renderer } from "../Renderer.ts";
+import { Renderer } from "../Renderer/Renderer.ts";
 import { Direction, Vec2 } from "../types.ts";
 import { add, convertTileToGlobal, mult, subtract } from "../utils.ts";
 import { CONFIG } from "../config.ts";
