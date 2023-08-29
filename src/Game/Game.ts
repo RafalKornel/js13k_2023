@@ -7,17 +7,37 @@ import { GameState } from "../Engine/GameState.ts";
 import { GameWorldState, getWorldState } from "./WorldState.ts";
 import { PLAYER_INITIAL_POS, createJailScene } from "./Scenes/Jail/Jail.ts";
 import { convertTileVecToGlobal } from "../Engine/utils.ts";
-import { createJailTunnel } from "./Scenes/JailTunnel/JailTunnel.ts";
 import { createWellScene } from "./Scenes/Well/Well.ts";
 import { Assets, Colors } from "../Engine/Renderer/types.ts";
+import {
+  createStashTavertTunnel,
+  createWellBottomTunnel,
+  createWellLeftTunnel,
+  createWellRightTunnel,
+  createWellTopTunnel,
+} from "./Scenes/Tunnels.ts";
+import { createBakeryScene } from "./Scenes/Bakery/Bakery.ts";
+import { createLaundryScene } from "./Scenes/Laundry/Laundry.ts";
+import { createTavernScene } from "./Scenes/Tavern/Tavern.ts";
+import { createStashScene } from "./Scenes/Stash/Stash.ts";
+import { createDoctorOfficeScene } from "./Scenes/DoctorOffice/DoctorOffice.ts";
 
 const createGameState = () =>
   new GameState(
     new InputManager(),
     new SceneManager([
-      createWellScene(),
       createJailScene(),
-      createJailTunnel(),
+      createBakeryScene(),
+      createDoctorOfficeScene(),
+      createTavernScene(),
+      createWellScene(),
+      createWellLeftTunnel(),
+      createWellBottomTunnel(),
+      createWellRightTunnel(),
+      createWellTopTunnel(),
+      createLaundryScene(),
+      createStashScene(),
+      createStashTavertTunnel(),
     ]),
     new CollisionManager(),
     getWorldState()

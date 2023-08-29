@@ -11,7 +11,7 @@ import {
   createSolidEntity,
 } from "../../helpers";
 import { PRISONER_KEY, createPrisoner } from "./Prisoner";
-import { SCENE_KEYS } from "../constants";
+import { SCENE_KEYS, TUNNELS } from "../constants";
 
 export const PLAYER_INITIAL_POS: Vec2 = [4, 4];
 
@@ -19,8 +19,6 @@ const JAIL_WALL_X = 8;
 const JAIL_WALL_Y = 6;
 
 const JAIL_DOORS_Y = [5, 11];
-
-const JAIL_SCENE_KEY = "Jail";
 
 class JailScene extends Scene {
   update(state: GameState<GameWorldState>): void {
@@ -32,11 +30,11 @@ class JailScene extends Scene {
 
 export const createJailScene = () => {
   const jailScene = new JailScene(
-    JAIL_SCENE_KEY,
+    SCENE_KEYS.jail,
     createScenePositionComponent(),
     createBrickSceneRenderComponent(),
     {
-      r: SCENE_KEYS.jailTunnel,
+      r: TUNNELS.wl,
     }
   );
 

@@ -7,7 +7,7 @@ import {
   createScenePositionComponent,
   createSolidEntity,
 } from "../../helpers";
-import { SCENE_KEYS } from "../constants";
+import { SCENE_KEYS, TUNNELS } from "../constants";
 import { createBanker } from "./Banker";
 import { createMerchant } from "./Merchant";
 
@@ -18,11 +18,14 @@ class WellScene extends Scene {
 
   constructor() {
     super(
-      "Well",
+      SCENE_KEYS.well,
       createScenePositionComponent(),
       createBrickSceneRenderComponent(),
       {
-        l: SCENE_KEYS.jailTunnel,
+        l: TUNNELS.wl,
+        r: TUNNELS.wr,
+        t: TUNNELS.wt,
+        d: TUNNELS.wd,
       }
     );
 

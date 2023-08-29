@@ -1,11 +1,11 @@
-import { IMAGES_KEY } from "../../../assets";
-import { NPC } from "../../NPC";
+import { IMAGES_KEY } from "../../assets";
+import { NPC } from "../NPC";
 import {
   createGameInteraction,
   createKillInteraction,
   createKillPlayerCallback,
   createPickpocketInteraction,
-} from "../../helpers";
+} from "../helpers";
 
 const KILL_TEXT = "<Slices you with his axe>";
 const INTERACTION_TEXT = `What are you trying to do??\n${KILL_TEXT}`;

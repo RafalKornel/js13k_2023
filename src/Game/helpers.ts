@@ -4,7 +4,7 @@ import {
   ImageRenderComponent,
   RectRenderComponent,
 } from "../Engine/Components/RenderComponent";
-import { SceneKey, Scene } from "../Engine/Scene/Scene";
+import { SceneKey, Scene, ConnectedScenes } from "../Engine/Scene/Scene";
 import { CONFIG } from "../Engine/config";
 import {
   Interaction,
@@ -90,35 +90,55 @@ export const createBrickSceneRenderComponent = () =>
   new RectRenderComponent("#371415", "topLeft");
 // new BackgroundRenderComponent(IMAGES_KEY.floor, dim);
 
-export const createHorizontalTunnel = (
+export const createTunnel = (
   key: SceneKey,
-  left?: SceneKey,
-  right?: SceneKey
-): Scene =>
-  new Scene(
-    key,
-    createScenePositionComponent([0, CONFIG.height / 2 - 1], [CONFIG.width, 3]),
-    createBrickSceneRenderComponent(),
-    {
-      l: left,
-      r: right,
-    }
-  );
+  orientation: "h" | "v",
+  cs: ConnectedScenes,
+  size = 5
+) => {
+  const offSet = (size - 1) / 2;
 
-export const createVerticalTunnel = (
-  key: SceneKey,
-  top?: SceneKey,
-  down?: SceneKey
-): Scene =>
-  new Scene(
+  const pos: Vec2 =
+    orientation === "h"
+      ? [0, CONFIG.height / 2 - offSet]
+      : [CONFIG.width / 2 - offSet, 1];
+
+  const dim: Vec2 =
+    orientation === "h" ? [CONFIG.width, size] : [size, CONFIG.height - 1];
+
+  return new Scene(
     key,
-    createScenePositionComponent(
-      [CONFIG.width / 2 - 1.5, 0],
-      [3, CONFIG.height]
-    ),
+    createScenePositionComponent(pos, dim),
     createBrickSceneRenderComponent(),
-    {
-      t: top,
-      d: down,
-    }
+    cs
   );
+};
+
+// export const createHorizontalTunnel = (
+//   key: SceneKey,
+//   cs: ConnectedScenes
+// ): Scene =>
+//   new Scene(
+//     key,
+//     createScenePositionComponent([0, CONFIG.height / 2 - 1], [CONFIG.width, 3]),
+//     createBrickSceneRenderComponent(),
+//     cs
+//     // {
+//     //   l: left,
+//     //   r: right,
+//     // }
+//   );
+
+// export const createVerticalTunnel = (
+//   key: SceneKey,
+//   cs: ConnectedScenes
+// ): Scene =>
+//   new Scene(
+//     key,
+//     createScenePositionComponent(
+//       [CONFIG.width / 2 - 1.5, 0],
+//       [3, CONFIG.height]
+//     ),
+//     createBrickSceneRenderComponent(),
+//     cs
+//   );
