@@ -7,7 +7,6 @@ import { GameState } from "../Engine/GameState.ts";
 import { GameWorldState, getWorldState } from "./WorldState.ts";
 import { PLAYER_INITIAL_POS, createJailScene } from "./Scenes/Jail/Jail.ts";
 import { convertTileVecToGlobal } from "../Engine/utils.ts";
-import { CONFIG } from "../Engine/config.ts";
 import { createJailTunnel } from "./Scenes/JailTunnel/JailTunnel.ts";
 import { createWellScene } from "./Scenes/Well/Well.ts";
 import { Assets, Colors } from "../Engine/Renderer/types.ts";
@@ -16,9 +15,9 @@ const createGameState = () =>
   new GameState(
     new InputManager(),
     new SceneManager([
+      createWellScene(),
       createJailScene(),
       createJailTunnel(),
-      createWellScene(),
     ]),
     new CollisionManager(),
     getWorldState()
@@ -41,6 +40,8 @@ export class Game extends Renderer {
     super(gameCanvas, textCanvas, colors, assets, options);
 
     this.state = createGameState();
+
+    console.log(this.state.worldState);
 
     this.player = createPlayer(this.state);
   }
@@ -97,12 +98,13 @@ export class Game extends Renderer {
   }
 
   private renderUI() {
-    const items = [...this.state.worldState.items.values()];
+    const ws = this.state.worldState;
+    const items = [...ws.items.values()];
 
     this.drawText(
-      `Items: ${items.reduce(
+      `Coins: ${ws.coins} | Items: ${items.reduce(
         (p, n, i) => p + (i !== 0 && i !== items.length ? " | " : "") + n,
-        ""
+        ``
       )}`,
       "m",
       ...convertTileVecToGlobal([1, 0.5]),

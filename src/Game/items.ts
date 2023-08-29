@@ -1,7 +1,8 @@
-export const KNIFE = "knife";
-export const CELL_KEY = "cell_key";
+export const KNIFE = "Knife";
+export const CELL_KEY = "Cell key";
+export const HAMMER = "Hammer";
 
-const items = [KNIFE, CELL_KEY] as const;
+const items = [KNIFE, CELL_KEY, HAMMER] as const;
 
 export type Item = (typeof items)[number];
 

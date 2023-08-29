@@ -95,8 +95,10 @@ export interface IDIalogueInteractionComponent<TWorldState extends WorldState>
 export class DialogueInteractionComponent<
   TWorldState extends WorldState
 > extends BaseInteractionComponent<TWorldState> {
-  private _availableInteractions: Interaction[];
-  private _performedInteractions: Set<Interaction>;
+  private _availableInteractions: Interaction[] = [];
+  private _performedInteractions: Set<Interaction> = new Set();
+
+  private _prevKP: Set<string> = new Set();
 
   selectedOption?: Interaction = undefined;
 
@@ -105,9 +107,6 @@ export class DialogueInteractionComponent<
     readonly interactions: Interaction[]
   ) {
     super();
-
-    this._availableInteractions = [];
-    this._performedInteractions = new Set();
   }
 
   render(entity: BaseEntity, renderer: Renderer): void {
@@ -161,6 +160,8 @@ export class DialogueInteractionComponent<
     for (const dialogueOption of this.dialogueConfig.options) {
       if (ic.state !== "active") return;
 
+      if (this._prevKP.has(dialogueOption.key)) continue;
+
       if (kp.has(dialogueOption.key) && !this.selectedOption) {
         dialogueOption.action?.(state.worldState);
 
@@ -171,9 +172,11 @@ export class DialogueInteractionComponent<
     for (const interaction of this._availableInteractions) {
       if (ic.state !== "active") return;
 
+      if (this._prevKP.has(interaction.key)) continue;
+
       if (
-        kp.has(interaction.key) &&
-        !this._performedInteractions.has(interaction)
+        kp.has(interaction.key)
+        // !this._performedInteractions.has(interaction)
       ) {
         interaction.action?.(state.worldState);
 
@@ -182,5 +185,7 @@ export class DialogueInteractionComponent<
         break;
       }
     }
+
+    this._prevKP = new Set(kp);
   }
 }

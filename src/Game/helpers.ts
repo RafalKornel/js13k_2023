@@ -1,4 +1,4 @@
-import { BaseEntity } from "../Engine/BaseEntity";
+import { BaseEntity, EntityKey } from "../Engine/BaseEntity";
 import { PositionComponent } from "../Engine/Components/PositionComponent";
 import {
   ImageRenderComponent,
@@ -15,6 +15,7 @@ import {
 import { add, mult } from "../Engine/utils";
 import { ImageId } from "../assets";
 import { GameWorldState } from "./WorldState";
+import { KNIFE } from "./items";
 
 export const createScenePositionComponent = (
   pos: Vec2 = [0, 1],
@@ -24,12 +25,20 @@ export const createScenePositionComponent = (
 export const createOffsetPositionComponent = (pos: Vec2, dim: Vec2 = [1, 1]) =>
   new PositionComponent(add(pos, mult(dim, 0.5)), dim);
 
-export const createSolidEntity = (pos: Vec2, imageId: ImageId) =>
-  new BaseEntity({
-    position: createOffsetPositionComponent(pos),
-    collision: { type: "solid" },
-    render: new ImageRenderComponent(imageId),
-  });
+export const createSolidEntity = (
+  imageId: ImageId,
+  pos: Vec2,
+  dim: Vec2 = [1, 1],
+  key?: EntityKey
+) =>
+  new BaseEntity(
+    {
+      position: createOffsetPositionComponent(pos, dim),
+      collision: { type: "solid" },
+      render: new ImageRenderComponent(imageId),
+    },
+    key
+  );
 
 export const withTimeout = (callback: () => void, time: number = 3000) => {
   setTimeout(callback, time);
@@ -65,6 +74,7 @@ export const createKillInteraction = (
   text: "<Murder>",
   response,
   action,
+  isAvailable: (ws: GameWorldState) => ws.items.has(KNIFE),
 });
 
 export const createKillPlayerCallback =

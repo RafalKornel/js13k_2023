@@ -39,6 +39,10 @@ export class Scene extends BaseEntity {
     this.children.delete(key);
   }
 
+  get dim() {
+    return this.components.position.tileDim;
+  }
+
   render(renderer: Renderer) {
     this.components.render?.render(this.components.position, renderer);
 

@@ -47,11 +47,11 @@ export const createJailScene = () => {
       continue;
     }
 
-    jailScene.addChild(createSolidEntity([JAIL_WALL_X, y], IMAGES_KEY.pointer));
+    jailScene.addChild(createSolidEntity(IMAGES_KEY.pointer, [JAIL_WALL_X, y]));
   }
 
   for (let x = tilePos[0]; x < JAIL_WALL_X; x++) {
-    jailScene.addChild(createSolidEntity([x, JAIL_WALL_Y], IMAGES_KEY.pointer));
+    jailScene.addChild(createSolidEntity(IMAGES_KEY.pointer, [x, JAIL_WALL_Y]));
   }
 
   jailScene.addChild(createGuard());
@@ -71,7 +71,7 @@ export const createJailScene = () => {
     }
   );
 
-  jailScene.addChild(playerCellDoor);
+  // jailScene.addChild(playerCellDoor);
   jailScene.addChild(prisonedCellDoor);
 
   return jailScene;

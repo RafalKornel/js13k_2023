@@ -20,8 +20,8 @@ class Guard extends NPC {
   }
 }
 
-export const createGuard = () => {
-  const guard = new Guard(
+export const createGuard = () =>
+  new Guard(
     GUARD_POS,
     GUARD_KEY,
     IMAGES_KEY.hero,
@@ -48,6 +48,3 @@ export const createGuard = () => {
       ),
     ]
   );
-
-  return guard;
-};
