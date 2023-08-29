@@ -16,6 +16,12 @@ import wellClean from "../assets/compiled/well_clean?binary";
 // @ts-ignore
 import wellPoisoned from "../assets/compiled/well_poisoned?binary";
 
+// @ts-ignore
+import wall from "../assets/compiled/wall?binary";
+
+console.log(wall);
+console.log(colorsData);
+
 import { Vec2 } from "./Engine/types";
 import { ImageMetaData } from "./Engine/Renderer/types";
 
@@ -25,6 +31,7 @@ const IMAGES_KEY = {
   hero: 2,
   wellClean: 3,
   wellPoisoned: 4,
+  wall: 5,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -40,6 +47,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.hero]: { data: hero, s: size8 },
   [IMAGES_KEY.wellClean]: { data: wellClean, s: [8, 16] },
   [IMAGES_KEY.wellPoisoned]: { data: wellPoisoned, s: [8, 16] },
+  [IMAGES_KEY.wall]: { data: wall, s: size8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;

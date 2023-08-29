@@ -58,9 +58,9 @@ function encodeImages(inputPath: string, outputPath: string) {
 
     const decoded = png.decode(data);
 
-    const hasTransparency = !decoded.transparency;
+    const colorByteSize = decoded.channels;
 
-    const colorByteSize = hasTransparency ? 4 : 3;
+    const hasTransparency = colorByteSize === 4;
 
     const arr = new Uint8ClampedArray(decoded.width * decoded.height);
 
@@ -72,22 +72,21 @@ function encodeImages(inputPath: string, outputPath: string) {
         const r = decoded.data[i + 0];
         const g = decoded.data[i + 1];
         const b = decoded.data[i + 2];
-        const a = hasTransparency ? decoded.data[i + 3] : undefined;
+        const a = hasTransparency ? decoded.data[i + 3] : 255;
 
         const hex = RGBTAoHex(r, g, b, a);
+
+        // console.log(hex);
 
         if (colorsMap.has(hex)) {
           arr[flatIndex] = colorsMap.get(hex)!;
         } else {
           colorsMap.set(hex, currentColorIdx);
 
-          colors[currentColorIdx * colorByteSize + 0] = r;
-          colors[currentColorIdx * colorByteSize + 1] = g;
-          colors[currentColorIdx * colorByteSize + 2] = b;
-
-          if (hasTransparency) {
-            colors[currentColorIdx * colorByteSize + 3] = a!;
-          }
+          colors[currentColorIdx * BYTES_PER_COLOR + 0] = r;
+          colors[currentColorIdx * BYTES_PER_COLOR + 1] = g;
+          colors[currentColorIdx * BYTES_PER_COLOR + 2] = b;
+          colors[currentColorIdx * BYTES_PER_COLOR + 3] = a;
 
           arr[flatIndex] = currentColorIdx;
 
@@ -102,6 +101,8 @@ function encodeImages(inputPath: string, outputPath: string) {
 
     return arr;
   }
+
+  console.log(colorsMap);
 }
 
 const __dirname = getDirname();

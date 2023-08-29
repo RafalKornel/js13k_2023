@@ -6,6 +6,8 @@ import { Direction, Vec2 } from "../types.ts";
 import { add, convertTileToGlobal, mult, subtract } from "../utils.ts";
 import { CONFIG } from "../config.ts";
 import { Renderer } from "../Renderer/Renderer.ts";
+import { createSolidEntity } from "../../Game/helpers.ts";
+import { IMAGES_KEY } from "../../assets.ts";
 
 export type SceneKey = string;
 
@@ -25,6 +27,7 @@ export class Scene extends BaseEntity {
     this.portals = {};
 
     this.setupPortals(connectedScenes);
+    this.setupBricks();
   }
 
   addChild(child: BaseEntity) {
@@ -46,14 +49,56 @@ export class Scene extends BaseEntity {
   render(renderer: Renderer) {
     this.components.render?.render(this.components.position, renderer);
 
-    renderer.drawText(this.key, "l", convertTileToGlobal(CONFIG.width - 1), 2, {
-      anchor: "right",
-    });
+    if (!this.key.startsWith("T-")) {
+      renderer.drawText(
+        this.key,
+        "l",
+        convertTileToGlobal(CONFIG.width - 1),
+        2,
+        {
+          anchor: "right",
+        }
+      );
+    }
 
     Object.values(this.portals).forEach((portal) => portal.render(renderer));
 
     this.children.forEach((child) => {
       child.render?.(renderer);
+    });
+  }
+
+  private setupBricks() {
+    const p = this.components.position;
+
+    const [x, y] = p.tilePos;
+    const [w, h] = p.tileDim;
+
+    let brickPositions: Vec2[] = [];
+
+    for (let _x = x; _x < x + w; _x++) {
+      brickPositions.push([_x, y]);
+      brickPositions.push([_x, y + h - 1]);
+    }
+
+    for (let _y = y; _y < y + h; _y++) {
+      brickPositions.push([x, _y]);
+      brickPositions.push([x + w - 1, _y]);
+    }
+
+    const portalPositions = Object.values(this.portals).map((p) => {
+      const pp = p.components.position;
+      return subtract(pp.tilePos, mult(pp.tileDim, 0.5));
+    });
+
+    console.log(portalPositions);
+
+    brickPositions = brickPositions.filter(
+      (p) => !portalPositions.find((pp) => pp[0] === p[0] && pp[1] === p[1])
+    );
+
+    brickPositions.forEach((brickPos) => {
+      this.addChild(createSolidEntity(IMAGES_KEY.wall, brickPos));
     });
   }
 
