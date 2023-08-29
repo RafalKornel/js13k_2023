@@ -19,11 +19,15 @@ import wellPoisoned from "../assets/compiled/well_poisoned?binary";
 // @ts-ignore
 import wall from "../assets/compiled/wall?binary";
 
-console.log(wall);
-console.log(colorsData);
-
 import { Vec2 } from "./Engine/types";
 import { ImageMetaData } from "./Engine/Renderer/types";
+
+// const encodeBase64 = (d: string): Uint8ClampedArray =>
+//   new Uint8ClampedArray(
+//     atob(d)
+//       .split("")
+//       .map((c) => c.charCodeAt(0))
+//   );
 
 const IMAGES_KEY = {
   pointer: 0,
@@ -52,6 +56,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
 
 const COLORS = colorsData as Uint8ClampedArray;
 
+// should remove for build
 [...Object.values(ASSETS).map(({ data }) => data), COLORS]
   .flat()
   .forEach((asset) => {

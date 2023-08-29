@@ -2,7 +2,6 @@ import ChildProcess, { exec } from "child_process";
 // @ts-ignore
 import advzip from "advzip-bin";
 import fs from "fs";
-// import path from "path";
 
 const compressDistFolder = () => {
   if (fs.existsSync(ZIP_FILE_PATH)) {
