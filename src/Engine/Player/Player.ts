@@ -38,6 +38,11 @@ export class Player extends BaseEntity {
   }
 
   update(state: GameState): void {
+    if (this.isKilled) {
+      (this.components.render as ImageRenderComponent).imageId =
+        IMAGES_KEY.ghost;
+    }
+
     const pos = this.components.position;
 
     this.interactionCollider.components.position.pos = pos.pos;

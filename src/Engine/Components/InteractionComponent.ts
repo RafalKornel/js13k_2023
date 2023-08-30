@@ -5,6 +5,32 @@ import { Renderer } from "../Renderer/Renderer";
 import { DialogueConfig, Interaction, Vec2, WorldState } from "../types";
 import { add, convertTileVecToGlobal, getEntityPairKey } from "../utils";
 
+class SpeechService {
+  static COUNT = 0;
+
+  static speak(text: string) {
+    return;
+
+    const voices = speechSynthesis
+      .getVoices()
+      .filter((v) => v.lang === "en-US");
+
+    console.log(voices);
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    utterance.voice = voices[SpeechService.COUNT++];
+
+    speechSynthesis.speak(utterance);
+  }
+
+  static stop() {
+    return;
+
+    speechSynthesis.cancel();
+  }
+}
+
 export type ComponentState = "idle" | "available" | "active";
 
 export interface IInteractionComponent<TWorldState extends WorldState> {
@@ -110,6 +136,18 @@ export class DialogueInteractionComponent<
     super();
   }
 
+  startInteraction(): void {
+    super.startInteraction();
+
+    SpeechService.speak(this.dialogueConfig.init);
+  }
+
+  endInteraction(): void {
+    super.endInteraction();
+
+    SpeechService.stop();
+  }
+
   render(entity: BaseEntity, renderer: Renderer): void {
     super.render(entity, renderer);
 
@@ -169,6 +207,12 @@ export class DialogueInteractionComponent<
 
       if (kp.has(dialogueOption.key) && !this.selectedOption) {
         dialogueOption.action?.(state.worldState);
+
+        SpeechService.speak(dialogueOption.text);
+
+        if (typeof dialogueOption.response === "string") {
+          SpeechService.speak(dialogueOption.response);
+        }
 
         this.selectedOption = dialogueOption;
       }

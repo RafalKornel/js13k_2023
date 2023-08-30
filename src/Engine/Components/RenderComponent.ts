@@ -21,7 +21,7 @@ export class RectRenderComponent implements IRenderComponent {
 }
 
 export class ImageRenderComponent implements IRenderComponent {
-  constructor(readonly imageId: ImageId) {}
+  constructor(public imageId: ImageId) {}
 
   render(position: IPositionComponent, renderer: Renderer): void {
     renderer.renderImage(this.imageId, position.pos, position.dir);

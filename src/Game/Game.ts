@@ -79,9 +79,11 @@ export class Game extends Renderer {
 
       if (this.state.inputManager.keysPressed.has("r")) {
         this.restart();
+
+        return;
       }
 
-      return;
+      this.state.sceneManager.changeScene(SCENE_KEYS.empty);
     }
 
     if (ws.hasWon) {

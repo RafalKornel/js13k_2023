@@ -58,7 +58,7 @@ export const flipImage = (
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const i1 = y * size + x;
-      const i2 = y * size + (size - x);
+      const i2 = y * size + (size - x - 1);
 
       res[i1] = copy[i2];
     }
