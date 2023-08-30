@@ -12,6 +12,7 @@ export const getWorldState = () => ({
   isPrisonerFreed: false,
   isPrisonerDoorOpen: false,
   isWellPoisoned: false,
+  isPlayerHelpingBaker: false,
 });
 
 export type GameWorldState = ReturnType<typeof getWorldState>;

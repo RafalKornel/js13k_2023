@@ -84,13 +84,13 @@ export const createKillPlayerCallback =
   (timeInSeconds: number) => (worldState: GameWorldState) =>
     withTimeout(() => {
       worldState.isDead = true;
-    }, timeInSeconds * 1000);
+    }, timeInSeconds);
 
 export const createWinCallback =
   (timeInSeconds: number) => (worldState: GameWorldState) =>
     withTimeout(() => {
       worldState.hasWon = true;
-    }, timeInSeconds * 1000);
+    }, timeInSeconds);
 
 export const createBrickSceneRenderComponent = () =>
   new RectRenderComponent("#371415", "topLeft");

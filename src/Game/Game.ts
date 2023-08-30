@@ -28,8 +28,8 @@ const createGameState = () =>
   new GameState(
     new InputManager(),
     new SceneManager([
-      createJailScene(),
       createBakeryScene(),
+      createJailScene(),
       createWellScene(),
       createDoctorOfficeScene(),
       createTavernScene(),
@@ -63,6 +63,8 @@ export class Game extends Renderer {
     super(gameCanvas, textCanvas, colors, assets, options);
 
     this.state = createGameState();
+
+    console.log(this.state);
 
     this.player = createPlayer(this.state);
   }

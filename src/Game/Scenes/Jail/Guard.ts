@@ -44,7 +44,7 @@ export const createGuard = () =>
           withTimeout(() => {
             ws.killedEntities.add(GUARD_KEY);
             ws.items.add(CELL_KEY.key);
-          });
+          }, 2);
         },
         (ws) => ws.items.has(KNIFE.key) && !ws.killedEntities.has(GUARD_KEY)
       ),

@@ -95,6 +95,7 @@ export interface IDIalogueInteractionComponent<TWorldState extends WorldState>
 export class DialogueInteractionComponent<
   TWorldState extends WorldState
 > extends BaseInteractionComponent<TWorldState> {
+  private _availableOptions: Interaction[] = [];
   private _availableInteractions: Interaction[] = [];
   private _performedInteractions: Set<Interaction> = new Set();
 
@@ -136,10 +137,7 @@ export class DialogueInteractionComponent<
       if (this.selectedOption) {
         options = this._availableInteractions;
       } else {
-        options = [
-          ...this.dialogueConfig.options,
-          ...this._availableInteractions,
-        ];
+        options = [...this._availableOptions, ...this._availableInteractions];
       }
 
       renderer.dialogueModal(lines, options);
@@ -151,6 +149,10 @@ export class DialogueInteractionComponent<
 
     if (entity.isKilled) return;
 
+    this._availableOptions = this.dialogueConfig.options.filter((option) =>
+      option.isAvailable ? option.isAvailable(state.worldState) : true
+    );
+
     this._availableInteractions = this.interactions.filter((interaction) =>
       interaction.isAvailable ? interaction.isAvailable(state.worldState) : true
     );
@@ -160,7 +162,7 @@ export class DialogueInteractionComponent<
 
     const kp: Set<string> = state.inputManager.keysPressed;
 
-    for (const dialogueOption of this.dialogueConfig.options) {
+    for (const dialogueOption of this._availableOptions) {
       if (ic.state !== "active") return;
 
       if (this._prevKP.has(dialogueOption.key)) continue;
@@ -177,9 +179,7 @@ export class DialogueInteractionComponent<
 
       if (this._prevKP.has(interaction.key)) continue;
 
-      if (
-        kp.has(interaction.key)
-      ) {
+      if (kp.has(interaction.key)) {
         interaction.action?.(state.worldState);
 
         this._performedInteractions.add(interaction);
