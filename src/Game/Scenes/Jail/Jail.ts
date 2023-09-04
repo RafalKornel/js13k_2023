@@ -41,8 +41,10 @@ export const createJailScene = () => {
 
   const { tilePos, tileDim } = jailScene.components.position;
 
-  for (let y = JAIL_WALL_Y; y <= tileDim[1] - 1; y++) {
-    jailScene.addChild(createSolidEntity(IMAGES_KEY.pointer, [JAIL_WALL_X, y]));
+  for (let y = JAIL_WALL_Y + 1; y <= tileDim[1] - 1; y++) {
+    const e = createSolidEntity(IMAGES_KEY.jailBars, [JAIL_WALL_X, y]);
+    e.components.position.dir = "t";
+    jailScene.addChild(e);
   }
 
   for (let x = tilePos[0] + 1; x < tileDim[0] - 1; x++) {
@@ -50,7 +52,9 @@ export const createJailScene = () => {
       continue;
     }
 
-    jailScene.addChild(createSolidEntity(IMAGES_KEY.pointer, [x, JAIL_WALL_Y]));
+    jailScene.addChild(
+      createSolidEntity(IMAGES_KEY.jailBars, [x, JAIL_WALL_Y])
+    );
   }
 
   jailScene.addChild(createGuard());

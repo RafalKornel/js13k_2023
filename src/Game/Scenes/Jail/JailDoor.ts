@@ -1,9 +1,12 @@
 import { BaseEntity, EntityKey } from "../../../Engine/BaseEntity";
 import { BaseInteractionComponent } from "../../../Engine/Components/InteractionComponent";
-import { RectRenderComponent } from "../../../Engine/Components/RenderComponent";
+import {
+  ImageRenderComponent,
+} from "../../../Engine/Components/RenderComponent";
 import { GameState } from "../../../Engine/GameState";
 import { Renderer } from "../../../Engine/Renderer/Renderer";
 import { Vec2 } from "../../../Engine/types";
+import { IMAGES_KEY } from "../../../assets";
 import { GameWorldState } from "../../WorldState";
 import { createOffsetPositionComponent } from "../../helpers";
 import { CELL_KEY } from "../../items";
@@ -46,7 +49,7 @@ export class JailDoor extends BaseEntity {
       {
         position: createOffsetPositionComponent(pos),
         collision: { type: "interactable" },
-        render: new RectRenderComponent(JailDoor.CLOSED_COLOR),
+        render: new ImageRenderComponent(IMAGES_KEY.jailDoor),
         interaction: new DoorInteractionComponent(),
       },
       key
@@ -60,8 +63,7 @@ export class JailDoor extends BaseEntity {
 
     if (i.isOpen) {
       this.components.collision!.type = "none";
-      (this.components.render as RectRenderComponent).color =
-        JailDoor.OPEN_COLOR;
+      this.components.render = undefined;
 
       this.onOpen?.(state.worldState);
     }

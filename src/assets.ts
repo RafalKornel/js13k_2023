@@ -2,25 +2,31 @@
 import colorsData from "../assets/compiled/colors?binary";
 
 // @ts-ignore
-import smile from "../assets/compiled/smile?binary";
-
-// @ts-ignore
 import pointer from "../assets/compiled/pointer?binary";
 
 // @ts-ignore
-import hero from "../assets/compiled/bohater1?binary";
+import hero from "../assets/compiled/hero?binary";
 
 // @ts-ignore
-import wellClean from "../assets/compiled/furnace?binary";
-
-// @ts-ignore
-import wellPoisoned from "../assets/compiled/well_poisoned?binary";
+import furnace from "../assets/compiled/furnace?binary";
 
 // @ts-ignore
 import wall from "../assets/compiled/wall2?binary";
 
 // @ts-ignore
+import wellNormal from "../assets/compiled/well_normal?binary";
+
+// @ts-ignore
+import wellPoisoned from "../assets/compiled/well_poisoned?binary";
+
+// @ts-ignore
 import ghost from "../assets/compiled/ghost?binary";
+
+// @ts-ignore
+import jailBars from "../assets/compiled/jail_bars?binary";
+
+// @ts-ignore
+import jailDoor from "../assets/compiled/jail_door?binary";
 
 import { Vec2 } from "./Engine/types";
 import { ImageMetaData } from "./Engine/Renderer/types";
@@ -34,12 +40,13 @@ import { ImageMetaData } from "./Engine/Renderer/types";
 
 const IMAGES_KEY = {
   pointer: 0,
-  smile: 1,
   hero: 2,
   wellClean: 3,
   wellPoisoned: 4,
   wall: 5,
   ghost: 6,
+  jailBars: 7,
+  jailDoor: 8,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -47,16 +54,18 @@ type ImageKey = keyof typeof IMAGES_KEY;
 type ImageId = (typeof IMAGES_KEY)[ImageKey];
 
 const size8: Vec2 = [8, 8];
+const tallSize8: Vec2 = [8, 16];
 // const size16: Vec2 = [16, 16];
 
 const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.pointer]: { data: pointer, s: size8 },
-  [IMAGES_KEY.smile]: { data: smile, s: size8 },
   [IMAGES_KEY.hero]: { data: hero, s: size8 },
-  [IMAGES_KEY.wellClean]: { data: wellClean, s: [8, 16] },
-  [IMAGES_KEY.wellPoisoned]: { data: wellPoisoned, s: [8, 16] },
+  [IMAGES_KEY.wellClean]: { data: wellNormal, s: tallSize8 },
+  [IMAGES_KEY.wellPoisoned]: { data: wellPoisoned, s: tallSize8 },
   [IMAGES_KEY.wall]: { data: wall, s: size8 },
   [IMAGES_KEY.ghost]: { data: ghost, s: size8 },
+  [IMAGES_KEY.jailBars]: { data: jailBars, s: size8 },
+  [IMAGES_KEY.jailDoor]: { data: jailDoor, s: size8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;
