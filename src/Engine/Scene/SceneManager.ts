@@ -33,7 +33,9 @@ export class SceneManager {
     this.scene.update?.(state);
 
     this.scene.children.forEach((child) => {
-      child.update(state);
+      if (child.state === "active") {
+        child.update(state);
+      }
     });
   }
 

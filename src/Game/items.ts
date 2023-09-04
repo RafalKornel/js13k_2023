@@ -6,8 +6,9 @@ export const HAMMER = { key: "Hammer", price: 2 };
 export const BREAD = { key: "Bread", price: 2 };
 export const POISON = { key: "Poison", price: 3 };
 export const ELIXIR = { key: "Elixir", price: 3 };
+export const WATER_BUCKER = { key: "Bucket of water", price: 1 };
 
-export const ITEMS = [KNIFE, CELL_KEY, HAMMER, BREAD, POISON, ELIXIR] as const;
+export const ITEMS = [KNIFE, CELL_KEY, HAMMER, BREAD, POISON, ELIXIR, WATER_BUCKER] as const;
 
 export type Item = (typeof ITEMS)[number];
 

@@ -45,7 +45,7 @@ export class CollisionManager {
 
     const playerEntities = [player, player.interactionCollider];
 
-    const allEntities = [...entities];
+    const allEntities = [...entities.filter((e) => e.state !== "inactive")];
 
     const traverse = (entity: BaseEntity) => {
       for (const [_, child] of entity.children) {

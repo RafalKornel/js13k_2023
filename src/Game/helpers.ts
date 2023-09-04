@@ -70,7 +70,7 @@ export const createPickpocketInteraction = (
 });
 
 export const createKillInteraction = (
-  response: string | InteractionResponseCallback<GameWorldState> = "Argh...",
+  response: string = "Argh...",
   action?: InteractionActionCallback<GameWorldState>
 ): Interaction => ({
   key: "k",

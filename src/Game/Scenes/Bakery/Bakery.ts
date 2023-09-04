@@ -8,6 +8,7 @@ import {
 } from "../../helpers";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { createBaker } from "./Baker";
+import { createBeggar } from "./Beggar";
 
 class BakeryScene extends Scene {}
 
@@ -21,7 +22,9 @@ export const createBakeryScene = () => {
     }
   );
 
-  bakeryScene.addChild(createBaker());
+  bakeryScene.addChild(createBaker([5, 5]));
+
+  bakeryScene.addChild(createBeggar([10, 5]));
 
   // bakeryScene.addChild(createSolidEntity(IMAGES_KEY.wellClean, []))
 

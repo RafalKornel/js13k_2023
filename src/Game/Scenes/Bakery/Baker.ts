@@ -1,21 +1,33 @@
+import { GameState } from "../../../Engine/GameState";
+import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
+import { GameWorldState } from "../../WorldState";
 import {
   createGameInteraction,
   createKillInteraction,
   createKillPlayerCallback,
   createPickpocketInteraction,
   createWinCallback,
+  withTimeout,
 } from "../../helpers";
-import { BREAD, buyItem } from "../../items";
+import { BREAD, WATER_BUCKER, buyItem } from "../../items";
 
-const BAKER_KEY = "Ernest";
+export const BAKER_KEY = "Ernest";
 
-class Baker extends NPC {}
+class Baker extends NPC {
+  update(state: GameState<GameWorldState>): void {
+    super.update(state);
 
-export const createBaker = () =>
+    if (state.worldState.isWellPoisoned) {
+      state.worldState.baker.add(WATER_BUCKER.key);
+    }
+  }
+}
+
+export const createBaker = (pos: Vec2) =>
   new Baker(
-    [5, 5],
+    pos,
     BAKER_KEY,
     IMAGES_KEY.hero,
     {
@@ -42,7 +54,8 @@ export const createBaker = () =>
       ],
     },
     [
-      createGameInteraction("3", ...buyItem(BREAD)),
+      createGameInteraction("3", ...buyItem(BREAD, (ws) => ws.baker)),
+      createGameInteraction("4", ...buyItem(WATER_BUCKER, (ws) => ws.baker)),
       createGameInteraction(
         "q",
         "I poisoned the well",
@@ -51,7 +64,9 @@ export const createBaker = () =>
         (ws) => ws.isWellPoisoned && ws.isPlayerHelpingBaker
       ),
       createKillInteraction("Arghh", (ws) => {
-        ws.killedEntities.add(BAKER_KEY);
+        withTimeout(() => {
+          ws.killedEntities.add(BAKER_KEY);
+        });
       }),
       createPickpocketInteraction(
         "Hey! Get your hands off of me!\nGuards!!",

@@ -6,7 +6,6 @@ import { GameState } from "../Engine/GameState";
 import { DialogueConfig, Interaction, Vec2 } from "../Engine/types";
 import { ImageId } from "../assets";
 import { createOffsetPositionComponent } from "./helpers";
-import { GameWorldState } from "./WorldState";
 
 export class NPC extends BaseEntity {
   constructor(
@@ -36,7 +35,9 @@ export class NPC extends BaseEntity {
     this.components.interaction!.render!(this, renderer);
   }
 
-  update(state: GameState<GameWorldState>) {
+  update(state: GameState) {
+    super.update(state);
+
     if (state.worldState.killedEntities.has(this.key)) {
       this.isKilled = true;
     }
