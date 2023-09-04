@@ -1,7 +1,8 @@
 import { EntityKey } from "../Engine/BaseEntity";
-import { BREAD, HAMMER, ItemKey, KNIFE, POISON } from "./items";
+import { BREAD, HAMMER, ItemKey, POISON } from "./items";
 
 export const getWorldState = () => ({
+  sceneJumps: 0,
   items: new Set<ItemKey>([]),
   coins: 10,
   banker: new Set<ItemKey>(),
@@ -19,6 +20,8 @@ export const getWorldState = () => ({
   isPlayerHelpingBaker: false,
   didHelpWitch: false,
   didChoseWitchReward: false,
+  didHelpDoctor: false,
+  firstInteractionWithLaundress: 0,
 });
 
 export type GameWorldState = ReturnType<typeof getWorldState>;

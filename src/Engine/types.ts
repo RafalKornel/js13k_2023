@@ -26,7 +26,11 @@ export type Interaction<TWorldState = any> = {
 
 export type TextSize = "m" | "l";
 
-export type WorldState = Record<string, any>;
+export type BaseWorldState = {
+  sceneJumps: number;
+};
+
+export type WorldState = Record<string, any> & BaseWorldState;
 
 export type DialogueConfig = {
   init: string;

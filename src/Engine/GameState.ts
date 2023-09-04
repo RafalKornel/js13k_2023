@@ -1,7 +1,7 @@
 import { CollisionManager } from "./CollisionManager";
 import { InputManager } from "./InputManager";
 import { SceneManager } from "./Scene/SceneManager";
-import { WorldState } from "./types";
+import { BaseWorldState, WorldState } from "./types";
 
 interface IGameState {
   inputManager: InputManager;
@@ -10,7 +10,7 @@ interface IGameState {
   worldState: WorldState;
 }
 
-export class GameState<TWorldState extends WorldState = any>
+export class GameState<TWorldState extends WorldState = BaseWorldState>
   implements IGameState
 {
   constructor(

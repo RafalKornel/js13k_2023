@@ -5,11 +5,12 @@ import {
   createScenePositionComponent,
 } from "../../helpers";
 import { SCENE_KEYS, TUNNELS } from "../constants";
+import { createLaundress } from "./Laundress";
 
 class LaundryScene extends Scene {}
 
-export const createLaundryScene = () =>
-  new LaundryScene(
+export const createLaundryScene = () => {
+  const laundryScene = new LaundryScene(
     SCENE_KEYS.laundry,
     createScenePositionComponent([2, 1], [12, CONFIG.height - 1]),
     createBrickSceneRenderComponent(),
@@ -17,3 +18,8 @@ export const createLaundryScene = () =>
       d: TUNNELS.wt,
     }
   );
+
+  laundryScene.addChild(createLaundress([4, 4]));
+
+  return laundryScene;
+};

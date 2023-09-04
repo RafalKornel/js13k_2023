@@ -28,8 +28,8 @@ const createGameState = () =>
   new GameState(
     new InputManager(),
     new SceneManager([
-      createJailScene(),
       createWellScene(),
+      createJailScene(),
       createBakeryScene(),
       createDoctorOfficeScene(),
       createTavernScene(),
@@ -83,7 +83,7 @@ export class Game extends Renderer {
         return;
       }
 
-      this.gameState.sceneManager.changeScene(SCENE_KEYS.empty);
+      this.setEmptyScene();
     }
 
     if (ws.hasWon) {
@@ -93,7 +93,7 @@ export class Game extends Renderer {
         return;
       }
 
-      this.gameState.sceneManager.changeScene(SCENE_KEYS.empty);
+      this.setEmptyScene();
     }
 
     this.gameState.sceneManager.update(this.gameState);
@@ -103,6 +103,12 @@ export class Game extends Renderer {
       this.player,
       this.gameState.sceneManager.scene
     );
+  }
+
+  setEmptyScene() {
+    if (this.gameState.sceneManager.scene.key === SCENE_KEYS.empty) return;
+
+    this.gameState.sceneManager.changeScene(SCENE_KEYS.empty);
   }
 
   private render() {

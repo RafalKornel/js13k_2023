@@ -50,8 +50,12 @@ export class BaseInteractionComponent<TWorldState extends WorldState>
 {
   state: ComponentState = "idle";
 
-  startInteraction(): void {
+  public lastInteractionSceneJumpIndex = 0;
+
+  startInteraction(sceneJumpIndex?: number): void {
     this.state = "active";
+
+    this.lastInteractionSceneJumpIndex = sceneJumpIndex || 0;
   }
 
   endInteraction(): void {
@@ -102,7 +106,7 @@ export class BaseInteractionComponent<TWorldState extends WorldState>
     }
 
     if (this.state === "available" && kp.has("e") && !entity.isKilled) {
-      this.startInteraction();
+      this.startInteraction(state.worldState.sceneJumps);
     }
 
     if (this.state === "active" && kp.has("x")) {
@@ -136,8 +140,8 @@ export class DialogueInteractionComponent<
     super();
   }
 
-  startInteraction(): void {
-    super.startInteraction();
+  startInteraction(...args: any[]): void {
+    super.startInteraction(...args);
 
     SpeechService.speak(this.dialogueConfig.init);
   }
