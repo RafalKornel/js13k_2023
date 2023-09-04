@@ -10,6 +10,7 @@ import {
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { createBanker } from "./Banker";
 import { createMerchant } from "./Merchant";
+import { createWitch } from "./Witch";
 
 const WELL_OBJECT_KEY = "well_obj";
 
@@ -35,6 +36,8 @@ class WellScene extends Scene {
 
     this.addChild(createMerchant([3, 3]));
     this.addChild(createBanker([w - 4, 3]));
+
+    this.addChild(createWitch([12, 8]));
   }
 
   update(state: GameState<GameWorldState>): void {
