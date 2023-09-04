@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "yarn compile && yarn vite-build",
+    "build": "yarn compile && yarn vite-build && yarn compress",
     "vite-build": "vite build",
     "ts-check": "tsc",
     "preview": "vite preview",
