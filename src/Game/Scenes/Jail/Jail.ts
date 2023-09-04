@@ -64,6 +64,7 @@ export const createJailScene = () => {
   const playerCellDoor = new JailDoor(
     "Cell door",
     [JAIL_DOORS_X[0], JAIL_WALL_Y],
+    "r",
     (ws) => {
       ws.isPlayerDoorOpen = true;
     }
@@ -72,18 +73,21 @@ export const createJailScene = () => {
   const prisonedCellDoor = new JailDoor(
     "Prisoner cell door",
     [JAIL_DOORS_X[1], JAIL_WALL_Y],
+    "l",
     (ws) => {
       ws.isPrisonerDoorOpen = true;
     }
   );
 
   const shieldsMetadata = [
-    [5, 1, "l"],
-    [11, 1, "l"],
-    [0, 4, "t"],
-    [0, 8, "t"],
-    [15, 4, "d"],
-    [15, 8, "d"],
+    [4, 1, "l"],
+    [12, 1, "l"],
+    [4, 11, "ur"],
+    [12, 11, "ul"],
+    [0, 3, "t"],
+    [0, 9, "t"],
+    [15, 3, "d"],
+    [15, 9, "d"],
   ] as const;
 
   shieldsMetadata.forEach(([x, y, dir]) =>
@@ -92,7 +96,7 @@ export const createJailScene = () => {
     )
   );
 
-  jailScene.addChild(createSolidEntity(IMAGES_KEY.shieldRed, [11, 1], [1, 1]));
+  // jailScene.addChild(createSolidEntity(IMAGES_KEY.shieldRed, [11, 1], [1, 1]));
 
   jailScene.addChild(playerCellDoor);
   jailScene.addChild(prisonedCellDoor);

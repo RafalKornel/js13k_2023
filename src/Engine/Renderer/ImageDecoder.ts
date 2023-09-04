@@ -3,8 +3,6 @@ import { Assets, Colors, ImageCacheKey } from "./types";
 import { flipImage, rotate90Deg } from "../utils";
 import { getImageCacheKey } from "./utils";
 
-const SUPPORTED_DIRECTIONS: Direction[] = ["l", "r", "d"];
-
 type ImageData = [data: Uint8ClampedArray, dim: Vec2];
 
 interface ICustomImageDecoder {
@@ -45,18 +43,24 @@ export class CustomImageDecoder implements ICustomImageDecoder {
 
     const { data, s } = imageData;
 
-    for (const dir of SUPPORTED_DIRECTIONS) {
-      const cacheKey = getImageCacheKey(imageId, dir);
-
-      this.decompress(cacheKey, data, s);
-    }
-
     this.decompress(getImageCacheKey(imageId, "r"), data, s);
-    this.decompress(getImageCacheKey(imageId, "l"), flipImage(data, s[0]), s);
-    this.decompress(getImageCacheKey(imageId, "t"), rotate90Deg(data, s[0]), s);
+    this.decompress(getImageCacheKey(imageId, "l"), flipImage(data, s), s);
+    this.decompress(getImageCacheKey(imageId, "t"), rotate90Deg(data, s), s);
     this.decompress(
       getImageCacheKey(imageId, "d"),
-      flipImage(rotate90Deg(data, s[0]), s[0]),
+      flipImage(rotate90Deg(data, s), s),
+      s
+    );
+
+    this.decompress(
+      getImageCacheKey(imageId, "ur"),
+      flipImage(data, s, "y"),
+      s
+    );
+
+    this.decompress(
+      getImageCacheKey(imageId, "ul"),
+      flipImage(flipImage(data, s, "y"), s, "x"),
       s
     );
   }

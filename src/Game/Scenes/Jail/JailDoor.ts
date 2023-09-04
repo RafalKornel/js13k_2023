@@ -1,8 +1,6 @@
 import { BaseEntity, EntityKey } from "../../../Engine/BaseEntity";
 import { BaseInteractionComponent } from "../../../Engine/Components/InteractionComponent";
-import {
-  ImageRenderComponent,
-} from "../../../Engine/Components/RenderComponent";
+import { ImageRenderComponent } from "../../../Engine/Components/RenderComponent";
 import { GameState } from "../../../Engine/GameState";
 import { Renderer } from "../../../Engine/Renderer/Renderer";
 import { Vec2 } from "../../../Engine/types";
@@ -43,11 +41,12 @@ export class JailDoor extends BaseEntity {
   constructor(
     key: EntityKey,
     pos: Vec2,
+    dir?: "l" | "r",
     readonly onOpen?: (ws: GameWorldState) => void
   ) {
     super(
       {
-        position: createOffsetPositionComponent(pos),
+        position: createOffsetPositionComponent(pos, [1, 1], dir),
         collision: { type: "interactable" },
         render: new ImageRenderComponent(IMAGES_KEY.jailDoor),
         interaction: new DoorInteractionComponent(),
