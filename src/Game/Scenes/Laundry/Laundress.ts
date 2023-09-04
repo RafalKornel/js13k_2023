@@ -1,4 +1,3 @@
-import { DialogueInteractionComponent } from "../../../Engine/Components/InteractionComponent";
 import { GameState } from "../../../Engine/GameState";
 import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
@@ -12,31 +11,13 @@ const LAUNDRESS_KEY = "Laundress";
 const GRATITUDE_DIALOGUE =
   "Thank you.\nYou are very kind man...\nYou can use my staircase if you\nwant to get out of here...";
 
-const SCENE_JUMPS_UNTIL_DEATH = 20;
+const DEATH_THRESHOLD = 20;
 
 class Laundress extends NPC {
   update(state: GameState<GameWorldState>): void {
     super.update(state);
 
-    const dic = this.components
-      .interaction as DialogueInteractionComponent<GameWorldState>;
-
-    if (
-      state.worldState.firstInteractionWithLaundress !==
-      dic.lastInteractionSceneJumpIndex
-    ) {
-      state.worldState.firstInteractionWithLaundress =
-        dic.lastInteractionSceneJumpIndex;
-    }
-
-    if (
-      state.worldState.firstInteractionWithLaundress !== 0 &&
-      state.worldState.sceneJumps -
-        state.worldState.firstInteractionWithLaundress >=
-        SCENE_JUMPS_UNTIL_DEATH
-    ) {
-      this.isKilled = true;
-    }
+    this.handleTimedDeath(state.worldState, DEATH_THRESHOLD);
   }
 }
 

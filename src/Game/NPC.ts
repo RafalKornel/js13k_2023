@@ -45,4 +45,31 @@ export class NPC extends BaseEntity {
 
     this.components.interaction!.update!(this, state);
   }
+
+  protected handleTimedDeath(
+    worldState: GameWorldState,
+    deathThreshold: number
+  ) {
+    const dic = this.components
+      .interaction as DialogueInteractionComponent<GameWorldState>;
+
+    const firstInteractions = worldState.firstInteractions;
+
+    let firstInteractionWithNPC = firstInteractions.get(this.key);
+
+    if (
+      !firstInteractionWithNPC ||
+      firstInteractionWithNPC !== dic.lastInteractionSceneJumpIndex
+    ) {
+      firstInteractionWithNPC = dic.lastInteractionSceneJumpIndex;
+      firstInteractions.set(this.key, firstInteractionWithNPC);
+    }
+
+    if (
+      !!firstInteractionWithNPC &&
+      worldState.sceneJumps - firstInteractionWithNPC >= deathThreshold
+    ) {
+      this.isKilled = true;
+    }
+  }
 }

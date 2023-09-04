@@ -22,6 +22,7 @@ export const getWorldState = () => ({
   didChoseWitchReward: false,
   didHelpDoctor: false,
   firstInteractionWithLaundress: 0,
+  firstInteractions: new Map<EntityKey, number>(),
 });
 
 export type GameWorldState = ReturnType<typeof getWorldState>;

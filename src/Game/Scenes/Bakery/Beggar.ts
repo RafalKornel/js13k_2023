@@ -7,11 +7,17 @@ import { createGameInteraction, createWinCallback } from "../../helpers";
 import { WATER_BUCKER } from "../../items";
 import { BAKER_KEY } from "./Baker";
 
+const DEATH_THRESHOLD = 20;
+
 class Beggar extends NPC {
   update(state: GameState<GameWorldState>): void {
     super.update(state);
 
     this.state = state.worldState.isWellPoisoned ? "active" : "inactive";
+
+    if (this.state === "inactive") return;
+
+    this.handleTimedDeath(state.worldState, DEATH_THRESHOLD);
   }
 }
 
