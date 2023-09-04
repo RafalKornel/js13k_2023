@@ -77,6 +77,23 @@ export const createJailScene = () => {
     }
   );
 
+  const shieldsMetadata = [
+    [5, 1, "l"],
+    [11, 1, "l"],
+    [0, 4, "t"],
+    [0, 8, "t"],
+    [15, 4, "d"],
+    [15, 8, "d"],
+  ] as const;
+
+  shieldsMetadata.forEach(([x, y, dir]) =>
+    jailScene.addChild(
+      createSolidEntity(IMAGES_KEY.shieldRed, [x, y], [1, 1], undefined, dir)
+    )
+  );
+
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.shieldRed, [11, 1], [1, 1]));
+
   jailScene.addChild(playerCellDoor);
   jailScene.addChild(prisonedCellDoor);
 

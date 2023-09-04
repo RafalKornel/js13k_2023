@@ -28,6 +28,9 @@ import jailBars from "../assets/compiled/jail_bars?binary";
 // @ts-ignore
 import jailDoor from "../assets/compiled/jail_door?binary";
 
+// @ts-ignore
+import shieldRed from "../assets/compiled/shield_red?binary";
+
 import { Vec2 } from "./Engine/types";
 import { ImageMetaData } from "./Engine/Renderer/types";
 
@@ -47,6 +50,7 @@ const IMAGES_KEY = {
   ghost: 6,
   jailBars: 7,
   jailDoor: 8,
+  shieldRed: 9,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -66,6 +70,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.ghost]: { data: ghost, s: size8 },
   [IMAGES_KEY.jailBars]: { data: jailBars, s: size8 },
   [IMAGES_KEY.jailDoor]: { data: jailDoor, s: size8 },
+  [IMAGES_KEY.shieldRed]: { data: shieldRed, s: size8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;

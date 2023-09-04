@@ -7,6 +7,7 @@ import {
 import { SceneKey, Scene, ConnectedScenes } from "../Engine/Scene/Scene";
 import { CONFIG } from "../Engine/config";
 import {
+  Direction,
   Interaction,
   InteractionActionCallback,
   InteractionAvailabilityCallback,
@@ -22,18 +23,19 @@ export const createScenePositionComponent = (
   dim: Vec2 = [CONFIG.width, CONFIG.height - 1]
 ) => new PositionComponent(pos, dim);
 
-export const createOffsetPositionComponent = (pos: Vec2, dim: Vec2 = [1, 1]) =>
-  new PositionComponent(add(pos, mult(dim, 0.5)), dim);
+export const createOffsetPositionComponent = (pos: Vec2, dim: Vec2 = [1, 1], dir?: Direction) =>
+  new PositionComponent(add(pos, mult(dim, 0.5)), dim, dir);
 
 export const createSolidEntity = (
   imageId: ImageId,
   pos: Vec2,
   dim: Vec2 = [1, 1],
-  key?: EntityKey
+  key?: EntityKey,
+  dir?: Direction
 ) =>
   new BaseEntity(
     {
-      position: createOffsetPositionComponent(pos, dim),
+      position: createOffsetPositionComponent(pos, dim, dir),
       collision: { type: "solid" },
       render: new ImageRenderComponent(imageId),
     },

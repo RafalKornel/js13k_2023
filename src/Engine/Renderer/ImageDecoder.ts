@@ -54,6 +54,11 @@ export class CustomImageDecoder implements ICustomImageDecoder {
     this.decompress(getImageCacheKey(imageId, "r"), data, s);
     this.decompress(getImageCacheKey(imageId, "l"), flipImage(data, s[0]), s);
     this.decompress(getImageCacheKey(imageId, "t"), rotate90Deg(data, s[0]), s);
+    this.decompress(
+      getImageCacheKey(imageId, "d"),
+      flipImage(rotate90Deg(data, s[0]), s[0]),
+      s
+    );
   }
 
   decompress(key: ImageCacheKey, data: Uint8ClampedArray, size: Vec2) {
