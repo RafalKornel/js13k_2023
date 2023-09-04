@@ -13,6 +13,8 @@ export const getWorldState = () => ({
   isDead: false,
   isPrisonerFreed: false,
   isPrisonerDoorOpen: false,
+  isPlayerDoorOpen: false,
+  isGuardAwake: false,
   isWellPoisoned: false,
   isPlayerHelpingBaker: false,
   didHelpWitch: false,

@@ -6,7 +6,12 @@ import {
 } from "../Engine/Components/RenderComponent";
 import { SceneKey, Scene, ConnectedScenes } from "../Engine/Scene/Scene";
 import { CONFIG } from "../Engine/config";
-import { Interaction, InteractionActionCallback, Vec2 } from "../Engine/types";
+import {
+  Interaction,
+  InteractionActionCallback,
+  InteractionAvailabilityCallback,
+  Vec2,
+} from "../Engine/types";
 import { add, mult } from "../Engine/utils";
 import { ImageId } from "../assets";
 import { GameWorldState } from "./WorldState";
@@ -57,7 +62,8 @@ export function createGameInteraction(
 export const createPickpocketInteraction = (
   entityKey: EntityKey,
   response: string,
-  action?: InteractionActionCallback<GameWorldState>
+  action?: InteractionActionCallback<GameWorldState>,
+  isAvailable?: InteractionAvailabilityCallback<GameWorldState>
 ): Interaction => ({
   key: "p",
   text: "<Pickpocket>",
@@ -69,12 +75,14 @@ export const createPickpocketInteraction = (
 
     return action?.(ws);
   },
-  isAvailable: (ws) => !ws.robbedEntities.has(entityKey),
+  isAvailable: (ws) =>
+    !ws.robbedEntities.has(entityKey) && (isAvailable ? isAvailable(ws) : true),
 });
 
 export const createSuccessfullPickpocketInteraction = (
   entityKey: EntityKey,
-  reward: number | ItemKey
+  reward: number | ItemKey,
+  isAvailable?: InteractionAvailabilityCallback<GameWorldState>
 ) =>
   createPickpocketInteraction(
     entityKey,
@@ -85,17 +93,20 @@ export const createSuccessfullPickpocketInteraction = (
       } else {
         ws.items.add(reward);
       }
-    }
+    },
+    isAvailable
   );
 
 export const createFailedPickpocketInteraction = (
   entityKey: EntityKey,
-  killText = "Stabs you in the chest"
+  killText = "Stabs you in the chest",
+  isAvailable?: InteractionAvailabilityCallback<GameWorldState>
 ) =>
   createPickpocketInteraction(
     entityKey,
     `What are you trying to do??\n<${killText}>`,
-    createKillPlayerCallback(3)
+    createKillPlayerCallback(3),
+    isAvailable
   );
 
 export const createKillInteraction = (

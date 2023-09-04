@@ -61,10 +61,13 @@ export const createJailScene = () => {
 
   jailScene.addChild(createPrisoner());
 
-  const playerCellDoor = new JailDoor("Cell door", [
-    JAIL_DOORS_X[0],
-    JAIL_WALL_Y,
-  ]);
+  const playerCellDoor = new JailDoor(
+    "Cell door",
+    [JAIL_DOORS_X[0], JAIL_WALL_Y],
+    (ws) => {
+      ws.isPlayerDoorOpen = true;
+    }
+  );
 
   const prisonedCellDoor = new JailDoor(
     "Prisoner cell door",
