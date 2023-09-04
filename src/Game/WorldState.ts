@@ -8,6 +8,7 @@ export const getWorldState = () => ({
   merchant: new Set<ItemKey>([HAMMER.key, POISON.key]),
   baker: new Set<ItemKey>([BREAD.key]),
   killedEntities: new Set<EntityKey>(),
+  robbedEntities: new Set<EntityKey>(),
   hasWon: false,
   isDead: false,
   isPrisonerFreed: false,

@@ -2,7 +2,11 @@ import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
 import { CELL_KEY, KNIFE } from "../../items";
-import { createGameInteraction, withTimeout } from "../../helpers";
+import {
+  createGameInteraction,
+  createSuccessfullPickpocketInteraction,
+  withTimeout,
+} from "../../helpers";
 import { GameState } from "../../../Engine/GameState";
 import { GameWorldState } from "../../WorldState";
 
@@ -48,5 +52,6 @@ export const createGuard = () =>
         },
         (ws) => ws.items.has(KNIFE.key) && !ws.killedEntities.has(GUARD_KEY)
       ),
+      createSuccessfullPickpocketInteraction(GUARD_KEY, CELL_KEY.key),
     ]
   );

@@ -66,9 +66,10 @@ export const createBaker = (pos: Vec2) =>
       createKillInteraction("Arghh", (ws) => {
         withTimeout(() => {
           ws.killedEntities.add(BAKER_KEY);
-        });
+        }, 2);
       }),
       createPickpocketInteraction(
+        BAKER_KEY,
         "Hey! Get your hands off of me!\nGuards!!",
         createKillPlayerCallback(3)
       ),

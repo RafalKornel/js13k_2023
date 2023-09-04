@@ -28,9 +28,9 @@ const createGameState = () =>
   new GameState(
     new InputManager(),
     new SceneManager([
+      createWellScene(),
       createJailScene(),
       createBakeryScene(),
-      createWellScene(),
       createDoctorOfficeScene(),
       createTavernScene(),
       createWellLeftTunnel(),

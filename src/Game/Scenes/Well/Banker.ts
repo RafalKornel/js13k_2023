@@ -1,8 +1,11 @@
 import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
-import { createGameInteraction } from "../../helpers";
-import { ITEMS, ItemKey } from "../../items";
+import {
+  createGameInteraction,
+  createSuccessfullPickpocketInteraction,
+} from "../../helpers";
+import { ITEMS, ItemKey, buyItem } from "../../items";
 
 const BANKER_KEY = "Banker";
 
@@ -38,26 +41,10 @@ export const createBanker = (pos: Vec2) => {
           (ws) => ws.items.has(key as ItemKey)
         );
       }),
-      ...ITEMS.map(({ key: key, price }, i) => {
-        const buyPrice = price + 1;
-
-        return createGameInteraction(
-          `${i + 1}`,
-          `<Buy ${key} (${buyPrice} coins)>`,
-          `Here you go!`,
-          (ws) => {
-            const i = key as ItemKey;
-
-            if (!ws.banker.has(i)) return;
-
-            ws.items.add(key as ItemKey);
-            ws.banker.delete(key as ItemKey);
-
-            ws.coins -= buyPrice;
-          },
-          (ws) => ws.banker.has(key as ItemKey) && ws.coins >= buyPrice
-        );
-      }),
+      ...ITEMS.map((item, i) =>
+        createGameInteraction(`${i + 1}`, ...buyItem(item, (ws) => ws.banker))
+      ),
+      createSuccessfullPickpocketInteraction(BANKER_KEY, 1),
     ]
   );
 

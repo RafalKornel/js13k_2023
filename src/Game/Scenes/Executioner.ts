@@ -1,19 +1,20 @@
 import { IMAGES_KEY } from "../../assets";
 import { NPC } from "../NPC";
 import {
+  createFailedPickpocketInteraction,
   createGameInteraction,
   createKillInteraction,
   createKillPlayerCallback,
-  createPickpocketInteraction,
 } from "../helpers";
 
-const KILL_TEXT = "<Slices you with his axe>";
+const KILL_TEXT = "Slices you with his axe";
 const INTERACTION_TEXT = `What are you trying to do??\n${KILL_TEXT}`;
+const EXECUTIONER_KEY = "Executioner";
 
 export const createExecutioner = () => {
   const executioner = new NPC(
     [1, 7],
-    "Executioner",
+    EXECUTIONER_KEY,
     IMAGES_KEY.hero,
     {
       init: "Hmmm?",
@@ -27,10 +28,7 @@ export const createExecutioner = () => {
       ],
     },
     [
-      createPickpocketInteraction(
-        INTERACTION_TEXT,
-        createKillPlayerCallback(2)
-      ),
+      createFailedPickpocketInteraction(EXECUTIONER_KEY, KILL_TEXT),
       createKillInteraction(INTERACTION_TEXT, createKillPlayerCallback(2)),
     ]
   );

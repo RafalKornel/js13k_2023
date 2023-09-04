@@ -6,16 +6,11 @@ import {
 } from "../Engine/Components/RenderComponent";
 import { SceneKey, Scene, ConnectedScenes } from "../Engine/Scene/Scene";
 import { CONFIG } from "../Engine/config";
-import {
-  Interaction,
-  InteractionActionCallback,
-  InteractionResponseCallback,
-  Vec2,
-} from "../Engine/types";
+import { Interaction, InteractionActionCallback, Vec2 } from "../Engine/types";
 import { add, mult } from "../Engine/utils";
 import { ImageId } from "../assets";
 import { GameWorldState } from "./WorldState";
-import { KNIFE } from "./items";
+import { ItemKey, KNIFE } from "./items";
 
 export const createScenePositionComponent = (
   pos: Vec2 = [0, 1],
@@ -60,14 +55,48 @@ export function createGameInteraction(
 }
 
 export const createPickpocketInteraction = (
-  response: string | InteractionResponseCallback<GameWorldState>,
+  entityKey: EntityKey,
+  response: string,
   action?: InteractionActionCallback<GameWorldState>
 ): Interaction => ({
   key: "p",
   text: "<Pickpocket>",
   response,
-  action,
+  action: (ws: GameWorldState) => {
+    if (ws.robbedEntities.has(entityKey)) return;
+
+    ws.robbedEntities.add(entityKey);
+
+    return action?.(ws);
+  },
+  isAvailable: (ws) => !ws.robbedEntities.has(entityKey),
 });
+
+export const createSuccessfullPickpocketInteraction = (
+  entityKey: EntityKey,
+  reward: number | ItemKey
+) =>
+  createPickpocketInteraction(
+    entityKey,
+    `<You steal ${typeof reward === "number" ? `${reward} coins` : reward}>`,
+    (ws) => {
+      if (typeof reward === "number") {
+        ws.coins += reward;
+      } else {
+        ws.items.add(reward);
+      }
+    }
+  );
+
+export const createFailedPickpocketInteraction = (
+  entityKey: EntityKey,
+  killText = "Stabs you in the chest"
+) =>
+  createPickpocketInteraction(
+    entityKey,
+    `What are you trying to do??\n<${killText}>`,
+    createKillPlayerCallback(3)
+  );
 
 export const createKillInteraction = (
   response: string = "Argh...",
