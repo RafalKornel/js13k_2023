@@ -28,9 +28,9 @@ const createGameState = () =>
   new GameState(
     new InputManager(),
     new SceneManager([
+      createBakeryScene(),
       createWellScene(),
       createJailScene(),
-      createBakeryScene(),
       createDoctorOfficeScene(),
       createTavernScene(),
       createWellLeftTunnel(),
@@ -51,7 +51,7 @@ const createPlayer = (state: GameState) =>
 
 export class Game extends Renderer {
   player: Player;
-  state: GameState<GameWorldState>;
+  gameState: GameState<GameWorldState>;
 
   constructor(
     readonly gameCanvas: HTMLCanvasElement,
@@ -62,58 +62,58 @@ export class Game extends Renderer {
   ) {
     super(gameCanvas, textCanvas, colors, assets, options);
 
-    this.state = createGameState();
+    this.gameState = createGameState();
 
-    console.log(this.state);
+    console.log(this.gameState);
 
-    this.player = createPlayer(this.state);
+    this.player = createPlayer(this.gameState);
   }
 
   private update() {
-    const ws = this.state.worldState;
+    const ws = this.gameState.worldState;
 
     if (ws.isDead) {
-      if (!this.player.isKilled) {
-        this.player.isKilled = true;
+      if (this.player.isKilled) {
+        this.player.state = "dead";
       }
 
-      if (this.state.inputManager.keysPressed.has("r")) {
+      if (this.gameState.inputManager.keysPressed.has("r")) {
         this.restart();
 
         return;
       }
 
-      this.state.sceneManager.changeScene(SCENE_KEYS.empty);
+      this.gameState.sceneManager.changeScene(SCENE_KEYS.empty);
     }
 
     if (ws.hasWon) {
-      if (this.state.inputManager.keysPressed.has("r")) {
+      if (this.gameState.inputManager.keysPressed.has("r")) {
         this.restart();
 
         return;
       }
 
-      this.state.sceneManager.changeScene(SCENE_KEYS.empty);
+      this.gameState.sceneManager.changeScene(SCENE_KEYS.empty);
     }
 
-    this.state.sceneManager.update(this.state);
-    this.player.update(this.state);
+    this.gameState.sceneManager.update(this.gameState);
+    this.player.update(this.gameState);
 
-    this.state.collisionManager.handle(
+    this.gameState.collisionManager.handle(
       this.player,
-      this.state.sceneManager.scene
+      this.gameState.sceneManager.scene
     );
   }
 
   private render() {
-    const ws = this.state.worldState;
+    const ws = this.gameState.worldState;
 
     if (ws.isDead) {
       this.renderDeadScreen();
     } else if (ws.hasWon) {
       this.renderWinningScreen();
     } else {
-      this.state.sceneManager.render(this as Renderer);
+      this.gameState.sceneManager.render(this as Renderer);
 
       this.renderUI();
     }
@@ -159,7 +159,7 @@ export class Game extends Renderer {
   }
 
   private renderUI() {
-    const ws = this.state.worldState;
+    const ws = this.gameState.worldState;
     const items = [...ws.items.values()];
 
     this.drawText(
@@ -174,8 +174,8 @@ export class Game extends Renderer {
   }
 
   private restart() {
-    this.state = createGameState();
-    this.player = createPlayer(this.state);
+    this.gameState = createGameState();
+    this.player = createPlayer(this.gameState);
   }
 
   loop(): void {

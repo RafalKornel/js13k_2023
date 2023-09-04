@@ -15,22 +15,26 @@ type Components = {
 
 export type EntityKey = string;
 
+export type EntityState = "active" | "inactive" | "dead";
+
 export class BaseEntity {
-  private _isKilled: boolean = false;
-
-  public get isKilled(): boolean {
-    return this._isKilled;
-  }
-
-  public set isKilled(value: boolean) {
-    this._isKilled = value;
-    this.components.position.dir = "t";
-  }
+  public state: EntityState = "active";
 
   readonly children: Map<EntityKey, BaseEntity>;
 
   constructor(public components: Components, public key: EntityKey = getKey()) {
     this.children = new Map();
+  }
+
+  get isKilled() {
+    return this.state === "dead";
+  }
+
+  set isKilled(value: boolean) {
+    if (value) {
+      this.state = "dead";
+      this.components.position.dir = "t";
+    }
   }
 
   addChild(child: BaseEntity) {
@@ -42,6 +46,10 @@ export class BaseEntity {
   }
 
   render(renderer: Renderer): void {
+    if (this.state === "inactive") return;
+
+    // if (this.state === "dead") this.components.position.dir = "t";
+
     this.children.forEach((child) => {
       child.render(renderer);
     });
@@ -50,6 +58,8 @@ export class BaseEntity {
   }
 
   update(state: GameState) {
+    if (this.state === "inactive") return;
+
     this.children.forEach((child) => {
       child.update(state);
     });

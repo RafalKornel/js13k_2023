@@ -1,8 +1,10 @@
 import { Scene } from "../../../Engine/Scene/Scene";
 import { CONFIG } from "../../../Engine/config";
+import { IMAGES_KEY } from "../../../assets";
 import {
   createBrickSceneRenderComponent,
   createScenePositionComponent,
+  createSolidEntity,
 } from "../../helpers";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { createBaker } from "./Baker";
@@ -20,6 +22,8 @@ export const createBakeryScene = () => {
   );
 
   bakeryScene.addChild(createBaker());
+
+  // bakeryScene.addChild(createSolidEntity(IMAGES_KEY.wellClean, []))
 
   return bakeryScene;
 };

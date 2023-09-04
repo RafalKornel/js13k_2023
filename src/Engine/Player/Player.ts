@@ -19,12 +19,15 @@ export class Player extends BaseEntity {
 
   velocity = 1;
 
-  constructor(readonly state: GameState, pos: Vec2, dim: Vec2) {
+  constructor(readonly gameState: GameState, pos: Vec2, dim: Vec2) {
     super(
       {
         position: new PositionComponent(pos, dim),
         render: new ImageRenderComponent(IMAGES_KEY.hero),
-        collision: new PlayerCollisionComponent("solid", state.sceneManager),
+        collision: new PlayerCollisionComponent(
+          "solid",
+          gameState.sceneManager
+        ),
       },
       PLAYER_KEY
     );

@@ -1,8 +1,8 @@
 import { EntityKey } from "../Engine/BaseEntity";
-import { HAMMER, ItemKey, POISON } from "./items";
+import { HAMMER, ItemKey, KNIFE, POISON } from "./items";
 
 export const getWorldState = () => ({
-  items: new Set<ItemKey>(),
+  items: new Set<ItemKey>([KNIFE.key]),
   coins: 10,
   banker: new Set<ItemKey>(),
   merchant: new Set<ItemKey>([HAMMER.key, POISON.key]),
