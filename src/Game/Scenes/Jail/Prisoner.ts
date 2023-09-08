@@ -43,7 +43,7 @@ export const createPrisoner = () => {
         "Thanks buddy...\nNow I don't want to kill you hehe...",
         (ws) => {
           withTimeout(() => {
-            ws.isPrisonerFreed = true;
+            ws.didHelpPrisoner = true;
           });
         },
         (ws) => ws.isPrisonerDoorOpen

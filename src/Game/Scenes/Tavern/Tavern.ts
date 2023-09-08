@@ -13,13 +13,21 @@ import { STASH_KEY } from "../../items";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { DRUNKARD_KEY, createDrunkard } from "./Drunkard";
 import { createInnkeeper } from "./Innkeeper";
+import { createPrisoner } from "./Prisoner";
 
 class TavernScene extends Scene {
+  private _didPrisonerCome = false;
+
   update(state: GameState<GameWorldState>): void {
     super.update(state);
 
     if (state.worldState.didHelpDrunkard) {
       this.removeChild(DRUNKARD_KEY);
+    }
+
+    if (state.worldState.didHelpPrisoner && !this._didPrisonerCome) {
+      this._didPrisonerCome = true;
+      this.addChild(createPrisoner([12, 10]));
     }
   }
 }

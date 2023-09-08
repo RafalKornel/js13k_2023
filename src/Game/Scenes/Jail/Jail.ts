@@ -24,7 +24,7 @@ const JAIL_DOORS_X = [1, CONFIG.width - 2];
 
 class JailScene extends Scene {
   update(state: GameState<GameWorldState>): void {
-    if (state.worldState.isPrisonerFreed && this.hasChild(PRISONER_KEY)) {
+    if (state.worldState.didHelpPrisoner && this.hasChild(PRISONER_KEY)) {
       this.removeChild(PRISONER_KEY);
     }
   }
@@ -74,7 +74,7 @@ export const createJailScene = () => {
   );
 
   const prisonedCellDoor = new Door(
-    "Cell door",
+    "Prisoner cell door",
     [JAIL_DOORS_X[1], JAIL_WALL_Y],
     IMAGES_KEY.jailDoor,
     (ws) => ws.items.has(CELL_KEY.key),
@@ -83,6 +83,9 @@ export const createJailScene = () => {
     },
     "l"
   );
+
+  jailScene.addChild(playerCellDoor);
+  jailScene.addChild(prisonedCellDoor);
 
   const shieldsMetadata = [
     [4, 1, "l"],
@@ -100,11 +103,6 @@ export const createJailScene = () => {
       createSolidEntity(IMAGES_KEY.shieldRed, [x, y], [1, 1], undefined, dir)
     )
   );
-
-  // jailScene.addChild(createSolidEntity(IMAGES_KEY.shieldRed, [11, 1], [1, 1]));
-
-  jailScene.addChild(playerCellDoor);
-  jailScene.addChild(prisonedCellDoor);
 
   return jailScene;
 };
