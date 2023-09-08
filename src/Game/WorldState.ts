@@ -1,5 +1,7 @@
 import { EntityKey } from "../Engine/BaseEntity";
-import { BREAD, HAMMER, ItemKey, POISON, STASH_KEY } from "./items";
+import { BREAD, HAMMER, ItemKey, MILK, POISON, STASH_KEY } from "./items";
+
+export const MERCHANT_INVENTORY = [HAMMER, POISON, MILK];
 
 export const getWorldState = () => ({
   hasWon: false,
@@ -10,7 +12,7 @@ export const getWorldState = () => ({
   items: new Set<ItemKey>([STASH_KEY.key]),
   coins: 10,
   banker: new Set<ItemKey>(),
-  merchant: new Set<ItemKey>([HAMMER.key, POISON.key]),
+  merchant: new Set<ItemKey>(MERCHANT_INVENTORY.map((item) => item.key)),
   baker: new Set<ItemKey>([BREAD.key]),
 
   firstInteractions: new Map<EntityKey, number>(),
@@ -35,6 +37,8 @@ export const getWorldState = () => ({
   didMasonKillBaker: false,
 
   isStashDoorOpen: false,
+
+  didHelpDrunkard: false,
 });
 
 export type GameWorldState = ReturnType<typeof getWorldState>;

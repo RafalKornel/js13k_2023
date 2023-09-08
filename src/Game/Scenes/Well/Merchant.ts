@@ -1,13 +1,14 @@
 import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
+import { MERCHANT_INVENTORY } from "../../WorldState";
 import {
   createGameInteraction,
   createKillInteraction,
   createKillPlayerCallback,
   createSuccessfullPickpocketInteraction,
 } from "../../helpers";
-import { HAMMER, POISON, buyItem } from "../../items";
+import { buyItem } from "../../items";
 
 const MERCHANT_KEY = "Merchant";
 
@@ -23,8 +24,12 @@ export const createMerchant = (pos: Vec2) =>
       options: [],
     },
     [
-      createGameInteraction("1", ...buyItem(HAMMER, (ws) => ws.merchant)),
-      createGameInteraction("2", ...buyItem(POISON, (ws) => ws.merchant)),
+      ...MERCHANT_INVENTORY.map((item, index) =>
+        createGameInteraction(
+          String(index + 1),
+          ...buyItem(item, (ws) => ws.merchant)
+        )
+      ),
       createSuccessfullPickpocketInteraction(MERCHANT_KEY, 1),
       createKillInteraction("What?? Guards!!", createKillPlayerCallback(2)),
     ]
