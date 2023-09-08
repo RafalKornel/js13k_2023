@@ -1,5 +1,6 @@
 import { GameState } from "../../../Engine/GameState";
 import { Vec2 } from "../../../Engine/types";
+import { add, convertTileVecToGlobal } from "../../../Engine/utils";
 import { IMAGES_KEY } from "../../../assets";
 import { NPC } from "../../NPC";
 import { GameWorldState } from "../../WorldState";
@@ -21,6 +22,13 @@ class Baker extends NPC {
 
     if (state.worldState.isWellPoisoned) {
       state.worldState.baker.add(WATER_BUCKER.key);
+    }
+
+    if (state.worldState.didMasonKillBaker) {
+      this.isKilled = true;
+      state.worldState.killedEntities.add(this.key);
+      const p = this.components.position;
+      p.pos = convertTileVecToGlobal(add([14, 2], [0.5, 0.5]));
     }
   }
 }

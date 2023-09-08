@@ -6,6 +6,7 @@ import {
 } from "../../helpers";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { createLaundress } from "./Laundress";
+import { createMason } from "./Mason";
 
 class LaundryScene extends Scene {}
 
@@ -20,6 +21,7 @@ export const createLaundryScene = () => {
   );
 
   laundryScene.addChild(createLaundress([4, 4]));
+  laundryScene.addChild(createMason([11, 9]));
 
   return laundryScene;
 };

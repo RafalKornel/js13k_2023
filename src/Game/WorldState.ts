@@ -3,7 +3,7 @@ import { BREAD, HAMMER, ItemKey, POISON } from "./items";
 
 export const getWorldState = () => ({
   sceneJumps: 0,
-  items: new Set<ItemKey>([]),
+  items: new Set<ItemKey>([HAMMER.key]),
   coins: 10,
   banker: new Set<ItemKey>(),
   merchant: new Set<ItemKey>([HAMMER.key, POISON.key]),
@@ -21,6 +21,8 @@ export const getWorldState = () => ({
   didHelpWitch: false,
   didChoseWitchReward: false,
   didHelpDoctor: false,
+  didHelpMason: false,
+  didMasonKillBaker: false,
   firstInteractionWithLaundress: 0,
   firstInteractions: new Map<EntityKey, number>(),
 });

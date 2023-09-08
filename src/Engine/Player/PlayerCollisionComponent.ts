@@ -40,9 +40,9 @@ export class PlayerCollisionComponent implements ICollisionComponent {
 
     const newScene = this.sceneManager.scenes.get(sceneKey)!;
 
-    const newPortal = newScene.portals[OPPOSITE_DIRECTIONS[portal.dir]]!;
+    const newPortal = newScene.portals[OPPOSITE_DIRECTIONS[portal.dir]!]!;
 
-    const offset = convertTileVecToGlobal(PORTAL_OFFSET[newPortal.dir]);
+    const offset = convertTileVecToGlobal(PORTAL_OFFSET[newPortal.dir]!);
 
     const newPos = add(newPortal.components.position.pos, offset);
 
