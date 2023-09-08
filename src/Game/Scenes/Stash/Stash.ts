@@ -5,7 +5,7 @@ import {
   createBrickSceneRenderComponent,
   createScenePositionComponent,
 } from "../../helpers";
-import { BREAD, HAMMER } from "../../items";
+import { BREAD, HAMMER, MILK } from "../../items";
 import { SCENE_KEYS } from "../constants";
 
 class StashScene extends Scene {}
@@ -20,6 +20,7 @@ export const createStashScene = () => {
 
   stash.addChild(new PickableItem(stash, [6, 4], HAMMER));
   stash.addChild(new PickableItem(stash, [10, 8], BREAD));
+  stash.addChild(new PickableItem(stash, [2, 8], MILK));
 
   return stash;
 };

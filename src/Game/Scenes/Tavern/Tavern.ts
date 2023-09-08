@@ -12,6 +12,7 @@ import {
 import { STASH_KEY } from "../../items";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { DRUNKARD_KEY, createDrunkard } from "./Drunkard";
+import { createInnkeeper } from "./Innkeeper";
 
 class TavernScene extends Scene {
   update(state: GameState<GameWorldState>): void {
@@ -45,6 +46,8 @@ export const createTavernScene = () => {
 
   tavern.addChild(createWall([14, 6]));
   tavern.addChild(createWall([14, 8]));
+
+  tavern.addChild(createInnkeeper([12, 4]));
 
   tavern.addChild(createDrunkard([4, 5]));
 

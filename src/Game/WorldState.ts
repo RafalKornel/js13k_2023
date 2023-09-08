@@ -1,7 +1,7 @@
 import { EntityKey } from "../Engine/BaseEntity";
-import { BREAD, HAMMER, ItemKey, MILK, POISON, STASH_KEY } from "./items";
+import { BREAD, HAMMER, ItemKey, POISON, STASH_KEY } from "./items";
 
-export const MERCHANT_INVENTORY = [HAMMER, POISON, MILK];
+export const MERCHANT_INVENTORY = [HAMMER, POISON];
 
 export const getWorldState = () => ({
   hasWon: false,

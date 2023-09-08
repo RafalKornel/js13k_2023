@@ -9,6 +9,7 @@ export const ELIXIR = { key: "Elixir", price: 3 };
 export const WATER_BUCKER = { key: "Bucket of water", price: 1 };
 export const STASH_KEY = { key: "Stash key", price: 0 };
 export const MILK = { key: "Milk", price: 1 };
+export const BEER = { key: "Beer", price: 2 };
 
 export const ITEMS = [
   KNIFE,
