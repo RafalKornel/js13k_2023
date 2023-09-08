@@ -31,7 +31,7 @@ export const getWorldState = () => ({
   didHelpWitch: false,
   didChoseWitchReward: false,
 
-  didHelpDoctor: false,
+  willDoctorExamineLaundress: false,
 
   didHelpMason: false,
   didMasonKillBaker: false,
@@ -39,6 +39,8 @@ export const getWorldState = () => ({
   isStashDoorOpen: false,
 
   didHelpDrunkard: false,
+
+  didHelpDoctor: false,
 });
 
 export type GameWorldState = ReturnType<typeof getWorldState>;

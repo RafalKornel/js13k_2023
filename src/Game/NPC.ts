@@ -70,6 +70,7 @@ export class NPC extends BaseEntity {
       worldState.sceneJumps - firstInteractionWithNPC >= deathThreshold
     ) {
       this.isKilled = true;
+      worldState.killedEntities.add(this.key);
     }
   }
 }

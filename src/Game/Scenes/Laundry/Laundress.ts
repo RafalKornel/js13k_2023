@@ -6,7 +6,7 @@ import { GameWorldState } from "../../WorldState";
 import { createGameInteraction, createWinCallback } from "../../helpers";
 import { ELIXIR } from "../../items";
 
-const LAUNDRESS_KEY = "Laundress";
+export const LAUNDRESS_KEY = "Laundress";
 
 const GRATITUDE_DIALOGUE =
   "Thank you.\nYou are very kind man...\nYou can use my staircase if you\nwant to get out of here...";
@@ -41,7 +41,7 @@ export const createLaundress = (pos: Vec2) =>
           "The doctor will examine you.",
           GRATITUDE_DIALOGUE,
           createWinCallback(4),
-          (ws) => ws.didHelpDoctor
+          (ws) => ws.willDoctorExamineLaundress
         ),
       ],
     },
