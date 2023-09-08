@@ -4,32 +4,7 @@ import { PLAYER_INTERACTION_COLLIDER_KEY } from "../Player/PlayerInteractionColl
 import { Renderer } from "../Renderer/Renderer";
 import { DialogueConfig, Interaction, Vec2, WorldState } from "../types";
 import { add, convertTileVecToGlobal, getEntityPairKey } from "../utils";
-
-class SpeechService {
-  static COUNT = 0;
-
-  static speak(text: string) {
-    return;
-
-    const voices = speechSynthesis
-      .getVoices()
-      .filter((v) => v.lang === "en-US");
-
-    console.log(voices);
-
-    const utterance = new SpeechSynthesisUtterance(text);
-
-    utterance.voice = voices[SpeechService.COUNT++];
-
-    speechSynthesis.speak(utterance);
-  }
-
-  static stop() {
-    return;
-
-    speechSynthesis.cancel();
-  }
-}
+import { SpeechService } from "../SpeechService";
 
 export type ComponentState = "idle" | "available" | "active";
 
@@ -119,7 +94,6 @@ export interface IDIalogueInteractionComponent<TWorldState extends WorldState>
   extends IInteractionComponent<TWorldState> {
   readonly dialogueConfig: DialogueConfig;
   readonly interactions: Interaction[];
-  selectedOption?: Interaction;
 }
 
 export class DialogueInteractionComponent<
@@ -131,7 +105,7 @@ export class DialogueInteractionComponent<
 
   private _prevKP: Set<string> = new Set();
 
-  selectedOption?: Interaction = undefined;
+  private _didChooseOption = false;
 
   constructor(
     readonly dialogueConfig: DialogueConfig,
@@ -164,11 +138,6 @@ export class DialogueInteractionComponent<
 
       const lines: string[] = [`${npcLabel}${this.dialogueConfig.init}\n`];
 
-      if (this.selectedOption) {
-        lines.push(`${youLabel}${this.selectedOption.text}\n`);
-        lines.push(`${npcLabel}${this.selectedOption.response}\n`);
-      }
-
       for (const performedInteraction of this._performedInteractions) {
         lines.push(`${youLabel}${performedInteraction.text}\n`);
         lines.push(`${npcLabel}${performedInteraction.response}\n`);
@@ -176,7 +145,7 @@ export class DialogueInteractionComponent<
 
       let options: Interaction[] = [];
 
-      if (this.selectedOption) {
+      if (this._didChooseOption) {
         options = this._availableInteractions;
       } else {
         options = [...this._availableOptions, ...this._availableInteractions];
@@ -209,7 +178,7 @@ export class DialogueInteractionComponent<
 
       if (this._prevKP.has(dialogueOption.key)) continue;
 
-      if (kp.has(dialogueOption.key) && !this.selectedOption) {
+      if (kp.has(dialogueOption.key) && !this._didChooseOption) {
         dialogueOption.action?.(state.worldState);
 
         SpeechService.speak(dialogueOption.text);
@@ -218,7 +187,8 @@ export class DialogueInteractionComponent<
           SpeechService.speak(dialogueOption.response);
         }
 
-        this.selectedOption = dialogueOption;
+        this._performedInteractions.add(dialogueOption);
+        this._didChooseOption = true;
       }
     }
 
