@@ -28,6 +28,7 @@ const createGameState = () =>
     new InputManager(),
     new SceneManager([
       createTavernScene(),
+      createStashScene(),
       createJailScene(),
       createLaundryScene(),
       createBakeryScene(),
@@ -37,7 +38,6 @@ const createGameState = () =>
       createWellBottomTunnel(),
       createWellRightTunnel(),
       createWellTopTunnel(),
-      createStashScene(),
       createEmptyScene(),
     ]),
     new CollisionManager(),
