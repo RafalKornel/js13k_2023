@@ -10,7 +10,6 @@ import { convertTileVecToGlobal } from "../Engine/utils.ts";
 import { createWellScene } from "./Scenes/Well/Well.ts";
 import { Assets, Colors } from "../Engine/Renderer/types.ts";
 import {
-  createStashTavertTunnel,
   createWellBottomTunnel,
   createWellLeftTunnel,
   createWellRightTunnel,
@@ -28,18 +27,17 @@ const createGameState = () =>
   new GameState(
     new InputManager(),
     new SceneManager([
+      createTavernScene(),
       createJailScene(),
       createLaundryScene(),
       createBakeryScene(),
       createWellScene(),
       createDoctorOfficeScene(),
-      createTavernScene(),
       createWellLeftTunnel(),
       createWellBottomTunnel(),
       createWellRightTunnel(),
       createWellTopTunnel(),
       createStashScene(),
-      createStashTavertTunnel(),
       createEmptyScene(),
     ]),
     new CollisionManager(),

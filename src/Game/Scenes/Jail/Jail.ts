@@ -3,7 +3,7 @@ import { Scene } from "../../../Engine/Scene/Scene";
 import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { GameWorldState } from "../../WorldState";
-import { JailDoor } from "./JailDoor";
+import { Door } from "../../Door";
 import { createGuard } from "./Guard";
 import {
   createBrickSceneRenderComponent,
@@ -13,6 +13,7 @@ import {
 import { PRISONER_KEY, createPrisoner } from "./Prisoner";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { CONFIG } from "../../../Engine/config";
+import { CELL_KEY } from "../../items";
 
 export const PLAYER_INITIAL_POS: Vec2 = [4, 9];
 
@@ -61,22 +62,26 @@ export const createJailScene = () => {
 
   jailScene.addChild(createPrisoner());
 
-  const playerCellDoor = new JailDoor(
+  const playerCellDoor = new Door(
     "Cell door",
     [JAIL_DOORS_X[0], JAIL_WALL_Y],
-    "r",
+    IMAGES_KEY.jailDoor,
+    (ws) => ws.items.has(CELL_KEY.key),
     (ws) => {
       ws.isPlayerDoorOpen = true;
-    }
+    },
+    "r"
   );
 
-  const prisonedCellDoor = new JailDoor(
-    "Prisoner cell door",
+  const prisonedCellDoor = new Door(
+    "Cell door",
     [JAIL_DOORS_X[1], JAIL_WALL_Y],
-    "l",
+    IMAGES_KEY.jailDoor,
+    (ws) => ws.items.has(CELL_KEY.key),
     (ws) => {
       ws.isPrisonerDoorOpen = true;
-    }
+    },
+    "l"
   );
 
   const shieldsMetadata = [

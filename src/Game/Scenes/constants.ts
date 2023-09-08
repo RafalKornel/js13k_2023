@@ -18,6 +18,4 @@ export const TUNNELS = {
   wd: "T-wd",
   /** Well right tunnel */
   wr: "T-wr",
-  /** Stash tavern tunnel */
-  st: "T-st",
 };

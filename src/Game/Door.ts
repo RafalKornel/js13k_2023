@@ -1,22 +1,28 @@
-import { BaseEntity, EntityKey } from "../../../Engine/BaseEntity";
-import { BaseInteractionComponent } from "../../../Engine/Components/InteractionComponent";
-import { ImageRenderComponent } from "../../../Engine/Components/RenderComponent";
-import { GameState } from "../../../Engine/GameState";
-import { Renderer } from "../../../Engine/Renderer/Renderer";
-import { Vec2 } from "../../../Engine/types";
-import { IMAGES_KEY } from "../../../assets";
-import { GameWorldState } from "../../WorldState";
-import { createOffsetPositionComponent } from "../../helpers";
-import { CELL_KEY } from "../../items";
+import { BaseEntity, EntityKey } from "../Engine/BaseEntity";
+import { BaseInteractionComponent } from "../Engine/Components/InteractionComponent";
+import { ImageRenderComponent } from "../Engine/Components/RenderComponent";
+import { GameState } from "../Engine/GameState";
+import { Renderer } from "../Engine/Renderer/Renderer";
+import { Vec2 } from "../Engine/types";
+import { IMAGES_KEY, ImageId } from "../assets";
+import { GameWorldState } from "./WorldState";
+import { createOffsetPositionComponent } from "./helpers";
+
+type HasKeyCallback = (ws: GameWorldState) => boolean;
 
 class DoorInteractionComponent extends BaseInteractionComponent<GameWorldState> {
   private _isOpen: boolean = false;
   private _hasKey: boolean = false;
 
+  constructor(readonly hasKeyCallback: HasKeyCallback) {
+    super();
+  }
+
   update(entity: BaseEntity, state: GameState<GameWorldState>): void {
     super.update(entity, state);
 
-    this._hasKey = state.worldState.items.has(CELL_KEY.key);
+    this._hasKey = this.hasKeyCallback(state.worldState);
+    // state.worldState.items.has(CELL_KEY.key);
 
     if (this.state === "active" && this._hasKey) {
       this._isOpen = true;
@@ -34,22 +40,21 @@ class DoorInteractionComponent extends BaseInteractionComponent<GameWorldState> 
   }
 }
 
-export class JailDoor extends BaseEntity {
-  static CLOSED_COLOR = "#fd0000";
-  static OPEN_COLOR = "#00fd00";
-
+export class Door extends BaseEntity {
   constructor(
     key: EntityKey,
     pos: Vec2,
-    dir?: "l" | "r",
-    readonly onOpen?: (ws: GameWorldState) => void
+    imageId: ImageId,
+    hasKeyCallback: HasKeyCallback,
+    readonly onOpen: (ws: GameWorldState) => void,
+    dir?: "l" | "r"
   ) {
     super(
       {
         position: createOffsetPositionComponent(pos, [1, 1], dir),
         collision: { type: "interactable" },
-        render: new ImageRenderComponent(IMAGES_KEY.jailDoor),
-        interaction: new DoorInteractionComponent(),
+        render: new ImageRenderComponent(imageId || IMAGES_KEY.jailDoor),
+        interaction: new DoorInteractionComponent(hasKeyCallback),
       },
       key
     );

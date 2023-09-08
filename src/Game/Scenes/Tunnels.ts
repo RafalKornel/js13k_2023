@@ -31,9 +31,3 @@ export const createWellLeftTunnel = () => {
 
   return jailTunnel;
 };
-
-export const createStashTavertTunnel = () =>
-  createTunnel(TUNNELS.st, "h", {
-    l: SCENE_KEYS.tavern,
-    r: SCENE_KEYS.stash,
-  });

@@ -2,6 +2,7 @@ import { GameState } from "../../../Engine/GameState";
 import { Scene } from "../../../Engine/Scene/Scene";
 import { CONFIG } from "../../../Engine/config";
 import { IMAGES_KEY } from "../../../assets";
+import { createWall } from "../../Wall";
 import { GameWorldState } from "../../WorldState";
 import {
   createBrickSceneRenderComponent,
@@ -21,9 +22,9 @@ class BakeryScene extends Scene {
     if (state.worldState.didMasonKillBaker && !this._didAddWalls) {
       this._didAddWalls = true;
 
-      this.addChild(createSolidEntity(IMAGES_KEY.wall, [13, 2]));
-      this.addChild(createSolidEntity(IMAGES_KEY.wall, [13, 3]));
-      this.addChild(createSolidEntity(IMAGES_KEY.wall, [14, 3]));
+      this.addChild(createWall([13, 2]));
+      this.addChild(createWall([13, 3]));
+      this.addChild(createWall([14, 3]));
     }
   }
 }
