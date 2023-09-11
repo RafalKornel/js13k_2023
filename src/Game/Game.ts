@@ -71,8 +71,8 @@ export class Game extends Renderer {
     const ws = this.gameState.worldState;
 
     if (ws.isDead) {
-      if (this.player.isKilled) {
-        this.player.state = "dead";
+      if (!this.player.isKilled) {
+        this.player.isKilled = true;
       }
 
       if (this.gameState.inputManager.keysPressed.has("r")) {
