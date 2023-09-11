@@ -61,8 +61,6 @@ export class Scene extends BaseEntity {
       );
     }
 
-    Object.values(this.portals).forEach((portal) => portal.render(renderer));
-
     this.children.forEach((child) => {
       child.render?.(renderer);
     });
