@@ -20,7 +20,6 @@ function encodeImages(inputPath: string, outputPath: string) {
   const colors = new Uint8ClampedArray(BYTES_PER_COLOR * COLORS_IN_PALETTE);
 
   try {
-    // fs.rmSync(`${outputPath}/*`);
     fs.rmSync(outputPath, { recursive: true, force: true });
 
     fs.mkdirSync(outputPath);
@@ -84,8 +83,6 @@ function encodeImages(inputPath: string, outputPath: string) {
 
         const hex = RGBTAoHex(r, g, b, a);
 
-        // console.log(hex);
-
         if (colorsMap.has(hex)) {
           arr[flatIndex] = colorsMap.get(hex)!;
         } else {
@@ -110,13 +107,12 @@ function encodeImages(inputPath: string, outputPath: string) {
     return arr;
   }
 
-  console.log(colorsMap);
+  console.log(`Size of color map: ${colorsMap.size}`);
 }
 
 const __dirname = getDirname();
 
 const INPUT_PATH = path.resolve(__dirname + "/../assets/raw/");
 const OUTPUT_PATH = path.resolve(__dirname + "/../assets/compiled/");
-// const OUTPUT_PATH = path.resolve(__dirname + "/../src/assets.ts");
 
 encodeImages(INPUT_PATH, OUTPUT_PATH);
