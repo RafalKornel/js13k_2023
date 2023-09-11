@@ -141,6 +141,9 @@ import laundry from "../assets/compiled/laundry?binary";
 import washingPan from "../assets/compiled/washing_pan?binary";
 
 // @ts-ignore
+import hammer from "../assets/compiled/hammer?binary";
+
+// @ts-ignore
 import cat from "../assets/compiled/cat?binary";
 
 import { Vec2 } from "./Engine/types";
@@ -199,6 +202,7 @@ const IMAGES_KEY = {
   furnace: 43,
   laundry: 44,
   washingPan: 45,
+  hammer: 47,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -258,8 +262,9 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.furnace]: { data: furnace, s: tallSize8 },
 
   [IMAGES_KEY.goldChest]: { data: goldChest, s: size8 },
-  [IMAGES_KEY.washingPan]: { data: washingPan, s: size8 },
   [IMAGES_KEY.laundry]: { data: laundry, s: widtSize8 },
+  [IMAGES_KEY.washingPan]: { data: washingPan, s: size8 },
+  [IMAGES_KEY.hammer]: { data: hammer, s: size8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;
