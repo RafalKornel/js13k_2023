@@ -6,7 +6,7 @@ import { GameWorldState } from "../../WorldState";
 import { createGameInteraction, createWinCallback } from "../../helpers";
 import { ELIXIR } from "../../items";
 
-export const LAUNDRESS_KEY = "Laundress";
+export const LAUNDRESS_KEY = "Laundress Eva";
 
 const GRATITUDE_DIALOGUE =
   "Thank you.\nYou are very kind man...\nYou can use my staircase if you\nwant to get out of here...";

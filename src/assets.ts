@@ -78,6 +78,9 @@ import shieldRed from "../assets/compiled/shield_red?binary";
 import bucketEmpty from "../assets/compiled/bucket_empty?binary";
 
 // @ts-ignore
+import bucketWater from "../assets/compiled/bucket_water?binary";
+
+// @ts-ignore
 import bucketFull from "../assets/compiled/bucket_full?binary";
 
 // @ts-ignore
@@ -132,6 +135,12 @@ import shelfWine from "../assets/compiled/shelf_wine?binary";
 import goldChest from "../assets/compiled/gold_chest?binary";
 
 // @ts-ignore
+import laundry from "../assets/compiled/laundry?binary";
+
+// @ts-ignore
+import washingPan from "../assets/compiled/washing_pan?binary";
+
+// @ts-ignore
 import cat from "../assets/compiled/cat?binary";
 
 import { Vec2 } from "./Engine/types";
@@ -168,6 +177,7 @@ const IMAGES_KEY = {
   doctor: 22,
   bucketEmpty: 23,
   bucketFull: 24,
+  bucketWater: 46,
   sleepingHay1: 25,
   sleepingHay2: 26,
   tableLeft: 27,
@@ -187,6 +197,8 @@ const IMAGES_KEY = {
   cat: 41,
   goldChest: 42,
   furnace: 43,
+  laundry: 44,
+  washingPan: 45,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -195,7 +207,7 @@ type ImageId = (typeof IMAGES_KEY)[ImageKey];
 
 const size8: Vec2 = [8, 8];
 const tallSize8: Vec2 = [8, 16];
-// const size16: Vec2 = [16, 16];
+const widtSize8: Vec2 = [16, 8];
 
 const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.player]: { data: player, s: size8 },
@@ -222,6 +234,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.shieldRed]: { data: shieldRed, s: size8 },
   [IMAGES_KEY.bucketEmpty]: { data: bucketEmpty, s: size8 },
   [IMAGES_KEY.bucketFull]: { data: bucketFull, s: size8 },
+  [IMAGES_KEY.bucketWater]: { data: bucketWater, s: size8 },
   [IMAGES_KEY.sleepingHay1]: { data: sleepingHay1, s: size8 },
   [IMAGES_KEY.sleepingHay2]: { data: sleepingHay2, s: size8 },
   [IMAGES_KEY.bread]: { data: bread, s: size8 },
@@ -245,6 +258,8 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.furnace]: { data: furnace, s: tallSize8 },
 
   [IMAGES_KEY.goldChest]: { data: goldChest, s: size8 },
+  [IMAGES_KEY.washingPan]: { data: washingPan, s: size8 },
+  [IMAGES_KEY.laundry]: { data: laundry, s: widtSize8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;

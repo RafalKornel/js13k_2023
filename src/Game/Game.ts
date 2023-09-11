@@ -27,12 +27,12 @@ const createGameState = () =>
   new GameState(
     new InputManager(),
     new SceneManager([
+      createLaundryScene(),
       createBakeryScene(),
       createWellScene(),
       createJailScene(),
       createTavernScene(),
       createStashScene(),
-      createLaundryScene(),
       createDoctorOfficeScene(),
       createWellLeftTunnel(),
       createWellBottomTunnel(),
