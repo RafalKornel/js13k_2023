@@ -96,6 +96,7 @@ function roadrollerPlugin(): Plugin {
 }
 
 export default defineConfig({
+  base: "/js13k_2023/",
   plugins: [
     roadrollerPlugin(),
     createHtmlPlugin({
