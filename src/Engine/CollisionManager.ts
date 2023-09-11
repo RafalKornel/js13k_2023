@@ -10,9 +10,8 @@ export class CollisionManager {
   readonly collisions: CollisionMap = new Map();
 
   handle(player: Player, scene: Scene) {
-    this.handleCollisions(player, [...scene.children.values()]);
-
     this.handleWallsCollision(player, scene);
+    this.handleCollisions(player, [...scene.children.values()]);
   }
 
   private handleWallsCollision(player: Player, scene: Scene) {
@@ -65,10 +64,10 @@ export class CollisionManager {
         const entityA = playerEntities[i];
         const entityB = allEntities[j];
 
-        if (
-          entityA.components.collision!.type === "none" ||
-          entityB.components.collision!.type === "none"
-        ) {
+        const typeA = entityA.components.collision!.type;
+        const typeB = entityB.components.collision!.type;
+
+        if (typeA === "none" || typeB === "none") {
           continue;
         }
 
@@ -91,6 +90,8 @@ export class CollisionManager {
 
         entityA.components.collision!.onCollide?.(entityA, entityB);
         entityB.components.collision!.onCollide?.(entityB, entityA);
+
+        if (typeB === "portal") continue;
 
         this.collisions.set(getEntityPairKey(entityA.key, entityB.key), {
           a: entityA,
