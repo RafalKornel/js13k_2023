@@ -3,6 +3,7 @@ import { GameWorldState } from "./WorldState";
 
 export const KNIFE = { key: "Knife", price: 1, imageId: IMAGES_KEY.beer };
 export const CELL_KEY = { key: "Cell key", price: 0, imageId: IMAGES_KEY.beer };
+export const EXIT_KEY = { key: "Exit key", price: 0, imageId: IMAGES_KEY.beer };
 export const HAMMER = { key: "Hammer", price: 2, imageId: IMAGES_KEY.hammer };
 export const BREAD = {
   key: "Bread",
@@ -39,6 +40,7 @@ export const ITEMS = [
   STASH_KEY,
   MILK,
   BEER,
+  EXIT_KEY,
 ] as const;
 
 export type Item = (typeof ITEMS)[number];

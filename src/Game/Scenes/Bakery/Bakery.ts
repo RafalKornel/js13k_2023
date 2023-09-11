@@ -6,26 +6,39 @@ import { createWall } from "../../Wall";
 import { GameWorldState } from "../../WorldState";
 import {
   createBrickSceneRenderComponent,
+  createOpaqueEntity,
   createScenePositionComponent,
   createSolidEntity,
   createTable,
 } from "../../helpers";
+import { MASON_KEY } from "../Laundry/Mason";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { createBaker } from "./Baker";
 import { createBeggar } from "./Beggar";
 
 class BakeryScene extends Scene {
-  private _didAddWalls = false;
+  private _didAddMason = false;
+  private _didAddBeggar = false;
 
   update(state: GameState<GameWorldState>): void {
     super.update(state);
 
-    if (state.worldState.didMasonKillBaker && !this._didAddWalls) {
-      this._didAddWalls = true;
+    if (state.worldState.didMasonKillBaker && !this._didAddMason) {
+      this._didAddMason = true;
 
       this.addChild(createWall([13, 2]));
       this.addChild(createWall([13, 3]));
       this.addChild(createWall([14, 3]));
+
+      this.addChild(
+        createSolidEntity(IMAGES_KEY.mason, [12, 2], undefined, MASON_KEY, "l")
+      );
+    }
+
+    if (state.worldState.isWellPoisoned && !this._didAddBeggar) {
+      this.addChild(createBeggar([5, 3.5]));
+
+      this._didAddBeggar = true;
     }
   }
 }
@@ -40,10 +53,8 @@ export const createBakeryScene = () => {
     }
   );
 
-
   bakeryScene.addChild(createBaker([10.25, 6.5]));
-
-  bakeryScene.addChild(createBeggar([4, 3]));
+  // bakeryScene.addChild(createBeggar([4, 3.5]));
 
   bakeryScene.addChild(
     createSolidEntity(IMAGES_KEY.wellClean, [12, 7], [1, 2])
@@ -52,25 +63,25 @@ export const createBakeryScene = () => {
   bakeryScene.addChild(createSolidEntity(IMAGES_KEY.furnace, [4, 7], [1, 2]));
 
   bakeryScene.addChild(
-    createSolidEntity(IMAGES_KEY.shelfBread, [3, 3], [1, 2])
+    createSolidEntity(IMAGES_KEY.shelfBread, [4, 3], [1, 2])
   );
 
   bakeryScene.addChild(
-    createSolidEntity(IMAGES_KEY.shelfBread, [5, 3], [1, 2])
+    createSolidEntity(IMAGES_KEY.shelfBread, [6, 3], [1, 2])
   );
 
   bakeryScene.addChild(
-    createSolidEntity(IMAGES_KEY.shelfBread, [11, 3], [1, 2])
+    createSolidEntity(IMAGES_KEY.shelfBread, [10, 3], [1, 2])
   );
 
   bakeryScene.addChild(
-    createSolidEntity(IMAGES_KEY.shelfBread, [13, 3], [1, 2])
+    createSolidEntity(IMAGES_KEY.shelfBread, [12, 3], [1, 2])
   );
 
   createTable([7, 8]).forEach((seg) => bakeryScene.addChild(seg));
 
-  bakeryScene.addChild(createSolidEntity(IMAGES_KEY.bread, [7.25, 7.5]));
-  bakeryScene.addChild(createSolidEntity(IMAGES_KEY.bread, [8.75, 7.5]));
+  bakeryScene.addChild(createOpaqueEntity(IMAGES_KEY.bread, [7.25, 7.5]));
+  bakeryScene.addChild(createOpaqueEntity(IMAGES_KEY.bread, [8.75, 7.5]));
 
   return bakeryScene;
 };

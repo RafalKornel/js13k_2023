@@ -46,10 +46,7 @@ export class NPC extends BaseEntity {
     this.components.interaction!.update!(this, state);
   }
 
-  protected handleTimedDeath(
-    worldState: GameWorldState,
-    deathThreshold: number
-  ) {
+  handleTimedDeath(worldState: GameWorldState, deathThreshold: number) {
     const dic = this.components
       .interaction as DialogueInteractionComponent<GameWorldState>;
 

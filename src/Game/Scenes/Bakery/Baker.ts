@@ -67,8 +67,8 @@ export const createBaker = (pos: Vec2) =>
       createGameInteraction(
         "q",
         "I poisoned the well",
-        "Really! Thank you!\nFinally I will earn some good money!\nI can't offer you a lot, but\nyou can use my exit!",
-        createWinCallback(3),
+        "Really! Thank you!\nFinally I will earn some good money!\nYou look like someone who might need this.\n<Hands you the exit key and winks>",
+        createWinCallback(),
         (ws) => ws.isWellPoisoned && ws.isPlayerHelpingBaker
       ),
       createKillInteraction("Arghh", (ws) => {

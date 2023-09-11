@@ -1,5 +1,5 @@
 import { EntityKey } from "../Engine/BaseEntity";
-import { BREAD, HAMMER, ItemKey, POISON } from "./items";
+import { BREAD, EXIT_KEY, HAMMER, ItemKey, POISON } from "./items";
 
 export const MERCHANT_INVENTORY = [HAMMER, POISON];
 
@@ -9,7 +9,7 @@ export const getWorldState = () => ({
 
   sceneJumps: 0,
 
-  items: new Set<ItemKey>([]),
+  items: new Set<ItemKey>([EXIT_KEY.key]),
   coins: 10,
   banker: new Set<ItemKey>(),
   merchant: new Set<ItemKey>(MERCHANT_INVENTORY.map((item) => item.key)),

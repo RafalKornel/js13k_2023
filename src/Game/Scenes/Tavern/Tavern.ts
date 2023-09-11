@@ -83,6 +83,7 @@ export const createTavernScene = () => {
   tavern.addChild(
     createOpaqueEntity(IMAGES_KEY.chairSide, [6, 10], undefined, undefined, "l")
   );
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.chairSide, [2, 10]));
 
   return tavern;
 };

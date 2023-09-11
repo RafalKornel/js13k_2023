@@ -15,16 +15,12 @@ class Beggar extends NPC {
   update(state: GameState<GameWorldState>): void {
     super.update(state);
 
-    this.state = state.worldState.isWellPoisoned ? "active" : "inactive";
-
-    if (this.state === "inactive") return;
-
     this.handleTimedDeath(state.worldState, DEATH_THRESHOLD);
   }
 }
 
 const GRATITUDE_RESPONSE =
-  "Thank you so much! You are so kind!\nYou saved lives of my children!\nYou can use staircase in my basement\nto get out of this underground!";
+  "Thank you so much! You are so kind!\nYou saved lives of my children!\nTake my key, I know you want\nto escape this underground maze...";
 
 export const createBeggar = (pos: Vec2) => {
   const b = new Beggar(
@@ -38,14 +34,14 @@ export const createBeggar = (pos: Vec2) => {
           "1",
           "Take this bucket of water",
           GRATITUDE_RESPONSE,
-          createWinCallback(5),
+          createWinCallback(),
           (ws) => ws.items.has(WATER_BUCKER.key)
         ),
         createGameInteraction(
           "2",
           "Ernest is dead. You can use his well.",
           GRATITUDE_RESPONSE,
-          createWinCallback(5),
+          createWinCallback(),
           (ws) => ws.killedEntities.has(BAKER_KEY)
         ),
       ],

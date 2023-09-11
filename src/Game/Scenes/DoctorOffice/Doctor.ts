@@ -19,8 +19,8 @@ export const createDoctor = (pos: Vec2) =>
       options: [
         createGameInteraction(
           "1",
-          "Do you have some poison left?",
-          "What? Poison? Why would you need it?\nYou know, nevermind. Take this and leave me alone.",
+          "Do you have any poison left?",
+          "What? Poison? Why would you need it?\nYou know, nevermind.\nTake this and leave me alone.",
           (ws) => {
             ws.items.add(POISON.key);
           },

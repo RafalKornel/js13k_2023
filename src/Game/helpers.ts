@@ -16,7 +16,7 @@ import {
 import { add, mult } from "../Engine/utils";
 import { IMAGES_KEY, ImageId } from "../assets";
 import { GameWorldState } from "./WorldState";
-import { ItemKey, KNIFE } from "./items";
+import { EXIT_KEY, ItemKey, KNIFE } from "./items";
 
 export const createScenePositionComponent = (
   pos: Vec2 = [0, 1],
@@ -52,11 +52,14 @@ export const createOpaqueEntity = (
   key?: EntityKey,
   dir?: Direction
 ) =>
-  new BaseEntity({
-    position: createOffsetPositionComponent(pos, dim, dir),
-    collision: { type: "none" },
-    render: new ImageRenderComponent(imageId),
-  }, key);
+  new BaseEntity(
+    {
+      position: createOffsetPositionComponent(pos, dim, dir),
+      collision: { type: "none" },
+      render: new ImageRenderComponent(imageId),
+    },
+    key
+  );
 
 export const withTimeout = (
   callback: () => void,
@@ -144,15 +147,12 @@ export const createKillPlayerCallback =
       worldState.isDead = true;
     }, timeInSeconds);
 
-export const createWinCallback =
-  (timeInSeconds: number) => (worldState: GameWorldState) =>
-    withTimeout(() => {
-      worldState.hasWon = true;
-    }, timeInSeconds);
+export const createWinCallback = () => (worldState: GameWorldState) => {
+  worldState.items.add(EXIT_KEY.key);
+};
 
 export const createBrickSceneRenderComponent = () =>
   new RectRenderComponent("#371415", "topLeft");
-// new BackgroundRenderComponent(IMAGES_KEY.floor, dim);
 
 export const createTunnel = (
   key: SceneKey,

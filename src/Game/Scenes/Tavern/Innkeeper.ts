@@ -19,8 +19,8 @@ export const createInnkeeper = (pos: Vec2) => {
         createGameInteraction(
           "q",
           "Drunkard went home.",
-          "Thank you! As you can see\nthere aren't many customers anyway...\nIf you want, you can use my staircase.",
-          createWinCallback(4),
+          "Thank you! As you can see\nthere aren't many customers anyway...\nTake this key, it opens exit door.\nI know you escaped prison...\nBut you helped me. You are a good man.",
+          createWinCallback(),
           (ws) => ws.didHelpDrunkard
         ),
       ],

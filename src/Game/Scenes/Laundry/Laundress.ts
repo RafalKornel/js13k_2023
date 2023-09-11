@@ -9,7 +9,7 @@ import { ELIXIR } from "../../items";
 export const LAUNDRESS_KEY = "Laundress Eva";
 
 const GRATITUDE_DIALOGUE =
-  "Thank you.\nYou are very kind man...\nYou can use my staircase if you\nwant to get out of here...";
+  "Thank you.\nYou are very kind man...\nTake this key, I won't be leaving\nour city in the near future...";
 
 const DEATH_THRESHOLD = 20;
 
@@ -33,14 +33,14 @@ export const createLaundress = (pos: Vec2) =>
           "1",
           "I've brought you medicine",
           "<Drinks elixir>" + GRATITUDE_DIALOGUE,
-          createWinCallback(4),
+          createWinCallback(),
           (ws) => ws.items.has(ELIXIR.key)
         ),
         createGameInteraction(
           "2",
-          "The doctor will examine you.",
-          GRATITUDE_DIALOGUE,
-          createWinCallback(4),
+          "How are you feeling?",
+          `I feel better now.\nThe doctor took care of me.\n${GRATITUDE_DIALOGUE}`,
+          createWinCallback(),
           (ws) => ws.willDoctorExamineLaundress
         ),
       ],

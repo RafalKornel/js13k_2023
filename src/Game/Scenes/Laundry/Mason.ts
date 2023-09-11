@@ -4,7 +4,7 @@ import { NPC } from "../../NPC";
 import { createGameInteraction } from "../../helpers";
 import { HAMMER } from "../../items";
 
-const MASON_KEY = "Mason John";
+export const MASON_KEY = "Mason John";
 
 class Mason extends NPC {}
 

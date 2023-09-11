@@ -12,9 +12,9 @@ import {
 import { GameState } from "../../../Engine/GameState";
 import { GameWorldState } from "../../WorldState";
 
-const GUARD_KEY = "Guard Dan";
+const PRISON_GUARD_KEY = "Prison Guard Dan";
 
-const GUARD_POS: Vec2 = [7, 5];
+const PRISON_GUARD_POS: Vec2 = [7, 5];
 
 class Guard extends NPC {
   update(state: GameState<GameWorldState>): void {
@@ -40,7 +40,6 @@ const createWakeUpInteraction = (type: "regular" | "escaped") =>
 
       createKillPlayerCallback(3)(ws);
     },
-    // (ws) =>
     (ws) =>
       !ws.isGuardAwake &&
       (type === "regular" ? !ws.isPlayerDoorOpen : ws.isPlayerDoorOpen)
@@ -48,8 +47,8 @@ const createWakeUpInteraction = (type: "regular" | "escaped") =>
 
 export const createGuard = () =>
   new Guard(
-    GUARD_POS,
-    GUARD_KEY,
+    PRISON_GUARD_POS,
+    PRISON_GUARD_KEY,
     IMAGES_KEY.guard,
     {
       init: "Zzzzz....",
@@ -64,19 +63,20 @@ export const createGuard = () =>
         "Arrgghh... <You take the cell key>",
         (ws) => {
           withTimeout(() => {
-            ws.killedEntities.add(GUARD_KEY);
+            ws.killedEntities.add(PRISON_GUARD_KEY);
             ws.items.add(CELL_KEY.key);
           }, 2);
         },
-        (ws) => ws.items.has(KNIFE.key) && !ws.killedEntities.has(GUARD_KEY)
+        (ws) =>
+          ws.items.has(KNIFE.key) && !ws.killedEntities.has(PRISON_GUARD_KEY)
       ),
       createSuccessfullPickpocketInteraction(
-        GUARD_KEY,
+        PRISON_GUARD_KEY,
         CELL_KEY.key,
         (ws) => !ws.isGuardAwake
       ),
       createFailedPickpocketInteraction(
-        GUARD_KEY,
+        PRISON_GUARD_KEY,
         "Stabs you with knife",
         (ws) => ws.isGuardAwake
       ),

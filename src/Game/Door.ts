@@ -45,7 +45,7 @@ export class Door extends BaseEntity {
     pos: Vec2,
     imageId: ImageId,
     hasKeyCallback: HasKeyCallback,
-    readonly onOpen: (ws: GameWorldState) => void,
+    readonly onOpen?: (ws: GameWorldState) => void,
     dir?: "l" | "r"
   ) {
     super(
