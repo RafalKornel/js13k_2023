@@ -24,7 +24,7 @@ export const getWorldState = () => ({
   isPlayerDoorOpen: false,
   isGuardAwake: false,
 
-  isWellPoisoned: false,
+  isWellPoisoned: true,
 
   isPlayerHelpingBaker: false,
 

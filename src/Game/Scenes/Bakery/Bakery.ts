@@ -8,6 +8,7 @@ import {
   createBrickSceneRenderComponent,
   createScenePositionComponent,
   createSolidEntity,
+  createTable,
 } from "../../helpers";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { createBaker } from "./Baker";
@@ -39,11 +40,37 @@ export const createBakeryScene = () => {
     }
   );
 
-  bakeryScene.addChild(createBaker([5, 5]));
 
-  bakeryScene.addChild(createBeggar([10, 5]));
+  bakeryScene.addChild(createBaker([10.25, 6.5]));
 
-  bakeryScene.addChild(createSolidEntity(IMAGES_KEY.wellClean, [4, 8]));
+  bakeryScene.addChild(createBeggar([4, 3]));
+
+  bakeryScene.addChild(
+    createSolidEntity(IMAGES_KEY.wellClean, [12, 7], [1, 2])
+  );
+
+  bakeryScene.addChild(createSolidEntity(IMAGES_KEY.furnace, [4, 7], [1, 2]));
+
+  bakeryScene.addChild(
+    createSolidEntity(IMAGES_KEY.shelfBread, [3, 3], [1, 2])
+  );
+
+  bakeryScene.addChild(
+    createSolidEntity(IMAGES_KEY.shelfBread, [5, 3], [1, 2])
+  );
+
+  bakeryScene.addChild(
+    createSolidEntity(IMAGES_KEY.shelfBread, [11, 3], [1, 2])
+  );
+
+  bakeryScene.addChild(
+    createSolidEntity(IMAGES_KEY.shelfBread, [13, 3], [1, 2])
+  );
+
+  createTable([7, 8]).forEach((seg) => bakeryScene.addChild(seg));
+
+  bakeryScene.addChild(createSolidEntity(IMAGES_KEY.bread, [7.25, 7.5]));
+  bakeryScene.addChild(createSolidEntity(IMAGES_KEY.bread, [8.75, 7.5]));
 
   return bakeryScene;
 };

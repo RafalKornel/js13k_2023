@@ -39,7 +39,7 @@ export const createBaker = (pos: Vec2) =>
     BAKER_KEY,
     IMAGES_KEY.baker,
     {
-      init: "Those damn people... They just won't buy anything\nfrom me... I have water for sale, but\nthey just go to public well...\nI would be rich if the well was unavailable.",
+      init: "Those damn people... They just won't buy\nanything from me... I have water for sale, but\nthey just go to public well...\nI would be rich if the well was unavailable.",
       options: [
         createGameInteraction(
           "1",

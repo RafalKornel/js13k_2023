@@ -186,6 +186,7 @@ const IMAGES_KEY = {
   shelfWine: 40,
   cat: 41,
   goldChest: 42,
+  furnace: 43,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -241,6 +242,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.shelfFood]: { data: shelfFood, s: tallSize8 },
   [IMAGES_KEY.shelfPotion]: { data: shelfPotion, s: tallSize8 },
   [IMAGES_KEY.shelfWine]: { data: shelfWine, s: tallSize8 },
+  [IMAGES_KEY.furnace]: { data: furnace, s: tallSize8 },
 
   [IMAGES_KEY.goldChest]: { data: goldChest, s: size8 },
 };
