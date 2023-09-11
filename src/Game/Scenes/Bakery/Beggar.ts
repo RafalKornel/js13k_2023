@@ -7,6 +7,8 @@ import { createGameInteraction, createWinCallback } from "../../helpers";
 import { WATER_BUCKER } from "../../items";
 import { BAKER_KEY } from "./Baker";
 
+const BEGGAR_NAME = "Beggar Marry";
+
 const DEATH_THRESHOLD = 20;
 
 class Beggar extends NPC {
@@ -27,8 +29,8 @@ const GRATITUDE_RESPONSE =
 export const createBeggar = (pos: Vec2) => {
   const b = new Beggar(
     pos,
-    "Beggar",
-    IMAGES_KEY.hero,
+    BEGGAR_NAME,
+    IMAGES_KEY.beggar,
     {
       init: "Ohh.. We are so thirsty...\nBut the well got poisoned and\nwe cannot afford buying water from\nthis leech Ernest...\nMy poor children...\nThey do not deserve this...",
       options: [

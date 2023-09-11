@@ -10,20 +10,20 @@ import { KNIFE } from "../../items";
 
 export const PRISONER_JAIL_POS: Vec2 = [9, 10];
 
-export const PRISONER_KEY = "Prisoner";
+export const PRISONER_KEY = "Diego";
 
 export const createPrisoner = () => {
   const prisoner = new NPC(
     PRISONER_JAIL_POS,
     PRISONER_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.prisoner,
     {
       init: "<Looks at you distrustfully>",
       options: [
         createGameInteraction(
           "1",
-          "Hey! What are you here for?",
-          "I'm here for killing\nannoying people like you!\n<Stabs you in the chest>",
+          "Hey! My name is...",
+          "I don't care about your name scumbag...\n<Stabs you in the chest>",
           createKillPlayerCallback(3)
         ),
         createGameInteraction(

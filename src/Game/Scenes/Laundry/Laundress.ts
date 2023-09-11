@@ -25,7 +25,7 @@ export const createLaundress = (pos: Vec2) =>
   new Laundress(
     pos,
     LAUNDRESS_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.laundress,
     {
       init: "Ohh... <Coughs> I don't feel well...\nCould you help me?\nPlease hurry... <Coughs>\nI don't have much time left",
       options: [

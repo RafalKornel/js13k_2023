@@ -12,7 +12,7 @@ export const createInnkeeper = (pos: Vec2) => {
   const innkeeper = new Innkeeper(
     pos,
     INNKEEPER_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.innkeeper,
     {
       init: "Welcome in my tavern!\nPlease make yourself comfortable\nand don't mind this ugly drunkard...\nHe sits here every day and I can't get\nrid of him...",
       options: [

@@ -23,7 +23,7 @@ export class Player extends BaseEntity {
     super(
       {
         position: new PositionComponent(pos, dim),
-        render: new ImageRenderComponent(IMAGES_KEY.hero),
+        render: new ImageRenderComponent(IMAGES_KEY.player),
         collision: new PlayerCollisionComponent(
           "solid",
           gameState.sceneManager

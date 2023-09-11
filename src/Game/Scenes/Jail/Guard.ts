@@ -12,7 +12,7 @@ import {
 import { GameState } from "../../../Engine/GameState";
 import { GameWorldState } from "../../WorldState";
 
-const GUARD_KEY = "Guard";
+const GUARD_KEY = "Guard Dan";
 
 const GUARD_POS: Vec2 = [7, 5];
 
@@ -50,7 +50,7 @@ export const createGuard = () =>
   new Guard(
     GUARD_POS,
     GUARD_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.guard,
     {
       init: "Zzzzz....",
       options: [],

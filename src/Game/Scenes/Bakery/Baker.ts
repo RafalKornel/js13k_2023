@@ -14,7 +14,7 @@ import {
 } from "../../helpers";
 import { BREAD, WATER_BUCKER, buyItem } from "../../items";
 
-export const BAKER_KEY = "Ernest";
+export const BAKER_KEY = "Baker Ernest";
 
 class Baker extends NPC {
   update(state: GameState<GameWorldState>): void {
@@ -37,7 +37,7 @@ export const createBaker = (pos: Vec2) =>
   new Baker(
     pos,
     BAKER_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.baker,
     {
       init: "Those damn people... They just won't buy anything\nfrom me... I have water for sale, but\nthey just go to public well...\nI would be rich if the well was unavailable.",
       options: [

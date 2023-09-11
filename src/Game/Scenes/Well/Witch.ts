@@ -4,13 +4,15 @@ import { NPC } from "../../NPC";
 import { createGameInteraction, createKillPlayerCallback } from "../../helpers";
 import { ELIXIR, POISON } from "../../items";
 
+export const WITCH_KEY = "Witch Margaret";
+
 class Witch extends NPC {}
 
 export const createWitch = (pos: Vec2) => {
   const witch = new Witch(
     pos,
-    "Witch",
-    IMAGES_KEY.hero,
+    WITCH_KEY,
+    IMAGES_KEY.witch,
     {
       init: "Whaat? Those people...\nThey would be better off dead...\nIf only I had poison...\nThis well would no longer be usable... Ha ha ha!",
       options: [
@@ -31,6 +33,7 @@ export const createWitch = (pos: Vec2) => {
         (ws) => {
           ws.didHelpWitch = true;
           ws.isWellPoisoned = true;
+          ws.items.delete(POISON.key);
         },
         (ws) => ws.items.has(POISON.key) && !ws.didHelpWitch
       ),
@@ -56,8 +59,6 @@ export const createWitch = (pos: Vec2) => {
       ),
     ]
   );
-
-  witch.components.position.dir = "l";
 
   return witch;
 };

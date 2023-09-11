@@ -15,7 +15,7 @@ export const createExecutioner = () => {
   const executioner = new NPC(
     [1, 7],
     EXECUTIONER_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.executioner,
     {
       init: "Hmmm?",
       options: [

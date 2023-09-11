@@ -16,7 +16,7 @@ export const createDrunkard = (pos: Vec2) =>
   new Drunkard(
     pos,
     DRUNKARD_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.drunkard,
     {
       init: "Hic! Whaat do youu want?\nOhhh crap, I was sssupossed to buy m-milk...\nBut I got ddrunk instd. Hic!\nI'm never coming to mmmy wive without\nstupid mmilk!",
       options: [

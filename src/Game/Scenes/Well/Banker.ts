@@ -7,7 +7,7 @@ import {
 } from "../../helpers";
 import { ITEMS, ItemKey, buyItem } from "../../items";
 
-const BANKER_KEY = "Banker";
+const BANKER_KEY = "Banker Mort";
 
 class Banker extends NPC {}
 
@@ -15,7 +15,7 @@ export const createBanker = (pos: Vec2) => {
   const banker = new Banker(
     pos,
     BANKER_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.banker,
     {
       init: "Hello! Do you have anything interesting\nto sell?",
       options: [],
@@ -47,8 +47,6 @@ export const createBanker = (pos: Vec2) => {
       createSuccessfullPickpocketInteraction(BANKER_KEY, 1),
     ]
   );
-
-  banker.components.position.dir = "l";
 
   return banker;
 };

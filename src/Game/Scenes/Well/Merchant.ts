@@ -10,7 +10,7 @@ import {
 } from "../../helpers";
 import { buyItem } from "../../items";
 
-const MERCHANT_KEY = "Merchant";
+const MERCHANT_KEY = "Merchant Ian";
 
 class Merchant extends NPC {}
 
@@ -18,7 +18,7 @@ export const createMerchant = (pos: Vec2) =>
   new Merchant(
     pos,
     MERCHANT_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.merchant,
     {
       init: "Hello! What can I get for you today?",
       options: [],

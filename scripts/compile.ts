@@ -15,11 +15,16 @@ function encodeImages(inputPath: string, outputPath: string) {
   let currentColorIdx = 0;
 
   const BYTES_PER_COLOR = 4;
-  const COLORS_IN_PALETTE = 64;
+  const COLORS_IN_PALETTE = 128;
 
   const colors = new Uint8ClampedArray(BYTES_PER_COLOR * COLORS_IN_PALETTE);
 
   try {
+    // fs.rmSync(`${outputPath}/*`);
+    fs.rmSync(outputPath, { recursive: true, force: true });
+
+    fs.mkdirSync(outputPath);
+
     const dir = fs.readdirSync(inputPath);
 
     for (const name of dir) {
@@ -45,7 +50,10 @@ function encodeImages(inputPath: string, outputPath: string) {
     console.log("Compiling images to binary files...");
 
     images.forEach(({ data, name }) => {
-      fs.writeFileSync(outputPath + "/" + name, data, "binary");
+      fs.writeFileSync(outputPath + "/" + name, data, {
+        encoding: "binary",
+        flag: "wx",
+      });
     });
 
     fs.writeFileSync(outputPath + "/colors", colors, "binary");

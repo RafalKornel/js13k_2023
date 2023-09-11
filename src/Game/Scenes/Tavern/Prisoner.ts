@@ -13,7 +13,7 @@ export const createPrisoner = (pos: Vec2) => {
   const prisoner = new NPC(
     pos,
     PRISONER_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.prisoner,
     {
       init: "Zzzz...",
       options: [

@@ -12,7 +12,7 @@ export const createMason = (pos: Vec2) => {
   const mason = new Mason(
     pos,
     MASON_KEY,
-    IMAGES_KEY.hero,
+    IMAGES_KEY.mason,
     {
       init: "Hello there fellow citizen!\nI have lost my hammer...\nCould you perhaps bring me one?\nWithout it I cannot continue my work...\nPlease, help me, if I don't finish this wall\nmy wife will never recover...",
       options: [],
@@ -37,8 +37,6 @@ export const createMason = (pos: Vec2) => {
       ),
     ]
   );
-
-  mason.components.position.dir = "l";
 
   return mason;
 };
