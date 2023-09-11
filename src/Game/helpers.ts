@@ -23,8 +23,11 @@ export const createScenePositionComponent = (
   dim: Vec2 = [CONFIG.width, CONFIG.height - 1]
 ) => new PositionComponent(pos, dim);
 
-export const createOffsetPositionComponent = (pos: Vec2, dim: Vec2 = [1, 1], dir?: Direction) =>
-  new PositionComponent(add(pos, mult(dim, 0.5)), dim, dir);
+export const createOffsetPositionComponent = (
+  pos: Vec2,
+  dim: Vec2 = [1, 1],
+  dir?: Direction
+) => new PositionComponent(add(pos, mult(dim, 0.5)), dim, dir);
 
 export const createSolidEntity = (
   imageId: ImageId,
@@ -41,6 +44,19 @@ export const createSolidEntity = (
     },
     key
   );
+
+export const createOpaqueEntity = (
+  imageId: ImageId,
+  pos: Vec2,
+  dim: Vec2 = [1, 1],
+  key?: EntityKey,
+  dir?: Direction
+) =>
+  new BaseEntity({
+    position: createOffsetPositionComponent(pos, dim, dir),
+    collision: { type: "none" },
+    render: new ImageRenderComponent(imageId),
+  }, key);
 
 export const withTimeout = (
   callback: () => void,

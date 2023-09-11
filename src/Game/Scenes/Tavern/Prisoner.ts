@@ -7,7 +7,7 @@ import {
 } from "../../helpers";
 import { BEER, STASH_KEY } from "../../items";
 
-export const PRISONER_KEY = "Prisoner";
+export const PRISONER_KEY = "Diego";
 
 export const createPrisoner = (pos: Vec2) => {
   const prisoner = new NPC(
@@ -29,8 +29,6 @@ export const createPrisoner = (pos: Vec2) => {
     },
     [createSuccessfullPickpocketInteraction(PRISONER_KEY, BEER.key)]
   );
-
-  prisoner.components.position.dir = "l";
 
   return prisoner;
 };

@@ -51,9 +51,6 @@ import witch from "../assets/compiled/witch?binary";
 // ITEMS
 
 // @ts-ignore
-import colorsData from "../assets/compiled/colors?binary";
-
-// @ts-ignore
 import furnace from "../assets/compiled/furnace?binary";
 
 // @ts-ignore
@@ -146,6 +143,12 @@ import hammer from "../assets/compiled/hammer?binary";
 // @ts-ignore
 import cat from "../assets/compiled/cat?binary";
 
+// @ts-ignore
+import door from "../assets/compiled/door?binary";
+
+// @ts-ignore
+import colorsData from "../assets/compiled/colors?binary";
+
 import { Vec2 } from "./Engine/types";
 import { ImageMetaData } from "./Engine/Renderer/types";
 
@@ -203,6 +206,7 @@ const IMAGES_KEY = {
   laundry: 44,
   washingPan: 45,
   hammer: 47,
+  door: 48,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -265,6 +269,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.laundry]: { data: laundry, s: widtSize8 },
   [IMAGES_KEY.washingPan]: { data: washingPan, s: size8 },
   [IMAGES_KEY.hammer]: { data: hammer, s: size8 },
+  [IMAGES_KEY.door]: { data: door, s: size8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;

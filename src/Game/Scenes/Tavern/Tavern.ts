@@ -7,7 +7,10 @@ import { createWall } from "../../Wall";
 import { GameWorldState } from "../../WorldState";
 import {
   createBrickSceneRenderComponent,
+  createOpaqueEntity,
   createScenePositionComponent,
+  createSolidEntity,
+  createTable,
 } from "../../helpers";
 import { STASH_KEY } from "../../items";
 import { SCENE_KEYS, TUNNELS } from "../constants";
@@ -27,7 +30,7 @@ class TavernScene extends Scene {
 
     if (state.worldState.didHelpPrisoner && !this._didPrisonerCome) {
       this._didPrisonerCome = true;
-      this.addChild(createPrisoner([12, 10]));
+      this.addChild(createPrisoner([2, 10]));
     }
   }
 }
@@ -44,7 +47,7 @@ export const createTavernScene = () => {
     new Door(
       "Stash door",
       [14, 7],
-      IMAGES_KEY.jailDoor,
+      IMAGES_KEY.door,
       (ws) => ws.items.has(STASH_KEY.key),
       (ws) => {
         ws.isStashDoorOpen = true;
@@ -55,9 +58,31 @@ export const createTavernScene = () => {
   tavern.addChild(createWall([14, 6]));
   tavern.addChild(createWall([14, 8]));
 
-  tavern.addChild(createInnkeeper([12, 4]));
+  tavern.addChild(createInnkeeper([12, 3]));
 
-  tavern.addChild(createDrunkard([4, 5]));
+  createTable([11, 4], 4).forEach((seg) => tavern.addChild(seg));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.beer, [14, 3.5]));
+
+  tavern.addChild(createSolidEntity(IMAGES_KEY.shelfWine, [9.75, 3], [1, 2]));
+  tavern.addChild(createSolidEntity(IMAGES_KEY.shelfFood, [8.5, 3], [1, 2]));
+  tavern.addChild(createSolidEntity(IMAGES_KEY.shelfWine, [7.25, 3], [1, 2]));
+  tavern.addChild(createSolidEntity(IMAGES_KEY.shelfWine, [14, 9], [1, 2]));
+
+  createTable([3.5, 4.5], 2).forEach((seg) => tavern.addChild(seg));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.stool, [5.625, 4.372]));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.stool, [2.375, 4.372]));
+  tavern.addChild(createDrunkard([3.75, 3.375]));
+
+  createTable([7, 7], 3).forEach((seg) => tavern.addChild(seg));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.stool, [5.875, 6.875]));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.stool, [10.125, 6.875]));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.beer, [8, 6.5]));
+
+  createTable([3, 10], 3).forEach((seg) => tavern.addChild(seg));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.beer, [4, 9.5]));
+  tavern.addChild(
+    createOpaqueEntity(IMAGES_KEY.chairSide, [6, 10], undefined, undefined, "l")
+  );
 
   return tavern;
 };
