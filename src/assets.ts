@@ -147,6 +147,9 @@ import cat from "../assets/compiled/cat?binary";
 import door from "../assets/compiled/door?binary";
 
 // @ts-ignore
+import bed from "../assets/compiled/bed?binary";
+
+// @ts-ignore
 import colorsData from "../assets/compiled/colors?binary";
 
 import { Vec2 } from "./Engine/types";
@@ -207,6 +210,7 @@ const IMAGES_KEY = {
   washingPan: 45,
   hammer: 47,
   door: 48,
+  bed: 49,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -215,7 +219,7 @@ type ImageId = (typeof IMAGES_KEY)[ImageKey];
 
 const size8: Vec2 = [8, 8];
 const tallSize8: Vec2 = [8, 16];
-const widtSize8: Vec2 = [16, 8];
+const wideSize8: Vec2 = [16, 8];
 
 const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.player]: { data: player, s: size8 },
@@ -266,10 +270,12 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.furnace]: { data: furnace, s: tallSize8 },
 
   [IMAGES_KEY.goldChest]: { data: goldChest, s: size8 },
-  [IMAGES_KEY.laundry]: { data: laundry, s: widtSize8 },
+  [IMAGES_KEY.laundry]: { data: laundry, s: wideSize8 },
   [IMAGES_KEY.washingPan]: { data: washingPan, s: size8 },
   [IMAGES_KEY.hammer]: { data: hammer, s: size8 },
   [IMAGES_KEY.door]: { data: door, s: size8 },
+
+  [IMAGES_KEY.bed]: { data: bed, s: size8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;

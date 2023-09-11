@@ -58,10 +58,12 @@ export const createTavernScene = () => {
   tavern.addChild(createWall([14, 6]));
   tavern.addChild(createWall([14, 8]));
 
-  tavern.addChild(createInnkeeper([12, 3]));
-
   createTable([11, 4], 4).forEach((seg) => tavern.addChild(seg));
-  tavern.addChild(createOpaqueEntity(IMAGES_KEY.beer, [14, 3.5]));
+  tavern.addChild(createInnkeeper([11.5, 3]));
+  tavern.addChild(
+    createOpaqueEntity(IMAGES_KEY.chairSide, [14, 3], undefined, undefined, "l")
+  );
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.beer, [13, 3.5]));
 
   tavern.addChild(createSolidEntity(IMAGES_KEY.shelfWine, [9.75, 3], [1, 2]));
   tavern.addChild(createSolidEntity(IMAGES_KEY.shelfFood, [8.5, 3], [1, 2]));
@@ -76,6 +78,8 @@ export const createTavernScene = () => {
   createTable([7, 7], 3).forEach((seg) => tavern.addChild(seg));
   tavern.addChild(createOpaqueEntity(IMAGES_KEY.stool, [5.875, 6.875]));
   tavern.addChild(createOpaqueEntity(IMAGES_KEY.stool, [10.125, 6.875]));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.chairFront, [7, 6]));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.chairFront, [9, 6]));
   tavern.addChild(createOpaqueEntity(IMAGES_KEY.beer, [8, 6.5]));
 
   createTable([3, 10], 3).forEach((seg) => tavern.addChild(seg));
@@ -83,6 +87,9 @@ export const createTavernScene = () => {
   tavern.addChild(
     createOpaqueEntity(IMAGES_KEY.chairSide, [6, 10], undefined, undefined, "l")
   );
+
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.chairFront, [3, 9]));
+  tavern.addChild(createOpaqueEntity(IMAGES_KEY.chairFront, [5, 9]));
   tavern.addChild(createOpaqueEntity(IMAGES_KEY.chairSide, [2, 10]));
 
   return tavern;

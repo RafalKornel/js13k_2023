@@ -1,10 +1,14 @@
 import { GameState } from "../../../Engine/GameState";
 import { Scene } from "../../../Engine/Scene/Scene";
 import { CONFIG } from "../../../Engine/config";
+import { IMAGES_KEY } from "../../../assets";
 import { GameWorldState } from "../../WorldState";
 import {
   createBrickSceneRenderComponent,
+  createOpaqueEntity,
   createScenePositionComponent,
+  createSolidEntity,
+  createTable,
 } from "../../helpers";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { DOCTOR_KEY, createDoctor } from "./Doctor";
@@ -27,7 +31,29 @@ export const createDoctorOfficeScene = () => {
     { t: TUNNELS.wr }
   );
 
-  doctorOfficeScene.addChild(createDoctor([3, 4]));
+  doctorOfficeScene.addChild(createDoctor([4.5, 2.875]));
+
+  doctorOfficeScene.addChild(
+    createSolidEntity(IMAGES_KEY.shelfPotion, [13, 3], [1, 2])
+  );
+
+  doctorOfficeScene.addChild(
+    createSolidEntity(IMAGES_KEY.shelfPotion, [11, 3], [1, 2])
+  );
+
+  createTable([4, 4]).forEach((seg) => doctorOfficeScene.addChild(seg));
+  doctorOfficeScene.addChild(
+    createOpaqueEntity(IMAGES_KEY.mason, [5, 3.75], undefined, undefined, "t")
+  );
+
+  doctorOfficeScene.addChild(createSolidEntity(IMAGES_KEY.bed, [13, 9]));
+  doctorOfficeScene.addChild(createSolidEntity(IMAGES_KEY.bed, [13, 8]));
+  doctorOfficeScene.addChild(createSolidEntity(IMAGES_KEY.bed, [13, 7]));
+
+  createTable([5, 9], 5).forEach((seg) => doctorOfficeScene.addChild(seg));
+  // TODO
+  doctorOfficeScene.addChild(createOpaqueEntity(IMAGES_KEY.beer, [6, 8.5]));
+  doctorOfficeScene.addChild(createOpaqueEntity(IMAGES_KEY.beer, [8, 8.5]));
 
   return doctorOfficeScene;
 };

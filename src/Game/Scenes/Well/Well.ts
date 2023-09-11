@@ -49,12 +49,16 @@ class WellScene extends Scene {
     this.addChild(createSolidEntity(IMAGES_KEY.shelfFood, [5, 2.5]));
     this.addChild(createSolidEntity(IMAGES_KEY.shelfFood, [1, 2.5]));
     this.addChild(createSolidEntity(IMAGES_KEY.chest2, [2.25, 2]));
+    this.addChild(createSolidEntity(IMAGES_KEY.chairFront, [3.625, 1.875]));
+
 
     this.addChild(createBanker([w - 4.25, 3]));
     createTable([w - 6, 4], 5).forEach((seg) => this.addChild(seg));
     this.addChild(createSolidEntity(IMAGES_KEY.shelfBooks, [w - 6, 2.5]));
     this.addChild(createSolidEntity(IMAGES_KEY.shelfBooks, [w - 2, 2.5]));
     this.addChild(createSolidEntity(IMAGES_KEY.goldChest, [w - 3, 2]));
+    this.addChild(createSolidEntity(IMAGES_KEY.chairFront, [w - 4.25, 1.875]));
+
 
     this.addChild(createWitch([13, 10]));
     this.addChild(createSolidEntity(IMAGES_KEY.cat, [14, 10]));
