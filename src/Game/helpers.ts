@@ -14,7 +14,7 @@ import {
   Vec2,
 } from "../Engine/types";
 import { add, mult } from "../Engine/utils";
-import { ImageId } from "../assets";
+import { IMAGES_KEY, ImageId } from "../assets";
 import { GameWorldState } from "./WorldState";
 import { ItemKey, KNIFE } from "./items";
 
@@ -160,4 +160,23 @@ export const createTunnel = (
     createBrickSceneRenderComponent(),
     cs
   );
+};
+
+export const createTable = (pos: Vec2, length = 3) => {
+  const middle = new Array(length - 2)
+    .fill(0)
+    .map((_, i) =>
+      createSolidEntity(IMAGES_KEY.tableMiddle, add(pos, [i + 1, 0]))
+    );
+
+  const left = createSolidEntity(IMAGES_KEY.tableLeft, pos);
+  const right = createSolidEntity(
+    IMAGES_KEY.tableLeft,
+    add(pos, [length - 1, 0]),
+    undefined,
+    undefined,
+    "l"
+  );
+
+  return [left, ...middle, right];
 };

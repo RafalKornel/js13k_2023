@@ -6,6 +6,7 @@ import {
   createBrickSceneRenderComponent,
   createScenePositionComponent,
   createSolidEntity,
+  createTable,
 } from "../../helpers";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { createBanker } from "./Banker";
@@ -34,10 +35,20 @@ class WellScene extends Scene {
 
     this.addChild(this.createWell(false));
 
-    this.addChild(createMerchant([3, 3]));
-    this.addChild(createBanker([w - 4, 3]));
+    this.addChild(createMerchant([2, 3]));
+    createTable([1, 4], 4).forEach((tableSegment) => {
+      this.addChild(tableSegment);
+    });
+    this.addChild(createSolidEntity(IMAGES_KEY.shelfFood, [4, 2.5]));
+    this.addChild(createSolidEntity(IMAGES_KEY.chest2, [1, 2]));
 
-    this.addChild(createWitch([12, 8]));
+    this.addChild(createBanker([w - 3, 3]));
+    createTable([w - 5, 4], 4).forEach((seg) => this.addChild(seg));
+    this.addChild(createSolidEntity(IMAGES_KEY.shelfBooks, [w - 5, 2.5]));
+    this.addChild(createSolidEntity(IMAGES_KEY.goldChest, [w - 2, 2]));
+
+    this.addChild(createWitch([13, 9]));
+    this.addChild(createSolidEntity(IMAGES_KEY.cat, [14, 9]));
   }
 
   update(state: GameState<GameWorldState>): void {
@@ -54,7 +65,7 @@ class WellScene extends Scene {
 
     return createSolidEntity(
       isPoisoned ? IMAGES_KEY.wellPoisoned : IMAGES_KEY.wellClean,
-      [w / 2 - 1, h / 2 + 2],
+      [w / 2, h / 2],
       [1, 2],
       WELL_OBJECT_KEY
     );

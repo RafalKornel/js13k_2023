@@ -9,6 +9,7 @@ import {
   createBrickSceneRenderComponent,
   createScenePositionComponent,
   createSolidEntity,
+  createTable,
 } from "../../helpers";
 import { PRISONER_KEY, createPrisoner } from "./Prisoner";
 import { SCENE_KEYS, TUNNELS } from "../constants";
@@ -115,23 +116,12 @@ export const createJailScene = () => {
 
   jailScene.addChild(createSolidEntity(IMAGES_KEY.chairSide, [1, 3]));
 
-  jailScene.addChild(createSolidEntity(IMAGES_KEY.tableLeft, [2, 3]));
-
-  jailScene.addChild(createSolidEntity(IMAGES_KEY.tableMiddle, [3, 3]));
-
-  jailScene.addChild(
-    createSolidEntity(IMAGES_KEY.tableLeft, [4, 3], undefined, undefined, "l")
-  );
+  createTable([2, 3]).forEach((seg) => jailScene.addChild(seg));
 
   jailScene.addChild(new PickableItem(jailScene, [2.25, 2.375], BREAD));
   jailScene.addChild(new PickableItem(jailScene, [4, 2.5], BEER));
 
   jailScene.addChild(createSolidEntity(IMAGES_KEY.chest2, [14, 2]));
-
-
-  // jailScene.addChild(createSolidEntity(IMAGES_KEY.bread, [1.25, 1.5]));
-
-  // jailScene.addChild(createSolidEntity(IMAGES_KEY.beer, [3, 1.5]));
 
   console.log(jailScene);
   return jailScene;

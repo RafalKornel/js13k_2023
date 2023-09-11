@@ -113,6 +113,27 @@ import chest1 from "../assets/compiled/chest1?binary";
 // @ts-ignore
 import chest2 from "../assets/compiled/chest2?binary";
 
+// @ts-ignore
+import shelfBooks from "../assets/compiled/shelf_books?binary";
+
+// @ts-ignore
+import shelfBread from "../assets/compiled/shelf_bread?binary";
+
+// @ts-ignore
+import shelfFood from "../assets/compiled/shelf_food?binary";
+
+// @ts-ignore
+import shelfPotion from "../assets/compiled/shelf_potion?binary";
+
+// @ts-ignore
+import shelfWine from "../assets/compiled/shelf_wine?binary";
+
+// @ts-ignore
+import goldChest from "../assets/compiled/gold_chest?binary";
+
+// @ts-ignore
+import cat from "../assets/compiled/cat?binary";
+
 import { Vec2 } from "./Engine/types";
 import { ImageMetaData } from "./Engine/Renderer/types";
 
@@ -158,6 +179,13 @@ const IMAGES_KEY = {
   chairFront: 33,
   chest1: 34,
   chest2: 35,
+  shelfBooks: 36,
+  shelfBread: 37,
+  shelfFood: 38,
+  shelfPotion: 39,
+  shelfWine: 40,
+  cat: 41,
+  goldChest: 42,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -195,15 +223,26 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.bucketFull]: { data: bucketFull, s: size8 },
   [IMAGES_KEY.sleepingHay1]: { data: sleepingHay1, s: size8 },
   [IMAGES_KEY.sleepingHay2]: { data: sleepingHay2, s: size8 },
-  [IMAGES_KEY.tableLeft]: { data: tableLeft, s: size8 },
-  [IMAGES_KEY.tableMiddle]: { data: tableMiddle, s: size8 },
   [IMAGES_KEY.bread]: { data: bread, s: size8 },
   [IMAGES_KEY.beer]: { data: beer, s: size8 },
+  [IMAGES_KEY.cat]: { data: cat, s: size8 },
+
+  [IMAGES_KEY.tableMiddle]: { data: tableMiddle, s: size8 },
+  [IMAGES_KEY.tableLeft]: { data: tableLeft, s: size8 },
   [IMAGES_KEY.stool]: { data: stool, s: size8 },
   [IMAGES_KEY.chairSide]: { data: chairSide, s: size8 },
   [IMAGES_KEY.chairFront]: { data: chairFront, s: size8 },
+
   [IMAGES_KEY.chest1]: { data: chest1, s: size8 },
   [IMAGES_KEY.chest2]: { data: chest2, s: size8 },
+
+  [IMAGES_KEY.shelfBooks]: { data: shelfBooks, s: tallSize8 },
+  [IMAGES_KEY.shelfBread]: { data: shelfBread, s: tallSize8 },
+  [IMAGES_KEY.shelfFood]: { data: shelfFood, s: tallSize8 },
+  [IMAGES_KEY.shelfPotion]: { data: shelfPotion, s: tallSize8 },
+  [IMAGES_KEY.shelfWine]: { data: shelfWine, s: tallSize8 },
+
+  [IMAGES_KEY.goldChest]: { data: goldChest, s: size8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;
