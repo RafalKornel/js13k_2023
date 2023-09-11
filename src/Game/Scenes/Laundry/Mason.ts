@@ -14,26 +14,34 @@ export const createMason = (pos: Vec2) => {
     MASON_KEY,
     IMAGES_KEY.mason,
     {
-      init: "Hello there fellow citizen!\nI have lost my hammer...\nCould you perhaps bring me one?\nWithout it I cannot continue my work...\nPlease, help me, if I don't finish this wall\nmy wife will never recover...",
-      options: [],
+      init: "Ehh... It's no use...\nWithout my hammer I will never finish\nbricking this damn wall...\nThis cold made my wife sick... Ohh, poor Eva...\nI can't even create safe space for her!\nI lost my hammer and I cannot finish this wall...\nFellow citizen, could you bring me my hammer?",
+      options: [
+        createGameInteraction(
+          "1",
+          "Could you help me and brick up Ernest?",
+          "What? Such crime... But I hate this\ngreedy scumbag Ernest... Fine!\nI'll make sure he NEVER leaves his bakery!\nHa ha ha!",
+          (ws) => (ws.didMasonKillBaker = true),
+          (ws) => ws.didHelpMason && !ws.didMasonKillBaker
+        ),
+        createGameInteraction(
+          "2",
+          "Money perhaps?",
+          "I don't have much, but take this.",
+          (ws) => (ws.coins += 1),
+          (ws) => ws.didHelpMason
+        ),
+      ],
     },
     [
       createGameInteraction(
         "q",
-        "Take this <give hammer>",
+        "Take this hammer.",
         "Thank you very much honorable man!\nHow can I ever repay you?",
         (ws) => {
           ws.items.delete(HAMMER.key);
           ws.didHelpMason = true;
         },
         (ws) => ws.items.has(HAMMER.key) && !ws.didHelpMason
-      ),
-      createGameInteraction(
-        "1",
-        "Could you help me and brick up Ernest?",
-        "What? Such crime... But I hate this\ngreedy scumbag Ernest... Fine!\nI'll make sure he NEVER leaves his bakery!\nHa ha ha!",
-        (ws) => (ws.didMasonKillBaker = true),
-        (ws) => ws.didHelpMason && !ws.didMasonKillBaker
       ),
     ]
   );
