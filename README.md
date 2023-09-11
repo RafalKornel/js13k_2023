@@ -5,6 +5,7 @@ This project is a game created for [js13kGames contest](https://js13kgames.com/)
 # TODO
 - [ ] Display item icons
 - [ ] Dialogue speech feature
+- [ ] Add introduction screen
 
 # Installing dependencies 
 ``` bash

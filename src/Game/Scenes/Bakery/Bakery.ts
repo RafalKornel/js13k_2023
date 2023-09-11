@@ -80,8 +80,8 @@ export const createBakeryScene = () => {
 
   createTable([7, 8]).forEach((seg) => bakeryScene.addChild(seg));
 
-  bakeryScene.addChild(createOpaqueEntity(IMAGES_KEY.bread, [7.25, 7.5]));
-  bakeryScene.addChild(createOpaqueEntity(IMAGES_KEY.bread, [8.75, 7.5]));
+  bakeryScene.addChild(createOpaqueEntity(IMAGES_KEY.bread, [7.25, 7.375]));
+  bakeryScene.addChild(createOpaqueEntity(IMAGES_KEY.bread, [8.875, 7.375]));
 
   return bakeryScene;
 };
