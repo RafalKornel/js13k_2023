@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "yarn compile && yarn vite-build && yarn compress",
     "vite-build": "vite build",
-    "deploy": "yarn compile && yarn vite-build && gh-pages -d dist",
+    "deploy": "gh-pages -d dist",
     "ts-check": "tsc",
     "preview": "vite preview",
     "compile": "ts-node --esm scripts/compile.ts",
