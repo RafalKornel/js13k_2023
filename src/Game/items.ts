@@ -1,15 +1,32 @@
+import { IMAGES_KEY } from "../assets";
 import { GameWorldState } from "./WorldState";
 
-export const KNIFE = { key: "Knife", price: 1 };
-export const CELL_KEY = { key: "Cell key", price: 0 };
-export const HAMMER = { key: "Hammer", price: 2 };
-export const BREAD = { key: "Bread", price: 2 };
-export const POISON = { key: "Poison", price: 3 };
-export const ELIXIR = { key: "Elixir", price: 3 };
-export const WATER_BUCKER = { key: "Bucket of water", price: 1 };
-export const STASH_KEY = { key: "Stash key", price: 0 };
-export const MILK = { key: "Milk", price: 1 };
-export const BEER = { key: "Beer", price: 2 };
+export const KNIFE = { key: "Knife", price: 1, imageId: IMAGES_KEY.beer };
+export const CELL_KEY = { key: "Cell key", price: 0, imageId: IMAGES_KEY.beer };
+export const HAMMER = { key: "Hammer", price: 2, imageId: IMAGES_KEY.beer };
+export const BREAD = {
+  key: "Bread",
+  price: 2,
+  imageId: IMAGES_KEY.bread,
+};
+export const POISON = { key: "Poison", price: 3, imageId: IMAGES_KEY.beer };
+export const ELIXIR = { key: "Elixir", price: 3, imageId: IMAGES_KEY.beer };
+export const WATER_BUCKER = {
+  key: "Bucket of water",
+  price: 1,
+  imageId: IMAGES_KEY.beer,
+};
+export const STASH_KEY = {
+  key: "Stash key",
+  price: 0,
+  imageId: IMAGES_KEY.beer,
+};
+export const MILK = { key: "Milk", price: 1, imageId: IMAGES_KEY.beer };
+export const BEER = {
+  key: "Beer",
+  price: 2,
+  imageId: IMAGES_KEY.beer,
+};
 
 export const ITEMS = [
   KNIFE,
@@ -21,6 +38,7 @@ export const ITEMS = [
   WATER_BUCKER,
   STASH_KEY,
   MILK,
+  BEER,
 ] as const;
 
 export type Item = (typeof ITEMS)[number];

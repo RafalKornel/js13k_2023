@@ -13,7 +13,8 @@ import {
 import { PRISONER_KEY, createPrisoner } from "./Prisoner";
 import { SCENE_KEYS, TUNNELS } from "../constants";
 import { CONFIG } from "../../../Engine/config";
-import { CELL_KEY } from "../../items";
+import { BEER, BREAD, CELL_KEY } from "../../items";
+import { PickableItem } from "../../PickableItem";
 
 export const PLAYER_INITIAL_POS: Vec2 = [4, 9];
 
@@ -90,12 +91,12 @@ export const createJailScene = () => {
   const shieldsMetadata = [
     [4, 1, "l"],
     [12, 1, "l"],
-    [4, 11, "ur"],
-    [12, 11, "ul"],
-    [0, 3, "t"],
-    [0, 9, "t"],
-    [15, 3, "d"],
-    [15, 9, "d"],
+    // [4, 11, "ur"],
+    // [12, 11, "ul"],
+    // [0, 3, "t"],
+    // [0, 9, "t"],
+    // [15, 3, "d"],
+    // [15, 9, "d"],
   ] as const;
 
   shieldsMetadata.forEach(([x, y, dir]) =>
@@ -104,5 +105,34 @@ export const createJailScene = () => {
     )
   );
 
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.bucketEmpty, [1, 10]));
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.sleepingHay1, [3, 10]));
+
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.sleepingHay2, [9, 7]));
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.bucketFull, [14, 10]));
+
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.chairFront, [3, 1.875]));
+
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.chairSide, [1, 3]));
+
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.tableLeft, [2, 3]));
+
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.tableMiddle, [3, 3]));
+
+  jailScene.addChild(
+    createSolidEntity(IMAGES_KEY.tableLeft, [4, 3], undefined, undefined, "l")
+  );
+
+  jailScene.addChild(new PickableItem(jailScene, [2.25, 2.375], BREAD));
+  jailScene.addChild(new PickableItem(jailScene, [4, 2.5], BEER));
+
+  jailScene.addChild(createSolidEntity(IMAGES_KEY.chest2, [14, 2]));
+
+
+  // jailScene.addChild(createSolidEntity(IMAGES_KEY.bread, [1.25, 1.5]));
+
+  // jailScene.addChild(createSolidEntity(IMAGES_KEY.beer, [3, 1.5]));
+
+  console.log(jailScene);
   return jailScene;
 };

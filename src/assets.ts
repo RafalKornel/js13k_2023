@@ -1,27 +1,3 @@
-// @ts-ignore
-import colorsData from "../assets/compiled/colors?binary";
-
-// @ts-ignore
-import furnace from "../assets/compiled/furnace?binary";
-
-// @ts-ignore
-import wall from "../assets/compiled/wall2?binary";
-
-// @ts-ignore
-import wellNormal from "../assets/compiled/well_normal?binary";
-
-// @ts-ignore
-import wellPoisoned from "../assets/compiled/well_poisoned?binary";
-
-// @ts-ignore
-import jailBars from "../assets/compiled/jail_bars?binary";
-
-// @ts-ignore
-import jailDoor from "../assets/compiled/jail_door?binary";
-
-// @ts-ignore
-import shieldRed from "../assets/compiled/shield_red?binary";
-
 // NPCS
 
 // @ts-ignore
@@ -72,6 +48,71 @@ import prisoner from "../assets/compiled/prisoner?binary";
 // @ts-ignore
 import witch from "../assets/compiled/witch?binary";
 
+// ITEMS
+
+// @ts-ignore
+import colorsData from "../assets/compiled/colors?binary";
+
+// @ts-ignore
+import furnace from "../assets/compiled/furnace?binary";
+
+// @ts-ignore
+import wall from "../assets/compiled/wall2?binary";
+
+// @ts-ignore
+import wellNormal from "../assets/compiled/well_normal?binary";
+
+// @ts-ignore
+import wellPoisoned from "../assets/compiled/well_poisoned?binary";
+
+// @ts-ignore
+import jailBars from "../assets/compiled/jail_bars?binary";
+
+// @ts-ignore
+import jailDoor from "../assets/compiled/jail_door?binary";
+
+// @ts-ignore
+import shieldRed from "../assets/compiled/shield_red?binary";
+
+// @ts-ignore
+import bucketEmpty from "../assets/compiled/bucket_empty?binary";
+
+// @ts-ignore
+import bucketFull from "../assets/compiled/bucket_full?binary";
+
+// @ts-ignore
+import sleepingHay1 from "../assets/compiled/sleeping_hay_1?binary";
+
+// @ts-ignore
+import sleepingHay2 from "../assets/compiled/sleeping_hay_2?binary";
+
+// @ts-ignore
+import tableLeft from "../assets/compiled/table_left?binary";
+
+// @ts-ignore
+import tableMiddle from "../assets/compiled/table_middle?binary";
+
+// @ts-ignore
+import bread from "../assets/compiled/bread?binary";
+
+// @ts-ignore
+import beer from "../assets/compiled/beer?binary";
+
+// @ts-ignore
+import stool from "../assets/compiled/stool?binary";
+
+// @ts-ignore
+import chairSide from "../assets/compiled/chair_side?binary";
+
+// @ts-ignore
+import chairFront from "../assets/compiled/chair_front?binary";
+
+// @ts-ignore
+import chest1 from "../assets/compiled/chest1?binary";
+
+// @ts-ignore
+import chest2 from "../assets/compiled/chest2?binary";
+
 import { Vec2 } from "./Engine/types";
 import { ImageMetaData } from "./Engine/Renderer/types";
 
@@ -104,6 +145,19 @@ const IMAGES_KEY = {
   witch: 20,
   banker: 21,
   doctor: 22,
+  bucketEmpty: 23,
+  bucketFull: 24,
+  sleepingHay1: 25,
+  sleepingHay2: 26,
+  tableLeft: 27,
+  tableMiddle: 28,
+  bread: 29,
+  beer: 30,
+  stool: 31,
+  chairSide: 32,
+  chairFront: 33,
+  chest1: 34,
+  chest2: 35,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -137,6 +191,19 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.jailBars]: { data: jailBars, s: size8 },
   [IMAGES_KEY.jailDoor]: { data: jailDoor, s: size8 },
   [IMAGES_KEY.shieldRed]: { data: shieldRed, s: size8 },
+  [IMAGES_KEY.bucketEmpty]: { data: bucketEmpty, s: size8 },
+  [IMAGES_KEY.bucketFull]: { data: bucketFull, s: size8 },
+  [IMAGES_KEY.sleepingHay1]: { data: sleepingHay1, s: size8 },
+  [IMAGES_KEY.sleepingHay2]: { data: sleepingHay2, s: size8 },
+  [IMAGES_KEY.tableLeft]: { data: tableLeft, s: size8 },
+  [IMAGES_KEY.tableMiddle]: { data: tableMiddle, s: size8 },
+  [IMAGES_KEY.bread]: { data: bread, s: size8 },
+  [IMAGES_KEY.beer]: { data: beer, s: size8 },
+  [IMAGES_KEY.stool]: { data: stool, s: size8 },
+  [IMAGES_KEY.chairSide]: { data: chairSide, s: size8 },
+  [IMAGES_KEY.chairFront]: { data: chairFront, s: size8 },
+  [IMAGES_KEY.chest1]: { data: chest1, s: size8 },
+  [IMAGES_KEY.chest2]: { data: chest2, s: size8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;

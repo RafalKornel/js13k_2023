@@ -33,7 +33,7 @@ export class PickableItem extends BaseEntity {
     super(
       {
         position: createOffsetPositionComponent(pos),
-        render: new ImageRenderComponent(IMAGES_KEY.shieldRed),
+        render: new ImageRenderComponent(item.imageId),
         collision: { type: "interactable" },
         interaction: new PickableInteractionComponent(item, () =>
           scene.removeChild(key)

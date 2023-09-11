@@ -5,7 +5,30 @@ import {
   createGameInteraction,
   createSuccessfullPickpocketInteraction,
 } from "../../helpers";
-import { ITEMS, ItemKey, buyItem } from "../../items";
+import {
+  BEER,
+  BREAD,
+  ELIXIR,
+  HAMMER,
+  ITEMS,
+  ItemKey,
+  KNIFE,
+  MILK,
+  POISON,
+  WATER_BUCKER,
+  buyItem,
+} from "../../items";
+
+const AVAILABLE_ITEMS = [
+  KNIFE,
+  HAMMER,
+  BREAD,
+  POISON,
+  ELIXIR,
+  WATER_BUCKER,
+  MILK,
+  BEER,
+];
 
 const BANKER_KEY = "Banker Mort";
 
@@ -21,7 +44,7 @@ export const createBanker = (pos: Vec2) => {
       options: [],
     },
     [
-      ...ITEMS.map(({ key, price }, i) => {
+      ...AVAILABLE_ITEMS.map(({ key, price }, i) => {
         const sellPrice = price > 1 ? price - 1 : price;
 
         return createGameInteraction(
