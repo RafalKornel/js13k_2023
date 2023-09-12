@@ -118,6 +118,5 @@ export const createJailScene = () => {
 
   jailScene.addChild(createSolidEntity(IMAGES_KEY.chest2, [14, 2]));
 
-  console.log(jailScene);
   return jailScene;
 };

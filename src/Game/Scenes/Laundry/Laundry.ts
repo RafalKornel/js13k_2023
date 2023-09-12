@@ -90,7 +90,5 @@ export const createLaundryScene = () => {
 
   laundryScene.addChild(createMason([12, 8]));
 
-  console.log(laundryScene);
-
   return laundryScene;
 };

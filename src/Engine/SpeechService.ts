@@ -26,11 +26,7 @@ export const startSpeach = (text: string, voiceKey: VoiceKey) => {
     .getVoices()
     .filter(({ lang }) => lang.startsWith("en"));
 
-  console.log(synthVoices);
-
   const voice: Voice = VOICES[voiceKey];
-
-  console.log(utterance);
 
   utterance.volume = MASTER_VOLUME * (voice.volume || 1);
   utterance.rate = voice.rate || 1;

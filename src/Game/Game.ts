@@ -68,8 +68,6 @@ export class Game extends Renderer {
 
     this.gameState.sceneManager.changeScene(SCENE_KEYS.empty);
 
-    console.log(this.gameState);
-
     this.player = createPlayer(this.gameState);
 
     stopSpeach();
