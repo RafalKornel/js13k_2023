@@ -10,8 +10,8 @@ export const SCREEN_HEIGHT = CONFIG.height * CONFIG.tileSize;
 
 export const TEXT_CONFIG = {
   fontSize: {
-    m: 18,
-    l: 36,
+    m: 2, // vh
+    l: 4, // vh
   },
   fontFace: "serif",
   textAlign: "left",

@@ -1,4 +1,4 @@
-import { TEXT_CONFIG } from "../config";
+import { SCREEN_HEIGHT, TEXT_CONFIG } from "../config";
 import { Interaction, TextSize, Vec2 } from "../types";
 import { add, convertTileVecToGlobal, mult, subtract } from "../utils";
 import { CONFIG } from "../config";
@@ -132,7 +132,7 @@ export class TextRenderer implements ITextRenderer {
   private setupTextProperties(size: TextSize, color: string) {
     const fontSize = TEXT_CONFIG.fontSize[size];
 
-    this.textCtx.font = `${fontSize}px ${TEXT_CONFIG.fontFace}`;
+    this.textCtx.font = `${fontSize}vh ${TEXT_CONFIG.fontFace}`;
 
     this.textCtx.textAlign = TEXT_CONFIG.textAlign;
 
@@ -140,7 +140,8 @@ export class TextRenderer implements ITextRenderer {
 
     this.textCtx.fillStyle = color;
 
-    const lineHeight = TEXT_CONFIG.lineHeight * fontSize;
+    const lineHeight =
+      TEXT_CONFIG.lineHeight * SCREEN_HEIGHT * this.scale * (fontSize / 100);
 
     return [lineHeight];
   }
