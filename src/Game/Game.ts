@@ -150,7 +150,7 @@ export class Game extends Renderer {
     );
 
     this.drawText(
-      "Created by Rafał Kornel & Małgorzata Kowalczyk for js13kgames, 2023",
+      "Created by Rafał Kornel & Małgorzata Kowalczyk for js13kgames 2023",
       "m",
       0,
       this.height - 3,
