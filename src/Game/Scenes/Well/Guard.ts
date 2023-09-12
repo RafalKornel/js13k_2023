@@ -20,7 +20,7 @@ export const createGuard = (pos: Vec2) =>
           "1",
           "What key? I come from prison...",
           "What? You escaped? Get here you scumbag!\n<Slashes you with sword>",
-          createKillPlayerCallback(3)
+          createKillPlayerCallback()
         ),
         createGameInteraction(
           "2",

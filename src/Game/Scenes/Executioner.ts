@@ -23,13 +23,13 @@ export const createExecutioner = () => {
           "1",
           "Hey, what are you doing here?",
           `What do you think? I will be\nexecuting one of those filthy prisoners...\nWait! You are a prisoner!\n${KILL_TEXT}`,
-          createKillPlayerCallback(4)
+          createKillPlayerCallback()
         ),
       ],
     },
     [
       createFailedPickpocketInteraction(EXECUTIONER_KEY, KILL_TEXT),
-      createKillInteraction(INTERACTION_TEXT, createKillPlayerCallback(2)),
+      createKillInteraction(INTERACTION_TEXT, createKillPlayerCallback()),
     ]
   );
 

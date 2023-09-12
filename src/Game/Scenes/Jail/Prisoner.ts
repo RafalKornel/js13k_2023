@@ -24,7 +24,7 @@ export const createPrisoner = () => {
           "1",
           "Hey! My name is...",
           "I don't care about your name scumbag...\n<Stabs you in the chest>",
-          createKillPlayerCallback(3)
+          createKillPlayerCallback()
         ),
         createGameInteraction(
           "2",

@@ -38,7 +38,7 @@ const createWakeUpInteraction = (type: "regular" | "escaped") =>
 
       if (type === "regular") return;
 
-      createKillPlayerCallback(3)(ws);
+      createKillPlayerCallback()(ws);
     },
     (ws) =>
       !ws.isGuardAwake &&

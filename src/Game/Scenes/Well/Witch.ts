@@ -20,7 +20,7 @@ export const createWitch = (pos: Vec2) => {
           "1",
           "May the God be with you!",
           "God?? What God?? You bastard!",
-          createKillPlayerCallback(3),
+          createKillPlayerCallback(),
           (ws) => !ws.didHelpWitch
         ),
       ],

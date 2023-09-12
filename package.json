@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "yarn compile && yarn vite-build && yarn compress",
     "vite-build": "vite build",
     "deploy": "gh-pages -d dist",

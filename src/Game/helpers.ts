@@ -126,7 +126,7 @@ export const createFailedPickpocketInteraction = (
   createPickpocketInteraction(
     entityKey,
     `What are you trying to do??\n<${killText}>`,
-    createKillPlayerCallback(3),
+    createKillPlayerCallback(),
     isAvailable
   );
 
@@ -141,11 +141,9 @@ export const createKillInteraction = (
   isAvailable: (ws: GameWorldState) => ws.items.has(KNIFE.key),
 });
 
-export const createKillPlayerCallback =
-  (timeInSeconds: number) => (worldState: GameWorldState) =>
-    withTimeout(() => {
-      worldState.isDead = true;
-    }, timeInSeconds);
+export const createKillPlayerCallback = () => (worldState: GameWorldState) => {
+  worldState.shouldBeKilled = true;
+};
 
 export const createWinCallback = () => (worldState: GameWorldState) => {
   worldState.items.add(EXIT_KEY.key);

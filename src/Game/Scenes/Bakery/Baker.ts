@@ -79,7 +79,7 @@ export const createBaker = (pos: Vec2) =>
       createPickpocketInteraction(
         BAKER_KEY,
         "Hey! Get your hands off of me!\nGuards!!",
-        createKillPlayerCallback(3)
+        createKillPlayerCallback()
       ),
     ]
   );

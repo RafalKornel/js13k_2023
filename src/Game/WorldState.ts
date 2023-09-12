@@ -6,6 +6,7 @@ export const MERCHANT_INVENTORY = [HAMMER, POISON];
 export const getWorldState = () => ({
   hasWon: false,
   isDead: false,
+  shouldBeKilled: false,
 
   sceneJumps: 0,
 

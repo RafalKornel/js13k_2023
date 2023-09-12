@@ -31,6 +31,6 @@ export const createMerchant = (pos: Vec2) =>
         )
       ),
       createSuccessfullPickpocketInteraction(MERCHANT_KEY, 1),
-      createKillInteraction("What?? Guards!!", createKillPlayerCallback(2)),
+      createKillInteraction("What?? Guards!!", createKillPlayerCallback()),
     ]
   );

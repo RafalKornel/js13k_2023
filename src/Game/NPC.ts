@@ -21,9 +21,14 @@ export class NPC extends BaseEntity {
         position: createOffsetPositionComponent(pos),
         render: new ImageRenderComponent(imageId),
         collision: { type: "interactable" },
-        interaction: new DialogueInteractionComponent(
+        interaction: new DialogueInteractionComponent<GameWorldState>(
           dialogueConfig,
-          interactions
+          interactions,
+          (_, ws) => {
+            if (ws.worldState.shouldBeKilled && !ws.worldState.isDead) {
+              ws.worldState.isDead = true;
+            }
+          }
         ),
       },
       name

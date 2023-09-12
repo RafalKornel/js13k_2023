@@ -9,10 +9,14 @@ import { SpeechService } from "../SpeechService";
 export type ComponentState = "idle" | "available" | "active";
 
 export interface IInteractionComponent<TWorldState extends WorldState> {
+  readonly onEndInteraction?: (
+    entity: BaseEntity,
+    state: GameState<TWorldState>
+  ) => void;
   state: ComponentState;
 
-  startInteraction(): void;
-  endInteraction(): void;
+  startInteraction(entity: BaseEntity, state: GameState<TWorldState>): void;
+  endInteraction(entity: BaseEntity, state: GameState<TWorldState>): void;
 
   setAvailability(isAvailable: boolean): void;
 
@@ -27,14 +31,23 @@ export class BaseInteractionComponent<TWorldState extends WorldState>
 
   public lastInteractionSceneJumpIndex = 0;
 
-  startInteraction(sceneJumpIndex?: number): void {
+  constructor(
+    readonly onEndInteraction?: (
+      entity: BaseEntity,
+      state: GameState<TWorldState>
+    ) => void
+  ) {}
+
+  startInteraction(_entity: BaseEntity, state: GameState<TWorldState>): void {
     this.state = "active";
 
-    this.lastInteractionSceneJumpIndex = sceneJumpIndex || 0;
+    this.lastInteractionSceneJumpIndex = state.worldState.sceneJumpIndex || 0;
   }
 
-  endInteraction(): void {
+  endInteraction(entity: BaseEntity, state: GameState<TWorldState>): void {
     this.state = "idle";
+
+    this.onEndInteraction?.(entity, state);
   }
 
   setAvailability(isAvailable: boolean) {
@@ -77,15 +90,15 @@ export class BaseInteractionComponent<TWorldState extends WorldState>
     }
 
     if (!isColliding && this.state === "active") {
-      this.endInteraction();
+      this.endInteraction(entity, state);
     }
 
     if (this.state === "available" && kp.has("e") && !entity.isKilled) {
-      this.startInteraction(state.worldState.sceneJumps);
+      this.startInteraction(entity, state);
     }
 
     if (this.state === "active" && kp.has("x")) {
-      this.endInteraction();
+      this.endInteraction(entity, state);
     }
   }
 }
@@ -109,19 +122,23 @@ export class DialogueInteractionComponent<
 
   constructor(
     readonly dialogueConfig: DialogueConfig,
-    readonly interactions: Interaction[]
+    readonly interactions: Interaction[],
+    onEndInteraction?: (
+      entity: BaseEntity,
+      state: GameState<TWorldState>
+    ) => void
   ) {
-    super();
+    super(onEndInteraction);
   }
 
-  startInteraction(...args: any[]): void {
-    super.startInteraction(...args);
+  startInteraction(entity: BaseEntity, state: GameState<TWorldState>): void {
+    super.startInteraction(entity, state);
 
     SpeechService.speak(this.dialogueConfig.init);
   }
 
-  endInteraction(): void {
-    super.endInteraction();
+  endInteraction(entity: BaseEntity, state: GameState<TWorldState>): void {
+    super.endInteraction(entity, state);
 
     SpeechService.stop();
   }
