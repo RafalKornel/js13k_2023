@@ -18,7 +18,6 @@ import { MASON_KEY, createMason } from "./Mason";
 class LaundryScene extends Scene {
   private _didAddDoctor = false;
   private _didRemoveMason = false;
-  private _didHelpMason = false;
 
   update(state: GameState<GameWorldState>): void {
     super.update(state);
@@ -37,12 +36,16 @@ class LaundryScene extends Scene {
       this._didRemoveMason = true;
     }
 
-    if (state.worldState.didHelpMason && !this._didHelpMason) {
-      this._didHelpMason = true;
+    const brokenWall = this.children.get(`${this.key}-38`);
 
-      changeEntityImage(this.children.get("37")!, IMAGES_KEY.wall, "r");
-      changeEntityImage(this.children.get("39")!, IMAGES_KEY.wall, "r");
-    }
+    if (!brokenWall) return;
+
+    changeEntityImage(
+      brokenWall,
+      state.worldState.didHelpMason
+        ? IMAGES_KEY.wall
+        : IMAGES_KEY.wallUnfinished
+    );
   }
 }
 
@@ -56,15 +59,15 @@ export const createLaundryScene = () => {
     }
   );
 
-  changeEntityImage(
-    laundryScene.children.get("37")!,
-    IMAGES_KEY.wallUnfinished,
-    "ur"
-  );
-  changeEntityImage(
-    laundryScene.children.get("39")!,
-    IMAGES_KEY.wallUnfinished
-  );
+  // changeEntityImage(
+  //   laundryScene.children.get("37")!,
+  //   IMAGES_KEY.wallUnfinished,
+  //   "ur"
+  // );
+  // changeEntityImage(
+  //   laundryScene.children.get("39")!,
+  //   IMAGES_KEY.wallUnfinished
+  // );
 
   laundryScene.addChild(createLaundress([4, 8]));
 
@@ -86,6 +89,8 @@ export const createLaundryScene = () => {
   );
 
   laundryScene.addChild(createMason([12, 8]));
+
+  console.log(laundryScene);
 
   return laundryScene;
 };

@@ -180,8 +180,8 @@ export const createTunnel = (
   );
 };
 
-export const createWall = (pos: Vec2) =>
-  createSolidEntity(IMAGES_KEY.wall, pos);
+export const createWall = (pos: Vec2, key?: EntityKey) =>
+  createSolidEntity(IMAGES_KEY.wall, pos, [1, 1], key);
 
 export const createTable = (pos: Vec2, length = 3) => {
   const middle = new Array(length - 2)

@@ -92,7 +92,9 @@ export class Scene extends BaseEntity {
       (p) => !portalPositions.find((pp) => pp[0] === p[0] && pp[1] === p[1])
     );
 
-    brickPositions.forEach((brickPos) => this.addChild(createWall(brickPos)));
+    brickPositions.forEach((brickPos, i) =>
+      this.addChild(createWall(brickPos, `${this.key}-${i}`))
+    );
   }
 
   private setupPortals(connectedScenes: ConnectedScenes) {
