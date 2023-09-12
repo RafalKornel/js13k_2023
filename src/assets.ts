@@ -153,6 +153,18 @@ import door from "../assets/compiled/door?binary";
 import bed from "../assets/compiled/bed?binary";
 
 // @ts-ignore
+import elixir from "../assets/compiled/elixir?binary";
+
+// @ts-ignore
+import poison from "../assets/compiled/poison?binary";
+
+// @ts-ignore
+import skeleton from "../assets/compiled/skeleton?binary";
+
+// @ts-ignore
+import deadBody from "../assets/compiled/dead_body?binary";
+
+// @ts-ignore
 import wallUnfinished from "../assets/compiled/wall_unfinished?binary";
 
 // @ts-ignore
@@ -212,6 +224,10 @@ const IMAGES_KEY = {
   bed: 49,
   wallUnfinished: 50,
   milk: 51,
+  deadBody: 52,
+  elixir: 53,
+  poison: 54,
+  skeleton: 55,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -278,7 +294,11 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.hammer]: { data: hammer, s: size8 },
   [IMAGES_KEY.door]: { data: door, s: size8 },
 
-  [IMAGES_KEY.bed]: { data: bed, s: size8 },
+  [IMAGES_KEY.bed]: { data: bed, s: wideSize8 },
+  [IMAGES_KEY.deadBody]: { data: deadBody, s: wideSize8 },
+  [IMAGES_KEY.elixir]: { data: elixir, s: size8 },
+  [IMAGES_KEY.poison]: { data: poison, s: size8 },
+  [IMAGES_KEY.skeleton]: { data: skeleton, s: tallSize8 },
 };
 
 const COLORS = colorsData as Uint8ClampedArray;
