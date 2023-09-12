@@ -198,3 +198,17 @@ export const createTable = (pos: Vec2, length = 3) => {
 
   return [left, ...middle, right];
 };
+
+export const changeEntityImage = (
+  entity: BaseEntity,
+  imageId: ImageId,
+  dir?: Direction
+) => {
+  const irc = entity.components.render as ImageRenderComponent;
+
+  irc.imageId = imageId;
+
+  if (dir) {
+    entity.components.position.dir = dir;
+  }
+};

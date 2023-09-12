@@ -10,7 +10,7 @@ export const getWorldState = () => ({
 
   sceneJumps: 0,
 
-  items: new Set<ItemKey>([]),
+  items: new Set<ItemKey>([HAMMER.key]),
   coins: 0,
   banker: new Set<ItemKey>(),
   merchant: new Set<ItemKey>(MERCHANT_INVENTORY.map((item) => item.key)),

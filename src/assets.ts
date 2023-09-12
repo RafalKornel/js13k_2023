@@ -150,17 +150,13 @@ import door from "../assets/compiled/door?binary";
 import bed from "../assets/compiled/bed?binary";
 
 // @ts-ignore
+import wallUnfinished from "../assets/compiled/wall_unfinished?binary";
+
+// @ts-ignore
 import colorsData from "../assets/compiled/colors?binary";
 
 import { Vec2 } from "./Engine/types";
 import { ImageMetaData } from "./Engine/Renderer/types";
-
-// const encodeBase64 = (d: string): Uint8ClampedArray =>
-//   new Uint8ClampedArray(
-//     atob(d)
-//       .split("")
-//       .map((c) => c.charCodeAt(0))
-//   );
 
 const IMAGES_KEY = {
   player: 2,
@@ -211,6 +207,7 @@ const IMAGES_KEY = {
   hammer: 47,
   door: 48,
   bed: 49,
+  wallUnfinished: 50,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -241,6 +238,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.wellClean]: { data: wellNormal, s: tallSize8 },
   [IMAGES_KEY.wellPoisoned]: { data: wellPoisoned, s: tallSize8 },
   [IMAGES_KEY.wall]: { data: wall, s: size8 },
+  [IMAGES_KEY.wallUnfinished]: { data: wallUnfinished, s: size8 },
   [IMAGES_KEY.jailBars]: { data: jailBars, s: size8 },
   [IMAGES_KEY.jailDoor]: { data: jailDoor, s: size8 },
   [IMAGES_KEY.shieldRed]: { data: shieldRed, s: size8 },

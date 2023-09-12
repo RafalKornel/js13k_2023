@@ -5,6 +5,7 @@ import { Vec2 } from "../../../Engine/types";
 import { IMAGES_KEY } from "../../../assets";
 import { GameWorldState } from "../../WorldState";
 import {
+  changeEntityImage,
   createBrickSceneRenderComponent,
   createScenePositionComponent,
   createSolidEntity,
@@ -17,6 +18,7 @@ import { MASON_KEY, createMason } from "./Mason";
 class LaundryScene extends Scene {
   private _didAddDoctor = false;
   private _didRemoveMason = false;
+  private _didHelpMason = false;
 
   update(state: GameState<GameWorldState>): void {
     super.update(state);
@@ -34,6 +36,13 @@ class LaundryScene extends Scene {
 
       this._didRemoveMason = true;
     }
+
+    if (state.worldState.didHelpMason && !this._didHelpMason) {
+      this._didHelpMason = true;
+
+      changeEntityImage(this.children.get("37")!, IMAGES_KEY.wall, "r");
+      changeEntityImage(this.children.get("39")!, IMAGES_KEY.wall, "r");
+    }
   }
 }
 
@@ -45,6 +54,16 @@ export const createLaundryScene = () => {
     {
       d: TUNNELS.wt,
     }
+  );
+
+  changeEntityImage(
+    laundryScene.children.get("37")!,
+    IMAGES_KEY.wallUnfinished,
+    "ur"
+  );
+  changeEntityImage(
+    laundryScene.children.get("39")!,
+    IMAGES_KEY.wallUnfinished
   );
 
   laundryScene.addChild(createLaundress([4, 8]));
@@ -66,7 +85,7 @@ export const createLaundryScene = () => {
     )
   );
 
-  laundryScene.addChild(createMason([11, 8]));
+  laundryScene.addChild(createMason([12, 8]));
 
   return laundryScene;
 };
