@@ -54,7 +54,7 @@ import witch from "../assets/compiled/witch?binary";
 import furnace from "../assets/compiled/furnace?binary";
 
 // @ts-ignore
-import wall from "../assets/compiled/wall2?binary";
+import wall from "../assets/compiled/wall?binary";
 
 // @ts-ignore
 import wellNormal from "../assets/compiled/well_normal?binary";

@@ -6,8 +6,7 @@ import { Direction, Vec2 } from "../types.ts";
 import { add, convertTileToGlobal, mult, subtract } from "../utils.ts";
 import { CONFIG } from "../config.ts";
 import { Renderer } from "../Renderer/Renderer.ts";
-import { createSolidEntity } from "../../Game/helpers.ts";
-import { IMAGES_KEY } from "../../assets.ts";
+import { createWall } from "../../Game/helpers.ts";
 
 export type SceneKey = string;
 
@@ -93,9 +92,7 @@ export class Scene extends BaseEntity {
       (p) => !portalPositions.find((pp) => pp[0] === p[0] && pp[1] === p[1])
     );
 
-    brickPositions.forEach((brickPos) => {
-      this.addChild(createSolidEntity(IMAGES_KEY.wall, brickPos));
-    });
+    brickPositions.forEach((brickPos) => this.addChild(createWall(brickPos)));
   }
 
   private setupPortals(connectedScenes: ConnectedScenes) {

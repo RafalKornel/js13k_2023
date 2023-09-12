@@ -2,7 +2,6 @@ import { GameState } from "../../../Engine/GameState";
 import { Scene } from "../../../Engine/Scene/Scene";
 import { CONFIG } from "../../../Engine/config";
 import { IMAGES_KEY } from "../../../assets";
-import { createWall } from "../../Wall";
 import { GameWorldState } from "../../WorldState";
 import {
   createBrickSceneRenderComponent,
@@ -10,6 +9,7 @@ import {
   createScenePositionComponent,
   createSolidEntity,
   createTable,
+  createWall,
 } from "../../helpers";
 import { MASON_KEY } from "../Laundry/Mason";
 import { SCENE_KEYS, TUNNELS } from "../constants";
