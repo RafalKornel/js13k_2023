@@ -7,6 +7,7 @@ import { Door } from "../../Door";
 import { createGuard } from "./Guard";
 import {
   createBrickSceneRenderComponent,
+  createOpaqueEntity,
   createScenePositionComponent,
   createSolidEntity,
   createTable,
@@ -92,12 +93,6 @@ export const createJailScene = () => {
   const shieldsMetadata = [
     [4, 1, "l"],
     [12, 1, "l"],
-    // [4, 11, "ur"],
-    // [12, 11, "ul"],
-    // [0, 3, "t"],
-    // [0, 9, "t"],
-    // [15, 3, "d"],
-    // [15, 9, "d"],
   ] as const;
 
   shieldsMetadata.forEach(([x, y, dir]) =>
@@ -107,9 +102,9 @@ export const createJailScene = () => {
   );
 
   jailScene.addChild(createSolidEntity(IMAGES_KEY.bucketEmpty, [1, 10]));
-  jailScene.addChild(createSolidEntity(IMAGES_KEY.sleepingHay1, [3, 10]));
+  jailScene.addChild(createOpaqueEntity(IMAGES_KEY.sleepingHay1, [3, 10]));
 
-  jailScene.addChild(createSolidEntity(IMAGES_KEY.sleepingHay2, [9, 7]));
+  jailScene.addChild(createOpaqueEntity(IMAGES_KEY.sleepingHay2, [9, 7]));
   jailScene.addChild(createSolidEntity(IMAGES_KEY.bucketFull, [14, 10]));
 
   jailScene.addChild(createSolidEntity(IMAGES_KEY.chairFront, [3, 1.875]));

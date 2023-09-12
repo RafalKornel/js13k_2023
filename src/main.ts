@@ -2,10 +2,10 @@ import { Game } from "./Game/Game.ts";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./Engine/config.ts";
 import { ASSETS, colors } from "./assets.ts";
 
-const body = document.querySelector("body")!;
+// const body = document.querySelector("body")!;
 
-body.style.background = "#000";
-body.style.margin = "0";
+// body.style.background = "#000";
+// body.style.margin = "0";
 
 const gameCanvas = document.querySelector<HTMLCanvasElement>("#g")!;
 const textCanvas = document.querySelector<HTMLCanvasElement>("#t")!;

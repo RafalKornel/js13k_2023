@@ -1,12 +1,21 @@
 import { EntityKey } from "../Engine/BaseEntity";
-import { BREAD, HAMMER, ItemKey, POISON } from "./items";
+import {
+  BREAD,
+  ELIXIR,
+  HAMMER,
+  ItemKey,
+  MILK,
+  POISON,
+  WATER_BUCKER,
+} from "./items";
 
-export const MERCHANT_INVENTORY = [HAMMER, POISON];
+export const MERCHANT_INVENTORY = [HAMMER, POISON, ELIXIR, MILK];
 
-export const getWorldState = () => ({
+export const getWorldState = (withMenu: boolean) => ({
   hasWon: false,
   isDead: false,
   shouldBeKilled: false,
+  isMenuScene: withMenu,
 
   sceneJumps: 0,
 
@@ -14,7 +23,7 @@ export const getWorldState = () => ({
   coins: 0,
   banker: new Set<ItemKey>(),
   merchant: new Set<ItemKey>(MERCHANT_INVENTORY.map((item) => item.key)),
-  baker: new Set<ItemKey>([BREAD.key]),
+  baker: new Set<ItemKey>([BREAD.key, WATER_BUCKER.key]),
 
   firstInteractions: new Map<EntityKey, number>(),
   killedEntities: new Set<EntityKey>(),

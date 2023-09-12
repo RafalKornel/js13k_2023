@@ -3,8 +3,7 @@ import { BaseEntity, EntityKey } from "../BaseEntity.ts";
 import { PositionComponent } from "../Components/PositionComponent.ts";
 import { IRenderComponent } from "../Components/RenderComponent.ts";
 import { Direction, Vec2 } from "../types.ts";
-import { add, convertTileToGlobal, mult, subtract } from "../utils.ts";
-import { CONFIG } from "../config.ts";
+import { add, mult, subtract } from "../utils.ts";
 import { Renderer } from "../Renderer/Renderer.ts";
 import { createWall } from "../../Game/helpers.ts";
 
@@ -47,18 +46,6 @@ export class Scene extends BaseEntity {
 
   render(renderer: Renderer) {
     this.components.render?.render(this.components.position, renderer);
-
-    if (!this.key.startsWith("T-")) {
-      renderer.drawText(
-        this.key,
-        "l",
-        convertTileToGlobal(CONFIG.width - 1),
-        2,
-        {
-          anchor: "right",
-        }
-      );
-    }
 
     this.children.forEach((child) => {
       child.render?.(renderer);

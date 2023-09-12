@@ -55,7 +55,9 @@ function encodeImages(inputPath: string, outputPath: string) {
       });
     });
 
-    fs.writeFileSync(outputPath + "/colors", colors, "binary");
+    const slicedColors = colors.slice(0, COLORS_IN_PALETTE * colorsMap.size);
+
+    fs.writeFileSync(outputPath + "/colors", slicedColors, "binary");
 
     console.log("Success!");
   }

@@ -21,7 +21,7 @@ export const createPrisoner = (pos: Vec2) => {
         createGameInteraction(
           "1",
           "Wake up!",
-          "Heyy!! It's you! Hic!\nThanks ffor leetting me out...\nBut why did you have to wwake me up...\nNnnevermind... You know what, take thish key.\nIt opens doors to the inkeeper's stash.\nBbbut remember! Shhhh!\n<Falls asleep again>",
+          "Hey!! It's you!\nThanks for leting me out...\nBut why did you have to wake me up...\nNevermind... You know what, take this key.\nIt opens the door to the inkeeper's stash.\nBut remember! Shhhh!\n<Falls asleep again>",
           (ws) => {
             ws.items.add(STASH_KEY.key);
           }

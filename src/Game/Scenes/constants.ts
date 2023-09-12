@@ -1,12 +1,13 @@
 export const SCENE_KEYS = {
-  empty: "empty",
-  jail: "Jail",
-  well: "Well",
-  laundry: "Laundry",
-  bakery: "Bakery",
-  doctorOffice: "Doctor's office",
-  tavern: "Tavern",
-  stash: "Stash",
+  main: "m",
+  empty: "e",
+  jail: "j",
+  well: "w",
+  laundry: "l",
+  bakery: "b",
+  doctorOffice: "d",
+  tavern: "t",
+  stash: "s",
 };
 
 export const TUNNELS = {

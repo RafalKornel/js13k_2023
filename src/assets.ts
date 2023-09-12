@@ -111,10 +111,7 @@ import chairSide from "../assets/compiled/chair_side?binary";
 import chairFront from "../assets/compiled/chair_front?binary";
 
 // @ts-ignore
-import chest1 from "../assets/compiled/chest1?binary";
-
-// @ts-ignore
-import chest2 from "../assets/compiled/chest2?binary";
+import chest from "../assets/compiled/chest?binary";
 
 // @ts-ignore
 import shelfBooks from "../assets/compiled/shelf_books?binary";
@@ -207,7 +204,6 @@ const IMAGES_KEY = {
   stool: 31,
   chairSide: 32,
   chairFront: 33,
-  chest1: 34,
   chest2: 35,
   shelfBooks: 36,
   shelfBread: 37,
@@ -278,8 +274,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.chairSide]: { data: chairSide, s: size8 },
   [IMAGES_KEY.chairFront]: { data: chairFront, s: size8 },
 
-  [IMAGES_KEY.chest1]: { data: chest1, s: size8 },
-  [IMAGES_KEY.chest2]: { data: chest2, s: size8 },
+  [IMAGES_KEY.chest2]: { data: chest, s: size8 },
 
   [IMAGES_KEY.shelfBooks]: { data: shelfBooks, s: tallSize8 },
   [IMAGES_KEY.shelfBread]: { data: shelfBread, s: tallSize8 },
