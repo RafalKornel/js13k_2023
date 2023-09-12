@@ -99,6 +99,9 @@ import bread from "../assets/compiled/bread?binary";
 import beer from "../assets/compiled/beer?binary";
 
 // @ts-ignore
+import milk from "../assets/compiled/milk?binary";
+
+// @ts-ignore
 import stool from "../assets/compiled/stool?binary";
 
 // @ts-ignore
@@ -208,6 +211,7 @@ const IMAGES_KEY = {
   door: 48,
   bed: 49,
   wallUnfinished: 50,
+  milk: 51,
 } as const;
 
 type ImageKey = keyof typeof IMAGES_KEY;
@@ -249,6 +253,7 @@ const ASSETS: Record<(typeof IMAGES_KEY)[ImageKey], ImageMetaData> = {
   [IMAGES_KEY.sleepingHay2]: { data: sleepingHay2, s: size8 },
   [IMAGES_KEY.bread]: { data: bread, s: size8 },
   [IMAGES_KEY.beer]: { data: beer, s: size8 },
+  [IMAGES_KEY.milk]: { data: milk, s: size8 },
   [IMAGES_KEY.cat]: { data: cat, s: size8 },
 
   [IMAGES_KEY.tableMiddle]: { data: tableMiddle, s: size8 },

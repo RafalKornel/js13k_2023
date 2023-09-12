@@ -5,7 +5,6 @@ import { GameState } from "../Engine/GameState";
 import { Renderer } from "../Engine/Renderer/Renderer";
 import { Scene } from "../Engine/Scene/Scene";
 import { BaseWorldState, Vec2 } from "../Engine/types";
-import { IMAGES_KEY } from "../assets";
 import { GameWorldState } from "./WorldState";
 import { createOffsetPositionComponent } from "./helpers";
 import { Item } from "./items";

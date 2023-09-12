@@ -22,7 +22,7 @@ export const STASH_KEY = {
   price: 0,
   imageId: IMAGES_KEY.beer,
 };
-export const MILK = { key: "Milk", price: 1, imageId: IMAGES_KEY.beer };
+export const MILK = { key: "Milk", price: 1, imageId: IMAGES_KEY.milk };
 export const BEER = {
   key: "Beer",
   price: 2,
