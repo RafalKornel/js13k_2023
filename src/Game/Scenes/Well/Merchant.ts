@@ -21,6 +21,7 @@ export const createMerchant = (pos: Vec2) =>
     IMAGES_KEY.merchant,
     {
       init: "Hello! What can I get for you today?",
+      voice: "ukMale",
       options: [],
     },
     [

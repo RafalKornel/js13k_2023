@@ -19,6 +19,7 @@ export const createPrisoner = () => {
     IMAGES_KEY.prisoner,
     {
       init: "<Looks at you distrustfully>",
+      voice: "maleDeep",
       options: [
         createGameInteraction(
           "1",
@@ -29,7 +30,7 @@ export const createPrisoner = () => {
         createGameInteraction(
           "2",
           "This guard... I would slash his throat...",
-          "Heyy buddy, I like your attitude!\nTake this knife and make a good use\nof it. But don't forget to come\nfor me too!",
+          "Hey buddy, I like your attitude!\nTake this knife and kill that guard!\nAnd then we cat get out of here, he he",
           (ws) => {
             ws.items.add(KNIFE.key);
           }
@@ -40,7 +41,7 @@ export const createPrisoner = () => {
       createGameInteraction(
         "q",
         "Let's get out!",
-        "Thanks buddy...\nNow I don't want to kill you hehe...",
+        "Thanks buddy...\nNow I don't want to kill you anymore hehe...",
         (ws) => {
           withTimeout(() => {
             ws.didHelpPrisoner = true;

@@ -107,7 +107,11 @@ export const createSuccessfullPickpocketInteraction = (
 ) =>
   createPickpocketInteraction(
     entityKey,
-    `<You steal ${typeof reward === "number" ? `${reward} coins` : reward}>`,
+    `<You steal ${
+      typeof reward === "number"
+        ? `${reward} coin${reward > 1 ? "s" : ""}`
+        : reward
+    }>`,
     (ws) => {
       if (typeof reward === "number") {
         ws.coins += reward;

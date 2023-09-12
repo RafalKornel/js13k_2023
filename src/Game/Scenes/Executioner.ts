@@ -7,7 +7,7 @@ import {
   createKillPlayerCallback,
 } from "../helpers";
 
-const KILL_TEXT = "Slices you with his axe";
+const KILL_TEXT = "<Slices you with his axe>";
 const INTERACTION_TEXT = `What are you trying to do??\n${KILL_TEXT}`;
 const EXECUTIONER_KEY = "Executioner";
 
@@ -18,6 +18,7 @@ export const createExecutioner = () => {
     IMAGES_KEY.executioner,
     {
       init: "Hmmm?",
+      voice: "maleDeep",
       options: [
         createGameInteraction(
           "1",

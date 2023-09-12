@@ -40,7 +40,8 @@ export const createBanker = (pos: Vec2) => {
     BANKER_KEY,
     IMAGES_KEY.banker,
     {
-      init: "Hello! Do you have anything interesting\nto sell?",
+      init: "Do you have anything interesting to sell?",
+      voice: "ukMale",
       options: [],
     },
     [

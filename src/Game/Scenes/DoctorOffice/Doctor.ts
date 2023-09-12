@@ -15,7 +15,8 @@ export const createDoctor = (pos: Vec2) =>
     DOCTOR_KEY,
     IMAGES_KEY.doctor,
     {
-      init: "This vein here... Oh! Hello!\nSorry, I didn't notice you...\nI am working on something extremely important...\nBut you wouldn't understand...\nAnd you probably don't care...\nI've been working for three days straight\nand I'm starving! But I can't finish now, I'm\nreaching breakthrough!\nCan you get me something to eat?",
+      init: "This vein here... Oh! Hello!\nSorry, I didn't notice you...\nI am working on something extremely important...\nBut you wouldn't understand...\nAnd you probably don't care...\n<Stops and looks at his patient>\nI've been working for three days straight\nand I'm starving! But I can't finish now, I'm\nreaching breakthrough!\nCan you get me something to eat?",
+      voice: "player2",
       options: [
         createGameInteraction(
           "1",

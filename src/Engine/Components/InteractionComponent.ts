@@ -4,7 +4,7 @@ import { PLAYER_INTERACTION_COLLIDER_KEY } from "../Player/PlayerInteractionColl
 import { Renderer } from "../Renderer/Renderer";
 import { DialogueConfig, Interaction, Vec2, WorldState } from "../types";
 import { add, convertTileVecToGlobal, getEntityPairKey } from "../utils";
-import { SpeechService } from "../SpeechService";
+import { speakWithNarrator, stopSpeach } from "../SpeechService";
 
 export type ComponentState = "idle" | "available" | "active";
 
@@ -120,6 +120,8 @@ export class DialogueInteractionComponent<
 
   private _didChooseOption = false;
 
+  private _didSpokeInit = false;
+
   constructor(
     readonly dialogueConfig: DialogueConfig,
     readonly interactions: Interaction[],
@@ -134,13 +136,17 @@ export class DialogueInteractionComponent<
   startInteraction(entity: BaseEntity, state: GameState<TWorldState>): void {
     super.startInteraction(entity, state);
 
-    SpeechService.speak(this.dialogueConfig.init);
+    if (!this._didSpokeInit) {
+      speakWithNarrator(this.dialogueConfig.init, this.dialogueConfig.voice);
+
+      this._didSpokeInit = true;
+    }
   }
 
   endInteraction(entity: BaseEntity, state: GameState<TWorldState>): void {
     super.endInteraction(entity, state);
 
-    SpeechService.stop();
+    stopSpeach();
   }
 
   render(entity: BaseEntity, renderer: Renderer): void {
@@ -198,11 +204,7 @@ export class DialogueInteractionComponent<
       if (kp.has(dialogueOption.key) && !this._didChooseOption) {
         dialogueOption.action?.(state.worldState);
 
-        SpeechService.speak(dialogueOption.text);
-
-        if (typeof dialogueOption.response === "string") {
-          SpeechService.speak(dialogueOption.response);
-        }
+        this.speakInteraction(dialogueOption);
 
         this._performedInteractions.add(dialogueOption);
         this._didChooseOption = true;
@@ -217,6 +219,8 @@ export class DialogueInteractionComponent<
       if (kp.has(interaction.key)) {
         interaction.action?.(state.worldState);
 
+        this.speakInteraction(interaction);
+
         this._performedInteractions.add(interaction);
 
         break;
@@ -224,5 +228,15 @@ export class DialogueInteractionComponent<
     }
 
     this._prevKP = new Set(kp);
+  }
+
+  speakInteraction(interaction: Interaction) {
+    stopSpeach();
+
+    speakWithNarrator(interaction.text, "player");
+
+    if (typeof interaction.response === "string") {
+      speakWithNarrator(interaction.response, this.dialogueConfig.voice);
+    }
   }
 }

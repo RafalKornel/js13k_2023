@@ -14,7 +14,7 @@ export const createGuard = (pos: Vec2) =>
     IMAGES_KEY.guard,
     {
       init: "Hey! What are you looking at?\nDo you want to use exit?\nThe door is closed and only\ncitizens of underground city have key.\nDo you have your key or what?",
-      // init: "You can use these doors to exit\nto the surface.\nBut only if you have a key!",
+      voice: "maleDeep",
       options: [
         createGameInteraction(
           "1",

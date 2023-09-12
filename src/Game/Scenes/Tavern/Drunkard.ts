@@ -18,12 +18,13 @@ export const createDrunkard = (pos: Vec2) =>
     DRUNKARD_KEY,
     IMAGES_KEY.drunkard,
     {
-      init: "Hic! Whaat do youu want?\nOhhh crap, I was sssupossed to buy m-milk...\nBut I got ddrunk instd. Hic!\nI'm never coming to mmmy wive without\nstupid mmilk!",
+      init: "<The drunkard stinks like beer and urine>\nWhat do you want?\nCrap, I was supposed to buy milk...\nBut I got drunk instead.\nI'm never coming to my wive without\nthis stupid milk!",
+      voice: "maleDeep",
       options: [
         createGameInteraction(
           "q",
           "Take this milk and get back to your wife.",
-          "Ttthank you! I'm outta here... Hic!",
+          "Thank you! I'm outta here... Hic!",
           (ws) => {
             withTimeout(() => {
               ws.didHelpDrunkard = true;

@@ -39,12 +39,13 @@ export const createBaker = (pos: Vec2) =>
     BAKER_KEY,
     IMAGES_KEY.baker,
     {
-      init: "Those damn people... They just won't buy\nanything from me... I have water for sale, but\nthey just go to public well...\nI would be rich if the well was unavailable.",
+      init: "Do you want to buy a bread?\nOr maybe some water from my well?\nNobody wants to buy water from me...\nPeople just go to public well...\nWho thought that water should be free?",
+      voice: "ukMale",
       options: [
         createGameInteraction(
           "1",
-          "That's a good idea, I think I can help you!",
-          "What? Really? But don't tell anybody!",
+          "I will poison the well for you.",
+          "What? Really?\nThen I would be rich!\nBut don't tell anybody!",
           (ws) => {
             ws.isPlayerHelpingBaker = true;
           },
@@ -52,8 +53,8 @@ export const createBaker = (pos: Vec2) =>
         ),
         createGameInteraction(
           "2",
-          "But then people would have to pay for water...",
-          "Yes, exactly! Thats the point...\nYou know, get out of here you peasant!",
+          "Water is a human right!",
+          "Human right? Get off of here you peasant!",
           (ws) => {
             ws.isPlayerHelpingBaker = false;
           },
@@ -78,7 +79,7 @@ export const createBaker = (pos: Vec2) =>
       }),
       createPickpocketInteraction(
         BAKER_KEY,
-        "Hey! Get your hands off of me!\nGuards!!",
+        "Hey! Get your hands off of me!\nGuards!!\n<You are caught and killed by the guards>",
         createKillPlayerCallback()
       ),
     ]

@@ -27,7 +27,8 @@ export const createLaundress = (pos: Vec2) =>
     LAUNDRESS_KEY,
     IMAGES_KEY.laundress,
     {
-      init: "Ohh... <Coughs> I don't feel well...\nCould you help me?\nPlease hurry... <Coughs>\nI don't have much time left",
+      init: "I don't feel well...\nCould you help me?\nPlease hurry...\n<Coughs with blood>\nI don't have much time left",
+      voice: "womanSick",
       options: [
         createGameInteraction(
           "1",

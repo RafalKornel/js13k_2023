@@ -15,7 +15,8 @@ export const createPrisoner = (pos: Vec2) => {
     PRISONER_KEY,
     IMAGES_KEY.prisoner,
     {
-      init: "Zzzz...",
+      init: "Zzzz...\n<The prisoner is sleeping, completely drunk>",
+      voice: "maleDeep",
       options: [
         createGameInteraction(
           "1",

@@ -22,6 +22,7 @@ import { createStashScene } from "./Scenes/Stash/Stash.ts";
 import { createDoctorOfficeScene } from "./Scenes/DoctorOffice/DoctorOffice.ts";
 import { createEmptyScene } from "./Scenes/emptyScene.ts";
 import { SCENE_KEYS } from "./Scenes/constants.ts";
+import { stopSpeach } from "../Engine/SpeechService.ts";
 
 const createGameState = () =>
   new GameState(
@@ -31,8 +32,8 @@ const createGameState = () =>
       createBakeryScene(),
       createTavernScene(),
       createWellScene(),
-      createDoctorOfficeScene(),
       createLaundryScene(),
+      createDoctorOfficeScene(),
       createStashScene(),
       createWellLeftTunnel(),
       createWellBottomTunnel(),
@@ -65,6 +66,8 @@ export class Game extends Renderer {
     console.log(this.gameState);
 
     this.player = createPlayer(this.gameState);
+
+    stopSpeach();
   }
 
   private update() {
@@ -180,6 +183,7 @@ export class Game extends Renderer {
   private restart() {
     this.gameState = createGameState();
     this.player = createPlayer(this.gameState);
+    stopSpeach();
   }
 
   loop(): void {

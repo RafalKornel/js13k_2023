@@ -14,14 +14,15 @@ export const createMason = (pos: Vec2) => {
     MASON_KEY,
     IMAGES_KEY.mason,
     {
-      init: "Ehh... It's no use...\nWithout my hammer I will never finish\nbricking this damn wall...\nThis cold made my wife sick... Ohh, poor Eva...\nI can't even create safe space for her!\nI lost my hammer and I cannot finish this wall...\nFellow citizen, could you bring me my hammer?",
+      init: "It's no use...\nWithout my hammer I will never finish\nbricking this damn wall...\nThis cold made my wife sick... My poor Eva!\nI can't even create safe space for her!\nI lost my hammer and I cannot finish this wall...\nFellow citizen, could you bring me my hammer?",
+      voice: "maleDeep",
       options: [
         createGameInteraction(
           "1",
           "Could you help me and brick up Ernest?",
           "What? Such crime... But I hate this\ngreedy scumbag Ernest... Fine!\nI'll make sure he NEVER leaves his bakery!\nHa ha ha!",
           (ws) => (ws.didMasonKillBaker = true),
-          (ws) => ws.didHelpMason && !ws.didMasonKillBaker
+          (ws) => ws.didHelpMason && !ws.didMasonKillBaker && ws.isWellPoisoned
         ),
         createGameInteraction(
           "2",

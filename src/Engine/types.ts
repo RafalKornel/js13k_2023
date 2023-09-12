@@ -1,3 +1,5 @@
+import { VoiceKey } from "./SpeechService";
+
 export type Vec2 = [x: number, y: number];
 
 export type Direction = "t" | "l" | "d" | "r" | "ul" | "ur";
@@ -35,4 +37,5 @@ export type WorldState = Record<string, any> & BaseWorldState;
 export type DialogueConfig = {
   init: string;
   options: Array<Interaction>;
+  voice?: VoiceKey;
 };

@@ -51,21 +51,22 @@ export const createGuard = () =>
     PRISON_GUARD_KEY,
     IMAGES_KEY.guard,
     {
-      init: "Zzzzz....",
+      init: "Zzzzz....\n<The guard is sleeping>",
+      voice: "maleDeep",
       options: [],
     },
     [
       createWakeUpInteraction("regular"),
       createWakeUpInteraction("escaped"),
       createGameInteraction(
-        "q",
+        "k",
         "<Kill the guard>",
         "Arrgghh... <You take the cell key>",
         (ws) => {
           withTimeout(() => {
             ws.killedEntities.add(PRISON_GUARD_KEY);
             ws.items.add(CELL_KEY.key);
-          }, 2);
+          }, 3);
         },
         (ws) =>
           ws.items.has(KNIFE.key) && !ws.killedEntities.has(PRISON_GUARD_KEY)

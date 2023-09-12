@@ -28,7 +28,8 @@ export const createBeggar = (pos: Vec2) => {
     BEGGAR_NAME,
     IMAGES_KEY.beggar,
     {
-      init: "Ohh.. We are so thirsty...\nBut the well got poisoned and\nwe cannot afford buying water from\nthis leech Ernest...\nMy poor children...\nThey do not deserve this...",
+      init: "Shhh! Ernest will spot us! We are so thirsty...\nBut the well got poisoned and\nwe cannot afford buying water from\nthis leech Ernest...\nMy poor children...\nThey do not deserve this...",
+      voice: "usFemale",
       options: [
         createGameInteraction(
           "1",
