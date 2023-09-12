@@ -27,6 +27,7 @@ export const createDrunkard = (pos: Vec2) =>
           (ws) => {
             withTimeout(() => {
               ws.didHelpDrunkard = true;
+              ws.items.delete(MILK.key);
             }, 3);
           },
           (ws) => ws.items.has(MILK.key)
