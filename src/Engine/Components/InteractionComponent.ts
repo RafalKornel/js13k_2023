@@ -41,7 +41,7 @@ export class BaseInteractionComponent<TWorldState extends WorldState>
   startInteraction(_entity: BaseEntity, state: GameState<TWorldState>): void {
     this.state = "active";
 
-    this.lastInteractionSceneJumpIndex = state.worldState.sceneJumpIndex || 0;
+    this.lastInteractionSceneJumpIndex = state.worldState.sceneJumps || 0;
   }
 
   endInteraction(entity: BaseEntity, state: GameState<TWorldState>): void {
