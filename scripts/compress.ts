@@ -1,4 +1,4 @@
-import ChildProcess, { exec } from "child_process";
+import ChildProcess from "child_process";
 // @ts-ignore
 import advzip from "advzip-bin";
 import fs from "fs";
@@ -8,9 +8,14 @@ const compressDistFolder = () => {
     ChildProcess.execSync(`rm ${ZIP_FILE_PATH}`);
   }
 
-  const args = ["-r", ZIP_FILE_PATH, DIST_FOLDER_PATH];
+  const args = ["-r", `../${ZIP_FILE_PATH}`, "./"];
 
-  ChildProcess.execSync(`zip ${args.reduce((p, n) => p + " " + n, "")}`);
+  ChildProcess.execSync(
+    `cd ${DIST_FOLDER_PATH} && zip ${args.reduce(
+      (p, n) => p + " " + n,
+      ""
+    )} && cd ../`
+  );
 };
 
 const recompressWithAdvzip = () => {
@@ -27,8 +32,6 @@ const recompressWithAdvzip = () => {
     console.log("advzip error", err);
   }
 };
-
-exec("cd ../");
 
 const ZIP_FILE_PATH = "dist.zip";
 const DIST_FOLDER_PATH = "dist/";
