@@ -107,9 +107,9 @@ export const createJailScene = () => {
   jailScene.addChild(createOpaqueEntity(IMAGES_KEY.sleepingHay2, [9, 7]));
   jailScene.addChild(createSolidEntity(IMAGES_KEY.bucketFull, [14, 10]));
 
-  jailScene.addChild(createSolidEntity(IMAGES_KEY.chairFront, [3, 1.875]));
+  jailScene.addChild(createOpaqueEntity(IMAGES_KEY.chairFront, [3, 1.875]));
 
-  jailScene.addChild(createSolidEntity(IMAGES_KEY.chairSide, [1, 3]));
+  jailScene.addChild(createOpaqueEntity(IMAGES_KEY.chairSide, [1, 3]));
 
   createTable([2, 3]).forEach((seg) => jailScene.addChild(seg));
 
