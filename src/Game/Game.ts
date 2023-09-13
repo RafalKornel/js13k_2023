@@ -141,7 +141,7 @@ export class Game extends Renderer {
 
   private renderMenuScene() {
     this.renderFullScreenMessage(
-      "XIIIth underground district",
+      "XIII Feet Underground",
       "#d5460d",
       "In XIII century citizens of small town named Kłodzko (formerly known as Glatz or Cladzco)\nstarted expanding their basements. After some time, they managed to create\ncomplex network of rooms, halls and tunnels. In this underground city, they had\nshops, wells, taverns, counting rooms, doctor's office and... prison.\n\nCriminals captured and sent to the prison were then trailed in court, and\noften treated with appropriate kindness by the executioners.\n\nYou are one of those lucky prisoners! Can you escape from the underground maze?\nHow many ways of escaping can you find? And are you ready to die, like a lot?\n\n\nControls: keyboard (WASD)\n\n\nPress SPACE to start",
       [this.width / 2, this.height / 5]

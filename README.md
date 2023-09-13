@@ -1,8 +1,8 @@
-# XIII Century (temp name)
+# XIII Feet Underground
 
 This project is a game created for [js13kGames contest](https://js13kgames.com/)
 
-Final size: 13 156 bytes
+Final size: 13 131 bytes
 
 # TODO
 - [ ] Display item icons
