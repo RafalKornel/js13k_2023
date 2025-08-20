@@ -5,7 +5,7 @@ export type ImageMetaData = {
   s: Vec2;
 };
 
-export type Assets = Record<number, ImageMetaData>;
+export type Assets = Record<number | string, ImageMetaData>;
 export type Colors = Uint8ClampedArray;
 
-export type ImageCacheKey = `${number} | ${Direction}`;
+export type ImageCacheKey = `${number | string} | ${Direction}`;

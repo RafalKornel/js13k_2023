@@ -1,7 +1,7 @@
 {
-  "name": "mixart",
+  "name": "js13k_2025",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -10,9 +10,9 @@
     "deploy": "gh-pages -d dist",
     "ts-check": "tsc",
     "preview": "vite preview",
-    "compile": "ts-node --esm scripts/compile.ts",
+    "compile": "node --loader ts-node/esm scripts/compile.ts",
     "optimize": "roadroller dist/assets/*.js -o dist/assets/*.js ",
-    "compress": "ts-node --esm scripts/compress.ts"
+    "compress": "node --loader ts-node/esm scripts/compress.ts"
   },
   "devDependencies": {
     "@types/node": "^20.5.4",

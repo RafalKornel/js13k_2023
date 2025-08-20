@@ -1,4 +1,4 @@
-import { VoiceKey } from "./SpeechService";
+import { VoiceKey } from "./speech-service";
 
 export type Vec2 = [x: number, y: number];
 

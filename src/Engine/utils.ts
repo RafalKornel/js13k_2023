@@ -1,4 +1,3 @@
-import { EntityKey } from "./BaseEntity";
 import { CONFIG } from "./config";
 import { Direction, PairKey, Vec2 } from "./types";
 
@@ -13,11 +12,6 @@ function KeyGenerator() {
 }
 
 export const { getKey } = KeyGenerator();
-
-export const getEntityPairKey = (
-  aKey: EntityKey,
-  bKey: EntityKey
-): PairKey<EntityKey> => `${aKey} | ${bKey}`;
 
 export const convertTileToGlobal = (v: number): number => v * CONFIG.tileSize;
 
