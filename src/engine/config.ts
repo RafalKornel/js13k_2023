@@ -1,7 +1,9 @@
 export const CONFIG = {
-  width: 9,
-  height: 16,
-  tileSize: 8,
+  width: 900,
+  height: 1600,
+  tileSize: 1,
+  scale: 16,
+  g: 200,
 };
 
 export const SCREEN_WIDTH = CONFIG.width * CONFIG.tileSize;

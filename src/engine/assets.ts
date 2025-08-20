@@ -1,6 +1,6 @@
 import { ImageMetaData } from "./types";
 
-export const ASSET_KEYS = ["cat", "skeleton"] as const;
+export const ASSET_KEYS = ["cat", "skeleton", 'beer'] as const;
 
 export type AssetKey = (typeof ASSET_KEYS)[number];
 

@@ -4,7 +4,7 @@ export type Direction = "t" | "l" | "d" | "r" | "ul" | "ur";
 
 export type Anchor = "tl" | "c";
 
-export type ImageMetaData = [data: Uint8ClampedArray, s: Vec2];
+export type ImageMetaData = [data: Uint8ClampedArray, size: Vec2];
 
 export type Assets = Record<number | string, ImageMetaData>;
 export type Colors = Uint8ClampedArray;
