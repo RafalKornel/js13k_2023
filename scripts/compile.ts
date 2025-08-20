@@ -49,7 +49,7 @@ function encodeImages(inputPath: string, outputPath: string) {
     console.log("Compiling images to binary files...");
 
     images.forEach(({ data, name }) => {
-      fs.writeFileSync(outputPath + "/" + name, data, {
+      fs.writeFileSync(outputPath + "/" + name + ".bin", data, {
         encoding: "binary",
         flag: "wx",
       });
@@ -57,7 +57,7 @@ function encodeImages(inputPath: string, outputPath: string) {
 
     const slicedColors = colors.slice(0, COLORS_IN_PALETTE * colorsMap.size);
 
-    fs.writeFileSync(outputPath + "/colors", slicedColors, "binary");
+    fs.writeFileSync(outputPath + "/colors.bin", slicedColors, "binary");
 
     console.log("Success!");
   }

@@ -1,4 +1,4 @@
-import { AssetKey } from "../../assets";
+import { AssetKey } from "../assets";
 import { IRenderer } from "../renderer/interfaces";
 import { Anchor } from "../types";
 import { IPositionComponent } from "./posittion-component";

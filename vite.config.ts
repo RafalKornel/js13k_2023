@@ -3,14 +3,26 @@ import { defineConfig, Plugin } from "vite";
 
 import { viteSingleFile } from "vite-plugin-singlefile";
 import { createHtmlPlugin } from "vite-plugin-html";
+import dynamicImport from "vite-plugin-dynamic-import";
 import { Packer, InputType, InputAction } from "roadroller";
 
 function binaryLoaderPlugin(): Plugin {
   return {
     name: "binary-loader",
     transform(code, id) {
-      const [path, query] = id.split("?");
-      if (query !== "binary") return null; // Change query string to match your use case
+      const parts = id.split(".");
+
+      const l = parts.length;
+
+      if (l < 2) {
+        return null;
+      }
+
+      if (parts[l - 1] !== "bin") {
+        return null;
+      }
+
+      const path = parts.join(".");
 
       const data = fs.readFileSync(path);
       const uintArray = new Uint8ClampedArray(data);
@@ -96,15 +108,16 @@ function roadrollerPlugin(): Plugin {
 }
 
 export default defineConfig({
-  base: "/js13k_2023/",
+  base: "/js13k_2025/",
   plugins: [
-    roadrollerPlugin(),
+    // roadrollerPlugin(),
     createHtmlPlugin({
       minify: true,
     }),
     viteSingleFile({ deleteInlinedFiles: true, removeViteModuleLoader: true }),
     binaryLoaderPlugin(),
     base64LoaderPlugin(),
+    dynamicImport({}),
   ],
 
   build: {

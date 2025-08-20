@@ -1,17 +1,5 @@
-// NPCS
-// @ts-ignore
-import cat from "../assets/compiled/cat?binary";
-
-import { Vec2 } from "./engine/types";
-import { ImageMetaData } from "./engine/renderer/types";
-
-export const ASSET_KEYS = ["cat"] as const;
-
-export type AssetKey = (typeof ASSET_KEYS)[number];
-
-const size8: Vec2 = [8, 8];
-
-type AssetsMap = Record<AssetKey, ImageMetaData>;
+import { ASSET_KEYS, AssetsMap, size8 } from "../src/engine/assets";
+import { ImageMetaData } from "../src/engine/renderer/types";
 
 export async function loadAssets(): Promise<{
   assets: AssetsMap;
@@ -25,21 +13,21 @@ export async function loadAssets(): Promise<{
     let data: Uint8ClampedArray;
 
     try {
-      data = await import(`../assets/compiled/${assetKey}?binary`).then(
+      /** @vite-ignore */
+      data = await import(`./compiled/${assetKey}.bin`).then(
         (m) => m.default
       );
     } catch (e) {
-      console.error("Failed loading asset");
+      console.error(`Failed loading asset ${assetKey}`);
+      console.error(e)
       data = missingAsset;
     }
 
     map[assetKey] = { data, s: size8 };
   }
 
-  const colorsPath = `../assets/compiled/colors?binary` as string;
-
-  /* @vite-ignore */
-  const colors = await import(colorsPath)
+      /** @vite-ignore */
+  const colors = await import(`./compiled/colors.bin` as string)
     .then((m) => m.default)
     .catch((e) => {
       console.error(

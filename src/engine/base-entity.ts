@@ -1,4 +1,4 @@
-import { AssetKey } from "../assets";
+import { AssetKey } from "./assets";
 import {
   IPositionComponent,
   PositionComponent,
