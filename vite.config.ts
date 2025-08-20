@@ -136,10 +136,14 @@ export default defineConfig({
         unsafe_math: true,
         unsafe_methods: true,
         unsafe_proto: true,
+        // drop_console: true,
       },
       mangle: {
         module: true,
         toplevel: true,
+        properties: true,
+        keep_classnames: false,
+        keep_fnames: false,
       },
       format: {
         comments: false,

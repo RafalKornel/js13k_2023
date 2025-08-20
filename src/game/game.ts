@@ -29,7 +29,9 @@ export class Game extends CanvasRenderer {
 
     this.cat = new Player([1, 1], "cat", "cat");
 
-    this.entites = [this.cat];
+    const skeleton = new BaseEntity([3, 3], "skeleton", "skeleton");
+
+    this.entites = [this.cat, skeleton];
   }
 
   private update() {

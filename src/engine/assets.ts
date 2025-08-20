@@ -2,13 +2,14 @@
 // @ts-ignore
 import cat from "../assets/compiled/cat?binary";
 
-import { Vec2 } from "./types";
 import { ImageMetaData } from "./renderer/types";
 
-export const ASSET_KEYS = ["cat"] as const;
+export const SQUARE_ASSETS = ["cat"] as const;
+
+export const TALL_ASSETS = ["skeleton"] as const;
+
+export const ASSET_KEYS = [...SQUARE_ASSETS, ...TALL_ASSETS] as const;
 
 export type AssetKey = (typeof ASSET_KEYS)[number];
-
-export const size8: Vec2 = [8, 8];
 
 export type AssetsMap = Record<AssetKey, ImageMetaData>;

@@ -7,16 +7,16 @@ export class Player extends BaseEntity {
 
   update(inputManager: InputManager): void {
     const d: Vec2 = [0, 0];
-    const pos = this.positionComponent;
+    const position = this.positionComponent;
 
     if (inputManager.keysPressed.has("a")) {
       d[0] -= 1;
-      pos.dir = "l";
+      position.dir = "l";
     }
 
     if (inputManager.keysPressed.has("d")) {
       d[0] += 1;
-      pos.dir = "r";
+      position.dir = "r";
     }
 
     if (inputManager.keysPressed.has("w")) {
@@ -26,8 +26,8 @@ export class Player extends BaseEntity {
     if (inputManager.keysPressed.has("s")) {
       d[1] += 1;
     }
-
-    pos.x = pos.x + Math.floor(d[0] * this.velocity);
-    pos.y = pos.y + Math.floor(d[1] * this.velocity);
+    
+    position.pos[0] = position.pos[0] + Math.floor(d[0] * this.velocity);
+    position.pos[1] = position.pos[1] + Math.floor(d[1] * this.velocity);
   }
 }
