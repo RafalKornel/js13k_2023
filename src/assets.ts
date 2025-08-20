@@ -2,8 +2,8 @@
 // @ts-ignore
 import cat from "../assets/compiled/cat?binary";
 
-import { Vec2 } from "./Engine/types";
-import { ImageMetaData } from "./Engine/Renderer/types";
+import { Vec2 } from "./engine-tmp/types";
+import { ImageMetaData } from "./engine-tmp/renderer-tmp/types";
 
 export const ASSET_KEYS = ["cat"] as const;
 
