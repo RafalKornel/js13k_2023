@@ -1,5 +1,5 @@
-import { Game } from "./game-tmp/game-tmp.ts";
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./engine-tmp/config.ts";
+import { Game } from "./game/game.ts";
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./engine/config.ts";
 import { loadAssets } from "./assets.ts";
 
 const gameCanvas = document.querySelector<HTMLCanvasElement>("#g")!;

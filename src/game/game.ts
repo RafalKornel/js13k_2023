@@ -1,14 +1,14 @@
-import { BaseEntity } from "../engine-tmp/base-entity.ts";
-import { InputManager } from "../engine-tmp/input-manager.ts";
-import { Player } from "../engine-tmp/player.ts";
+import { BaseEntity } from "../engine/base-entity.ts";
+import { InputManager } from "../engine/input-manager.ts";
+import { Player } from "../engine/player.ts";
 import {
   CanvasRenderer,
   RenderEngineParams,
-} from "../engine-tmp/renderer-tmp/canvas-renderer.ts";
-import { IRenderer } from "../engine-tmp/renderer-tmp/interfaces.ts";
-import { Assets, Colors } from "../engine-tmp/renderer-tmp/types.ts";
+} from "../engine/renderer/canvas-renderer.ts";
+import { IRenderer } from "../engine/renderer/interfaces.ts";
+import { Assets, Colors } from "../engine/renderer/types.ts";
 
-import { stopSpeach } from "../engine-tmp/speech-service.ts";
+import { stopSpeach } from "../engine/speech-service.ts";
 
 export class Game extends CanvasRenderer {
   private readonly inputManager = new InputManager();
