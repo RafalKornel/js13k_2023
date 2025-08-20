@@ -4,52 +4,62 @@ import { defineConfig, Plugin } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { Packer, InputType, InputAction } from "roadroller";
+import path from "path";
 
-function binaryLoaderPlugin(): Plugin {
+function binaryDirectoryLoaderPlugin(): Plugin {
   return {
-    name: "binary-loader",
+    name: "binary-directory-loader",
     transform(code, id) {
-      const [path, query] = id.split("?");
-      if (query !== "binary") return null; // Change query string to match your use case
+      const [file, query] = id.split("?");
 
-      const data = fs.readFileSync(path);
-      const uintArray = new Uint8ClampedArray(data);
+      if (query !== "binary-directory") {
+        return null;
+      } // Change query string to match your use case
+
+      if (!file.endsWith("colors")) {
+        return null;
+      }
+
+      const colorsData = fs.readFileSync(file);
+
+      const colors = new Uint8ClampedArray(colorsData);
+
+      const directory = path.resolve(file + "/../");
+
+      const assets: Array<[string, Uint8ClampedArray]> = [];
+
+      try {
+        const files = fs.readdirSync(directory);
+
+        for (const currFile of files) {
+          const filepath = path.join(directory, currFile);
+
+          if (file === filepath) {
+            continue;
+          }
+
+          const data = fs.readFileSync(filepath);
+
+          assets.push([currFile, new Uint8ClampedArray(data)]);
+        }
+      } catch (e) {
+        console.error(`failed importing "${id}"`);
+      }
 
       const codeToReturn = `
-      const array = new Uint8ClampedArray([${uintArray.join(",")}]);
-      export default array;
-    `;
+          const colors = new Uint8ClampedArray([${colors}]);
 
-      return {
-        code: codeToReturn,
-        map: null,
-      };
-    },
-  };
-}
+          const assets = Object.fromEntries(
+          [${assets.map(
+            ([key, data]) => `[
+            "${key.split("_")[0]}",
+            [[${new Uint8ClampedArray(data)}], [${key.split("_")[1].split("x")}]]]`
+          )}]);
 
-function base64LoaderPlugin(): Plugin {
-  return {
-    name: "base64-loader",
-    transform(code, id) {
-      const [path, query] = id.split("?");
-      if (query !== "base64") return null; // Change query string to match your use case
+          export default { assets, colors };
+      `;
 
-      const data = fs.readFileSync(path);
-      const dataEncoded = data.toString("base64");
-      // const uintArray = new Uint8ClampedArray(data);
-
-      // console.log(data)
-
-      const codeToReturn = `
-      const data = \`${dataEncoded}\`;
-      export default data;
-    `;
-
-      return {
-        code: codeToReturn,
-        map: null,
-      };
+      return { code: codeToReturn, map: null };
     },
   };
 }
@@ -65,13 +75,6 @@ function roadrollerPlugin(): Plugin {
       for (const asset of Object.values(context.bundle)) {
         if (asset.type !== "chunk") continue;
 
-        html = html.replace(
-          new RegExp(
-            `<script type="module"[^>]*?src="/${asset.fileName}"[^>]*?></script>`
-          ),
-          ""
-        );
-
         const packer = new Packer(
           [
             {
@@ -83,57 +86,58 @@ function roadrollerPlugin(): Plugin {
           {}
         );
 
-        await packer.optimize(4);
+        await packer.optimize(3);
 
         const { firstLine, secondLine } = packer.makeDecoder();
 
         transformedScripts.push(`<script>${firstLine}${secondLine}</script>`);
       }
 
-      return html.replace(/<\/body>/, `${transformedScripts.join("")}</body>`);
+      // html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+      html.replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, "");
+
+      return html
+        .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, "")
+        .replace(/<\/body>/, `${transformedScripts.join("")}</body>`);
     },
   };
 }
 
 export default defineConfig({
-  base: "/js13k_2023/",
+  base: "/js13k_2025/",
   plugins: [
-    roadrollerPlugin(),
+    // roadrollerPlugin(),
+    viteSingleFile({ deleteInlinedFiles: true, removeViteModuleLoader: true }),
     createHtmlPlugin({
       minify: true,
     }),
-    viteSingleFile({ deleteInlinedFiles: true, removeViteModuleLoader: true }),
-    binaryLoaderPlugin(),
-    base64LoaderPlugin(),
+    binaryDirectoryLoaderPlugin(),
   ],
-
   build: {
     target: "esnext",
     minify: "terser",
-    polyfillModulePreload: false, // Don't add vite polyfills
+    modulePreload: {
+      polyfill: false,
+    },
     cssCodeSplit: false,
     // brotliSize: false,
     terserOptions: {
       compress: {
         ecma: 2020,
-        module: true,
-        passes: 3,
-        unsafe_arrows: true,
-        unsafe_comps: true,
-        unsafe_math: true,
-        unsafe_methods: true,
-        unsafe_proto: true,
+        passes: 2,
+        drop_console: true,
       },
       mangle: {
-        module: true,
         toplevel: true,
+        module: true,
+        properties: true, // disable unless you know what you’re mangling
       },
       format: {
         comments: false,
         ecma: 2020,
       },
-      module: true,
       toplevel: true,
+      module: true,
     },
     rollupOptions: {
       output: {
