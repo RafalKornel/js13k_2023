@@ -15,7 +15,7 @@ function encodeImages(inputPath: string, outputPath: string) {
   let currentColorIdx = 0;
 
   const BYTES_PER_COLOR = 4;
-  const COLORS_IN_PALETTE = 128;
+  const COLORS_IN_PALETTE = 64;
 
   const colors = new Uint8ClampedArray(BYTES_PER_COLOR * COLORS_IN_PALETTE);
 
@@ -35,9 +35,9 @@ function encodeImages(inputPath: string, outputPath: string) {
         continue;
       }
 
-      const imageEncoded = encodeImage(`${inputPath}/${name}`);
+      const [imageEncoded, w, h] = encodeImage(`${inputPath}/${name}`);
 
-      images.push({ name: name.replace(".png", ""), data: imageEncoded });
+      images.push({ name: name.replace(".png", `_${w}x${h}`), data: imageEncoded });
     }
 
     generateAssetsFile(colors, images);
@@ -49,7 +49,7 @@ function encodeImages(inputPath: string, outputPath: string) {
     console.log("Compiling images to binary files...");
 
     images.forEach(({ data, name }) => {
-      fs.writeFileSync(outputPath + "/" + name + ".bin", data, {
+      fs.writeFileSync(outputPath + "/" + name , data, {
         encoding: "binary",
         flag: "wx",
       });
@@ -57,7 +57,7 @@ function encodeImages(inputPath: string, outputPath: string) {
 
     const slicedColors = colors.slice(0, COLORS_IN_PALETTE * colorsMap.size);
 
-    fs.writeFileSync(outputPath + "/colors.bin", slicedColors, "binary");
+    fs.writeFileSync(outputPath + "/colors", slicedColors, "binary");
 
     console.log("Success!");
   }
@@ -106,7 +106,7 @@ function encodeImages(inputPath: string, outputPath: string) {
       }
     }
 
-    return arr;
+    return [arr, decoded.width, decoded.height] as const;
   }
 
   console.log(`Size of color map: ${colorsMap.size}`);

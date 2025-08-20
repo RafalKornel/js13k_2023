@@ -33,7 +33,7 @@ const recompressWithAdvzip = () => {
   }
 };
 
-const ZIP_FILE_PATH = "dist.zip";
+const ZIP_FILE_PATH = "dist/dist.zip";
 const DIST_FOLDER_PATH = "dist/";
 
 compressDistFolder();
