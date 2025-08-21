@@ -49,17 +49,15 @@ function binaryDirectoryLoaderPlugin(): Plugin {
       const codeToReturn = `
           const colors = new Uint8ClampedArray([${colors}]);
 
-          const assets = Object.fromEntries(
+          const assets = 
           [${assets.map(
-            ([key, data]) => `[
-            "${key.split("_")[0]}",
-            [new Uint8ClampedArray([${data}]), [${key
-              .split("_")[1]
-              .split("x")}]]]`
-          )}]);
+            ([key, data]) => `[ new Uint8ClampedArray([${data}]), [${key.split("_")[2].split("x")}] ]`
+          )}];
 
           export default { assets, colors };
       `;
+
+      console.log(codeToReturn);
 
       return { code: codeToReturn, map: null };
     },
@@ -128,6 +126,8 @@ export default defineConfig({
         ecma: 2020,
         passes: 2,
         drop_console: true,
+        dead_code: true,
+        reduce_vars: true,
       },
       mangle: {
         toplevel: true,

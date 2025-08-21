@@ -1,31 +1,44 @@
 import { Vec2 } from "./types.ts";
-import { CONFIG, width } from "./config.ts";
-import { getId, rnd } from "./utils.ts";
-import { AssetKey } from "./assets.ts";
+import { G, SCREEN_WIDTH } from "./config.ts";
+import { rnd } from "./utils.ts";
+import { AssetKey, BEER_SPRITE, CAT_SPRITE } from "./assets.ts";
 
-// export const pixels = new Uint8ClampedArray(width * height * bpc);
-// export const imageData = new ImageData(pixels, width, height);
+let id = 0;
+const getId = () => id++;
+
+export const PLAYER = getId();
 
 export const positions: Vec2[] = [];
 export const velocities: Vec2[] = [];
 export const sprites: AssetKey[] = [];
 export const rotations: number[] = [];
 
-export const PLAYER = getId();
-sprites[PLAYER] = "cat";
-positions[PLAYER] = [20, 20];
-velocities[PLAYER] = [0, 0];
-rotations[PLAYER] = 0;
+export let objects: number[] = [];
 
-export const objects = [getId()];
+export const spawnObject = () => {
+  const o = getId();
 
-export const spawnObject = (o: number) => {
-  sprites[o] = "beer";
-  positions[o] = [rnd(width / 8, (width * 7) / 8), 5];
-  velocities[o] = [rnd(-CONFIG.g / 2, CONFIG.g / 2), 0];
+  objects.push(o);
+
+  sprites[o] = BEER_SPRITE;
+  positions[o] = [rnd(SCREEN_WIDTH / 8, (SCREEN_WIDTH * 7) / 8), 5];
+  velocities[o] = [rnd(-G / 2, G / 2), 0];
   rotations[o] = rnd(0, Math.PI * 2);
+
+  return o;
 };
 
-for (const o of objects) {
-  spawnObject(o);
+export function setupTestScene() {
+  sprites[PLAYER] = CAT_SPRITE;
+  positions[PLAYER] = [20, 20];
+  velocities[PLAYER] = [0, 0];
+  rotations[PLAYER] = 0;
+
+  objects = [];
+
+  const objCount = 2;
+
+  for (let i = 0; i < objCount; i++) {
+    spawnObject();
+  }
 }

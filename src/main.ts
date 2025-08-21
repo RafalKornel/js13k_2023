@@ -1,6 +1,7 @@
-import { render, update } from "./game.ts";
+import { game } from "./game.ts";
 
 // GAME LOOP
+const [render, update] = game();
 let lastTime = performance.now();
 let raf: number;
 
