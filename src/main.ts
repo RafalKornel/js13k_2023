@@ -1,7 +1,6 @@
-import { game } from "./game.ts";
+import { init, render, update } from "./game.ts";
 
 // GAME LOOP
-const [render, update] = game();
 let lastTime = performance.now();
 let raf: number;
 
@@ -27,6 +26,8 @@ async function start() {
   if (raf) {
     stop();
   }
+
+  init();
 
   raf = loop(0);
 }

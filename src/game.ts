@@ -1,6 +1,5 @@
 import { G, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH } from "./config.ts";
 import { mag, mult } from "./utils.ts";
-import { loadAssets } from "./assets.ts";
 import {
   objects,
   PLAYER,
@@ -11,62 +10,50 @@ import {
   sprites,
   velocities,
 } from "./state.ts";
-import { setupRenderer } from "./render.ts";
+import {
+  beginShake,
+  canvas,
+  clearCanvas,
+  endShake,
+  ratio,
+  renderImage,
+  renderRect,
+  renderRectFill,
+  startShake,
+} from "./render.ts";
 import { Vec2 } from "./types.ts";
+import { sizes } from "./assets.ts";
 
-export function game() {
-  const canvas = document.querySelector<HTMLCanvasElement>("#g")!;
-  const ctx = canvas.getContext("2d")!;
+// CONTROLS
+let mousePressed: Vec2 | null = null;
 
-  canvas.width = SCREEN_WIDTH;
-  canvas.height = SCREEN_HEIGHT;
-
-  const ratio = SCREEN_WIDTH / canvas.clientWidth;
-
-  ctx.imageSmoothingEnabled = false;
-
-  if (!ctx) {
-    throw new Error("ctx failed");
-  }
-
-  const [assets, sizes] = loadAssets();
-  const [
-    clearCanvas,
-    renderRectFill,
-    renderRect,
-    renderImage,
-    startShake,
-    beginShake,
-    endShake,
-  ] = setupRenderer(ctx, assets, sizes);
+export let init = () => {
+  let KP = "keypress" as const;
+  let MD = "mousedown" as const;
 
   setupTestScene();
 
-  // CONTROLS
-  const keysPressed = new Set<string>();
+  let keypress = (e: KeyboardEvent) => {
+    if (e.key === "r") {
+      setupTestScene();
+    }
+    if (e.key === "s") {
+      spawnObject();
+    }
+  };
 
-  let mousePressed: Vec2 | null = null;
-
-  window.addEventListener("keydown", (e) => {
-    keysPressed.add(e.key);
-  });
-
-  window.addEventListener("keyup", (e) => {
-    keysPressed.delete(e.key);
-  });
+  window.addEventListener(KP, keypress);
 
   let tmt: NodeJS.Timeout | null = null;
 
-  window.addEventListener("mousedown", (e) => {
+  let mousedown = (e: MouseEvent) => {
     if (e.target !== canvas) {
       return;
     }
 
     mousePressed = [e.offsetX, e.offsetY] as Vec2;
     startShake(0.5, 10);
-  });
 
-  window.addEventListener("mouseup", () => {
     if (tmt) {
       clearTimeout(tmt);
     }
@@ -74,98 +61,95 @@ export function game() {
     tmt = setTimeout(() => {
       mousePressed = null;
     }, 500);
-  });
+  };
 
-  function render(dt: number) {
-    clearCanvas();
+  window.addEventListener(MD, mousedown);
 
-    beginShake(dt);
+  return () => {
+    window.removeEventListener(KP, keypress);
+    window.removeEventListener(MD, mousedown);
+  };
+};
 
-    renderImage(sprites[PLAYER], positions[PLAYER], "tl", rotations[PLAYER]);
+export let render = (dt: number) => {
+  clearCanvas();
 
-    for (const o of objects) {
-      renderImage(sprites[o], positions[o], "tl", rotations[o]);
-    }
+  beginShake(dt);
 
-    if (mousePressed) {
-      renderRectFill(
-        mult(mousePressed, ratio),
-        [SCALE * 4, SCALE * 4],
-        "#00ff00",
-        "c"
-      );
-    }
+  renderImage(sprites[PLAYER], positions[PLAYER], "tl", rotations[PLAYER]);
 
-    endShake();
-
-    renderRect([0, 0], [SCREEN_WIDTH, SCREEN_HEIGHT], "#ff0000", "tl");
+  for (const o of objects) {
+    renderImage(sprites[o], positions[o], "tl", rotations[o]);
   }
 
-  function update(dt: number) {
-    rotations[PLAYER] += dt * 0.5;
-
-    if (keysPressed.has("r")) {
-      setupTestScene();
-    }
-
-    if (keysPressed.has("s")) {
-      spawnObject();
-    }
-
-    for (const o of objects) {
-      const v = velocities[o];
-      const p = positions[o];
-      const d = mult(sizes[sprites[o]], SCALE);
-
-      // gravity
-      v[1] += G * dt;
-
-      const mass = 10;
-      const thr = 0.0001;
-      const dmpn = 0.8;
-
-      const dv = mass * dt;
-
-      const mg = mag(v);
-
-      p[0] += v[0] * dv;
-
-      let shouldShake = false;
-
-      if (p[0] < 0) {
-        p[0] = 0;
-        v[0] = Math.abs(v[0]) < thr ? 0 : v[0] * dmpn * -1;
-
-        shouldShake = true;
-      } else if (p[0] + d[0] > SCREEN_WIDTH) {
-        p[0] = SCREEN_WIDTH - d[0];
-        v[0] = Math.abs(v[0]) < thr ? 0 : v[0] * dmpn * -1;
-
-        shouldShake = true;
-      }
-
-      p[1] += v[1] * dv;
-
-      if (p[1] < 0) {
-        p[1] = 0;
-        v[1] = Math.abs(v[1]) < thr ? 0 : v[1] * dmpn * -1;
-
-        v[0] *= dmpn;
-      } else if (p[1] + d[1] > SCREEN_HEIGHT) {
-        p[1] = SCREEN_HEIGHT - d[1];
-        v[1] = Math.abs(v[1]) < thr ? 0 : v[1] * dmpn * -1;
-
-        v[0] *= dmpn;
-
-        shouldShake = true;
-      }
-
-      if (shouldShake && mg > 1) {
-        startShake(0.5, mg / 16);
-      }
-    }
-    // console.log({ positions, velocities, sprites });
+  if (mousePressed) {
+    renderRectFill(
+      mult(mousePressed, ratio),
+      [SCALE * 4, SCALE * 4],
+      "#00ff00",
+      "c"
+    );
   }
 
-  return [render, update] as const;
-}
+  endShake();
+
+  renderRect([0, 0], [SCREEN_WIDTH, SCREEN_HEIGHT], "#ff0000", "tl");
+};
+
+export let update = (dt: number) => {
+  rotations[PLAYER] += dt * 0.5;
+
+  for (const o of objects) {
+    const v = velocities[o];
+    const p = positions[o];
+    const d = mult(sizes[sprites[o]], SCALE);
+
+    // gravity
+    v[1] += G * dt;
+
+    const mass = 10;
+    const thr = 0.0001;
+    const dmpn = 0.8;
+
+    const dv = mass * dt;
+
+    const mg = mag(v);
+
+    p[0] += v[0] * dv;
+
+    let shouldShake = false;
+
+    if (p[0] < 0) {
+      p[0] = 0;
+      v[0] = Math.abs(v[0]) < thr ? 0 : v[0] * dmpn * -1;
+
+      shouldShake = true;
+    } else if (p[0] + d[0] > SCREEN_WIDTH) {
+      p[0] = SCREEN_WIDTH - d[0];
+      v[0] = Math.abs(v[0]) < thr ? 0 : v[0] * dmpn * -1;
+
+      shouldShake = true;
+    }
+
+    p[1] += v[1] * dv;
+
+    if (p[1] < 0) {
+      p[1] = 0;
+      v[1] = Math.abs(v[1]) < thr ? 0 : v[1] * dmpn * -1;
+
+      v[0] *= dmpn;
+    } else if (p[1] + d[1] > SCREEN_HEIGHT) {
+      p[1] = SCREEN_HEIGHT - d[1];
+      v[1] = Math.abs(v[1]) < thr ? 0 : v[1] * dmpn * -1;
+
+      v[0] *= dmpn;
+
+      shouldShake = true;
+    }
+
+    if (shouldShake && mg > 1) {
+      startShake(0.5, mg / 16);
+    }
+  }
+  // console.log({ positions, velocities, sprites });
+};

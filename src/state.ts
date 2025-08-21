@@ -4,18 +4,18 @@ import { rnd } from "./utils.ts";
 import { AssetKey, BEER_SPRITE, CAT_SPRITE } from "./assets.ts";
 
 let id = 0;
-const getId = () => id++;
+let getId = () => id++;
 
-export const PLAYER = getId();
+export let PLAYER = getId();
 
-export const positions: Vec2[] = [];
-export const velocities: Vec2[] = [];
-export const sprites: AssetKey[] = [];
-export const rotations: number[] = [];
+export let positions: Vec2[] = [];
+export let velocities: Vec2[] = [];
+export let sprites: AssetKey[] = [];
+export let rotations: number[] = [];
 
 export let objects: number[] = [];
 
-export const spawnObject = () => {
+export let spawnObject = () => {
   const o = getId();
 
   objects.push(o);
@@ -28,7 +28,7 @@ export const spawnObject = () => {
   return o;
 };
 
-export function setupTestScene() {
+export let setupTestScene = () => {
   sprites[PLAYER] = CAT_SPRITE;
   positions[PLAYER] = [20, 20];
   velocities[PLAYER] = [0, 0];
@@ -41,4 +41,4 @@ export function setupTestScene() {
   for (let i = 0; i < objCount; i++) {
     spawnObject();
   }
-}
+};

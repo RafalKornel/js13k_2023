@@ -128,6 +128,8 @@ export default defineConfig({
         drop_console: true,
         dead_code: true,
         reduce_vars: true,
+        unsafe_arrows: true,
+        unsafe_Function: true,
       },
       mangle: {
         toplevel: true,
