@@ -1,20 +1,11 @@
-import { assets, colors, AssetKey } from "./assets";
-import { ctx, CONFIG, width, bpc, height } from "./config";
-import { imageData, pixels } from "./state";
+import { assets, AssetKey, cache } from "./assets";
+import { ctx, CONFIG, width, height } from "./config";
 import { Vec2, Anchor } from "./types";
 import { floor, subtract, mult, rnd } from "./utils";
 
 // RENDERING
 export function clearCanvas() {
-  pixels.fill(0);
   ctx.clearRect(0, 0, width, height);
-}
-
-export function flushBuffer(dt: number) {
-  const buffer = applyShake(pixels, dt);
-
-  imageData.data.set(buffer);
-  ctx.putImageData(imageData, 0, 0);
 }
 
 export function renderRectFill(
@@ -55,34 +46,40 @@ export function renderRect(
 export function renderImage(
   assetKey: AssetKey,
   pos: Vec2,
-  anchor: Anchor = "c"
+  anchor: Anchor = "c",
+  rotation: number = 0 // radians
 ) {
-  const [data, size] = assets[assetKey];
+  const [, size] = assets[assetKey];
+  const img: HTMLImageElement | undefined = cache.get(assetKey);
 
-  const tPos = floor(anchor === "c" ? subtract(pos, mult(size, 0.5)) : pos);
+  if (!img) return;
 
   const scale = CONFIG.scale;
+  const scaledSize: Vec2 = mult(size, scale);
 
-  for (let y = 0; y < size[1]; y++) {
-    for (let x = 0; x < size[0]; x++) {
-      const srcIdx = x + y * size[0];
-      const colorIdx = data[srcIdx];
+  // pivot position
+  const tPos = floor(
+    anchor === "c" ? subtract(pos, mult(scaledSize, 0.5)) : pos
+  ) as Vec2;
 
-      for (let sy = 0; sy < scale; sy++) {
-        for (let sx = 0; sx < scale; sx++) {
-          const dstX = tPos[0] + x * scale + sx;
-          const dstY = tPos[1] + y * scale + sy;
+  ctx.save();
 
-          const dstIdx = dstX + dstY * width;
+  // move origin to image center
+  ctx.translate(tPos[0] + scaledSize[0] / 2, tPos[1] + scaledSize[1] / 2);
 
-          pixels[dstIdx * bpc + 0] += colors[colorIdx * bpc + 0];
-          pixels[dstIdx * bpc + 1] += colors[colorIdx * bpc + 1];
-          pixels[dstIdx * bpc + 2] += colors[colorIdx * bpc + 2];
-          pixels[dstIdx * bpc + 3] += colors[colorIdx * bpc + 3];
-        }
-      }
-    }
-  }
+  // rotate
+  ctx.rotate(rotation);
+
+  // draw centered at origin
+  ctx.drawImage(
+    img,
+    -scaledSize[0] / 2,
+    -scaledSize[1] / 2,
+    scaledSize[0],
+    scaledSize[1]
+  );
+
+  ctx.restore();
 }
 
 let shakeTime = 0;
@@ -95,49 +92,30 @@ export function startShake(duration: number, intensity: number) {
   shakeDuration = duration;
   shakeIntensity = intensity;
   shakeTime = 0;
-  xMod = rnd(0.5, 1);
+  xMod = rnd(0.5, 1); // randomize so X/Y aren’t in sync
   yMod = rnd(0.5, 1);
 }
+
 /**
- * Call each frame to apply smooth shake.
+ * Call this once per frame *before* drawing your scene.
  */
-export function applyShake(
-  pixels: Uint8ClampedArray,
-  dt: number
-): Uint8ClampedArray {
-  if (shakeTime >= shakeDuration) return pixels;
+export function beginShake(dt: number) {
+  if (shakeTime >= shakeDuration) return;
 
   shakeTime += dt;
 
-  const t = shakeTime / shakeDuration; // 0 → 1
-  const damping = 1 - t; // linear decay
-  const angle = shakeTime * 50; // speed of oscillation
+  const t = shakeTime / shakeDuration; // goes 0 → 1
+  const damping = 1 - t; // fade out
+  const angle = shakeTime * 50; // oscillation speed
   const offsetX = Math.sin(angle * xMod) * shakeIntensity * damping;
   const offsetY = Math.cos(angle * yMod) * shakeIntensity * damping;
 
-  const shaken = new Uint8ClampedArray(pixels.length);
+  ctx.save(); // save current transform
+  ctx.translate(offsetX, offsetY); // apply shake
+}
 
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const srcX = Math.round(x - offsetX);
-      const srcY = Math.round(y - offsetY);
-
-      const dstIdx = (x + y * width) * bpc;
-
-      if (srcX < 0 || srcX >= width || srcY < 0 || srcY >= height) {
-        shaken[dstIdx + 0] = 0;
-        shaken[dstIdx + 1] = 0;
-        shaken[dstIdx + 2] = 0;
-        shaken[dstIdx + 3] = 255;
-      } else {
-        const srcIdx = (srcX + srcY * width) * bpc;
-        shaken[dstIdx + 0] = pixels[srcIdx + 0];
-        shaken[dstIdx + 1] = pixels[srcIdx + 1];
-        shaken[dstIdx + 2] = pixels[srcIdx + 2];
-        shaken[dstIdx + 3] = pixels[srcIdx + 3];
-      }
-    }
+export function endShake() {
+  if (shakeTime < shakeDuration) {
+    ctx.restore(); // undo transform
   }
-
-  return shaken;
 }

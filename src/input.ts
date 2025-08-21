@@ -23,7 +23,7 @@ window.addEventListener("mousedown", (e) => {
   }
 
   mousePressed = [e.offsetX, e.offsetY] as Vec2;
-  startShake(1, 20);
+  startShake(0.5, 10);
 });
 
 window.addEventListener("mouseup", () => {

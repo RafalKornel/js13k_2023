@@ -1,9 +1,9 @@
 export const CONFIG = {
-  width: 900,
-  height: 1600,
-  tileSize: 1,
-  scale: 16,
-  g: 200,
+  width: 90,
+  height: 160,
+  tileSize: 4,
+  scale: 4,
+  g: 50,
 };
 
 export const SCREEN_WIDTH = CONFIG.width * CONFIG.tileSize;
@@ -19,6 +19,8 @@ export const height = SCREEN_HEIGHT;
 
 canvas.width = width;
 canvas.height = height;
+
+ctx.imageSmoothingEnabled = false;
 
 if (!ctx) {
   throw new Error("ctx failed");

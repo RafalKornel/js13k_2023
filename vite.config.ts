@@ -53,7 +53,9 @@ function binaryDirectoryLoaderPlugin(): Plugin {
           [${assets.map(
             ([key, data]) => `[
             "${key.split("_")[0]}",
-            [[${new Uint8ClampedArray(data)}], [${key.split("_")[1].split("x")}]]]`
+            [new Uint8ClampedArray([${data}]), [${key
+              .split("_")[1]
+              .split("x")}]]]`
           )}]);
 
           export default { assets, colors };

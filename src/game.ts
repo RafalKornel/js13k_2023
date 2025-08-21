@@ -1,30 +1,28 @@
 import { CONFIG, ratio, height, width } from "./config.ts";
-import { mult } from "./utils.ts";
+import { mag, mult } from "./utils.ts";
 import { mousePressed } from "./input.ts";
 import { assets } from "./assets.ts";
-import { objects, PLAYER, positions, sprites, velocities } from "./state.ts";
+import { objects, PLAYER, positions, rotations, sprites, velocities } from "./state.ts";
 import {
   renderImage,
   renderRectFill,
   renderRect,
   clearCanvas,
-  flushBuffer,
+  beginShake,
+  endShake,
+  startShake,
 } from "./render.ts";
 
 export function render(dt: number) {
   clearCanvas();
 
-  // Order is important
-  // Render sprites
-  renderImage(sprites[PLAYER], positions[PLAYER], "tl");
+  beginShake(dt);
+
+  renderImage(sprites[PLAYER], positions[PLAYER], "tl", rotations[PLAYER]);
 
   for (const o of objects) {
-    renderImage(sprites[o], positions[o], "tl");
+    renderImage(sprites[o], positions[o], "tl", rotations[o]);
   }
-
-  flushBuffer(dt);
-
-  // Render primitives
 
   if (mousePressed) {
     renderRectFill(
@@ -35,10 +33,15 @@ export function render(dt: number) {
     );
   }
 
+  endShake();
+
   renderRect([0, 0], [width, height], "#ff0000", "tl");
 }
 
 export function update(dt: number) {
+
+  rotations[PLAYER] += dt * 0.5;
+
   for (const o of objects) {
     const v = velocities[o];
     const p = positions[o];
@@ -53,7 +56,7 @@ export function update(dt: number) {
 
     const dv = mass * dt;
 
-    // const mg = mag(v);
+    const mg = mag(v);
 
     p[0] += v[0] * dv;
 
@@ -87,9 +90,9 @@ export function update(dt: number) {
       shouldShake = true;
     }
 
-    // if (shouldShake) {
-    //   startShake(0.5, mg / 16);
-    // }
+    if (shouldShake) {
+      startShake(0.5, mg / 16);
+    }
   }
 
   // console.log({ positions, velocities, sprites });
